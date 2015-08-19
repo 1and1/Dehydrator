@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EntityReferenceStripper", "EntityReferenceStripper\EntityReferenceStripper.shproj", "{D7419180-F830-4E67-AA49-B40A0738C442}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.Net40", "EntityReferenceStripper.Net40\EntityReferenceStripper.Net40.csproj", "{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.Net45", "EntityReferenceStripper.Net45\EntityReferenceStripper.Net45.csproj", "{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EntityReferenceStripper.WebApi", "EntityReferenceStripper.WebApi\EntityReferenceStripper.WebApi.shproj", "{21193DBC-438E-4D31-8C86-471A63DC833B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.WebApi.Net45", "EntityReferenceStripper.WebApi.Net45\EntityReferenceStripper.WebApi.Net45.csproj", "{368ABA94-AA57-482E-B696-1C104EB57BD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.UnitTests", "EntityReferenceStripper.UnitTests\EntityReferenceStripper.UnitTests.csproj", "{1C898342-B01A-44A0-81FB-EC09FA2982E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.WebApi.UnitTests", "EntityReferenceStripper.WebApi.UnitTests\EntityReferenceStripper.WebApi.UnitTests.csproj", "{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		EntityReferenceStripper.WebApi\EntityReferenceStripper.WebApi.projitems*{368aba94-aa57-482e-b696-1c104eb57bd6}*SharedItemsImports = 4
+		EntityReferenceStripper\EntityReferenceStripper.projitems*{d7419180-f830-4e67-aa49-b40a0738c442}*SharedItemsImports = 13
+		EntityReferenceStripper\EntityReferenceStripper.projitems*{fe22975b-b3a0-4855-beeb-ef8b58c3df21}*SharedItemsImports = 4
+		EntityReferenceStripper\EntityReferenceStripper.projitems*{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}*SharedItemsImports = 4
+		EntityReferenceStripper.WebApi\EntityReferenceStripper.WebApi.projitems*{21193dbc-438e-4d31-8c86-471a63dc833b}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{368ABA94-AA57-482E-B696-1C104EB57BD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{368ABA94-AA57-482E-B696-1C104EB57BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{368ABA94-AA57-482E-B696-1C104EB57BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{368ABA94-AA57-482E-B696-1C104EB57BD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C898342-B01A-44A0-81FB-EC09FA2982E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C898342-B01A-44A0-81FB-EC09FA2982E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C898342-B01A-44A0-81FB-EC09FA2982E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C898342-B01A-44A0-81FB-EC09FA2982E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
