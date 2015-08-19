@@ -90,7 +90,7 @@ namespace EntityReferenceStripper.WebApi
             var storedEntity = Db.Set<T>().Add(resolvedEntity);
             await Db.SaveChangesAsync();
 
-            return Created(new Uri(resolvedEntity.Id.ToString(), UriKind.Relative), storedEntity);
+            return Created(new Uri(resolvedEntity.Id.ToString(), UriKind.Relative), storedEntity.StripReferences());
             //return CreatedAtRoute("bla", new { id = resolvedEntity.Id }, storedEntity);
         }
 
@@ -106,7 +106,7 @@ namespace EntityReferenceStripper.WebApi
             Db.Set<T>().Remove(entity);
             await Db.SaveChangesAsync();
 
-            return Ok();
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         protected override void Dispose(bool disposing)
