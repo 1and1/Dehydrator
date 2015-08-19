@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,6 +73,19 @@ namespace EntityReferenceStripper.WebApi
 
             var result = await _controller.Read(1);
             result.ShouldBeEqualTo(_entityWithStrippedReference);
+        }
+
+        [Test]
+        public async void TestDelete()
+        {
+            _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(_entityWithResolvedReference)).Verifiable();
+            _dbSetMock.Setup(x => x.Remove(_entityWithResolvedReference)).Returns(_entityWithResolvedReference).Verifiable();
+            _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
+
+            var result = await _controller.Delete(1);
+            var response = await result.ExecuteAsync(CancellationToken.None);
+
+            response.IsSuccessStatusCode.ShouldBeTrue();
         }
 
         public class MockEntity : Entity
