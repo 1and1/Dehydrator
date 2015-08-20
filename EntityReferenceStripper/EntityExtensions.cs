@@ -33,25 +33,25 @@ namespace EntityReferenceStripper
 
                 if (IsEntity(prop))
                 {
-                    var resolvedReference = resolver.Resolve((IEntity)propertyValue, prop.PropertyType);
-                    prop.SetValue(clonedEntity, resolvedReference, null);
+                    var resolvedRef = resolver.Resolve((IEntity)propertyValue, prop.PropertyType);
+                    prop.SetValue(clonedEntity, resolvedRef, null);
                 }
                 else if (IsEntityCollection(prop))
                 {
                     var referenceType = prop.PropertyType.GetGenericArguments().First();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
-                    var resolvedReferences = Activator.CreateInstance(collectionType);
-                    prop.SetValue(clonedEntity, resolvedReferences, null);
+                    var resolvedRefs = Activator.CreateInstance(collectionType);
+                    prop.SetValue(clonedEntity, resolvedRefs, null);
 
-                    foreach (IEntity strippedReference in (IEnumerable)propertyValue)
+                    foreach (IEntity strippedRef in (IEnumerable)propertyValue)
                     {
-                        if (strippedReference == null) continue;
+                        if (strippedRef == null) continue;
 
-                        var resolvedReference = resolver.Resolve(strippedReference, referenceType);
+                        var resolvedRef = resolver.Resolve(strippedRef, referenceType);
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            resolvedReferences, new object[] {resolvedReference});
+                            resolvedRefs, new object[] {resolvedRef});
                     }
                 }
             }
@@ -79,25 +79,25 @@ namespace EntityReferenceStripper
 
                 if (IsEntity(prop))
                 {
-                    var resolvedReference = await resolver.ResolveAsync((IEntity)propertyValue, prop.PropertyType);
-                    prop.SetValue(clonedEntity, resolvedReference, null);
+                    var resolvedRef = await resolver.ResolveAsync((IEntity)propertyValue, prop.PropertyType);
+                    prop.SetValue(clonedEntity, resolvedRef, null);
                 }
                 else if (IsEntityCollection(prop))
                 {
                     var referenceType = prop.PropertyType.GetGenericArguments().First();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
-                    var resolvedReferences = Activator.CreateInstance(collectionType);
-                    prop.SetValue(clonedEntity, resolvedReferences, null);
+                    var resolvedRefs = Activator.CreateInstance(collectionType);
+                    prop.SetValue(clonedEntity, resolvedRefs, null);
 
-                    foreach (IEntity strippedReference in (IEnumerable)propertyValue)
+                    foreach (IEntity strippedRef in (IEnumerable)propertyValue)
                     {
-                        if (strippedReference == null) continue;
+                        if (strippedRef == null) continue;
 
-                        var resolvedReference = await resolver.ResolveAsync(strippedReference, referenceType);
+                        var resolvedRef = await resolver.ResolveAsync(strippedRef, referenceType);
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            resolvedReferences, new object[] { resolvedReference });
+                            resolvedRefs, new object[] {resolvedRef});
                     }
                 }
             }
@@ -122,27 +122,27 @@ namespace EntityReferenceStripper
 
                 if (IsEntity(prop))
                 {
-                    var strippedReference = (IEntity)Activator.CreateInstance(prop.PropertyType);
-                    strippedReference.Id = ((IEntity)propertyValue).Id;
-                    prop.SetValue(clonedEntity, strippedReference, null);
+                    var strippedRef = (IEntity)Activator.CreateInstance(prop.PropertyType);
+                    strippedRef.Id = ((IEntity)propertyValue).Id;
+                    prop.SetValue(clonedEntity, strippedRef, null);
                 }
                 else if (IsEntityCollection(prop))
                 {
                     var referenceType = prop.PropertyType.GetGenericArguments().First();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
-                    var strippedReferences = Activator.CreateInstance(collectionType);
-                    prop.SetValue(clonedEntity, strippedReferences, null);
+                    var strippedRefs = Activator.CreateInstance(collectionType);
+                    prop.SetValue(clonedEntity, strippedRefs, null);
 
-                    foreach (IEntity resolvedReference in (IEnumerable)propertyValue)
+                    foreach (IEntity resolvedRef in (IEnumerable)propertyValue)
                     {
-                        if (resolvedReference == null) continue;
+                        if (resolvedRef == null) continue;
 
-                        var strippedReference = (IEntity)Activator.CreateInstance(referenceType);
-                        strippedReference.Id = resolvedReference.Id;
+                        var strippedRef = (IEntity)Activator.CreateInstance(referenceType);
+                        strippedRef.Id = resolvedRef.Id;
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            strippedReferences, new object[] { strippedReference });
+                            strippedRefs, new object[] {strippedRef});
                     }
                 }
             }

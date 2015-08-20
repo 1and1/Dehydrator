@@ -78,8 +78,8 @@ namespace EntityReferenceStripper.WebApi
         /// <param name="entity">The modified entity with stripped resources.</param>
         protected void Modify([NotNull] TEntity entity)
         {
-            var entityWithResolvedReferences = entity.ResolveReferences(_resolver);
-            _db.Entry(entityWithResolvedReferences).State = EntityState.Modified;
+            var entityWithResolvedRefs = entity.ResolveReferences(_resolver);
+            _db.Entry(entityWithResolvedRefs).State = EntityState.Modified;
             _db.SaveChanges();
         }
 
@@ -89,8 +89,8 @@ namespace EntityReferenceStripper.WebApi
         /// <param name="entity">The modified entity with stripped resources.</param>
         protected async Task ModifyAsync([NotNull] TEntity entity)
         {
-            var entityWithResolvedReferences = await entity.ResolveReferencesAsync(_resolver);
-            _db.Entry(entityWithResolvedReferences).State = EntityState.Modified;
+            var entityWithResolvedRefs = await entity.ResolveReferencesAsync(_resolver);
+            _db.Entry(entityWithResolvedRefs).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
 
@@ -119,8 +119,8 @@ namespace EntityReferenceStripper.WebApi
         [NotNull]
         protected TEntity Add([NotNull] TEntity entity)
         {
-            var entityWithResolvedReferences = entity.ResolveReferences(_resolver);
-            var storedEntity = _dbSet.Add(entityWithResolvedReferences);
+            var entityWithResolvedRefs = entity.ResolveReferences(_resolver);
+            var storedEntity = _dbSet.Add(entityWithResolvedRefs);
             _db.SaveChanges();
             return storedEntity;
         }
@@ -131,8 +131,8 @@ namespace EntityReferenceStripper.WebApi
         /// <returns>The added entity with <see cref="IEntity.Id"/> set.</returns>
         protected async Task<TEntity> AddAsync([NotNull] TEntity entity)
         {
-            var entityWithResolvedReferences = await entity.ResolveReferencesAsync(_resolver);
-            var storedEntity = _dbSet.Add(entityWithResolvedReferences);
+            var entityWithResolvedRefs = await entity.ResolveReferencesAsync(_resolver);
+            var storedEntity = _dbSet.Add(entityWithResolvedRefs);
             await _db.SaveChangesAsync();
             return storedEntity;
         }
