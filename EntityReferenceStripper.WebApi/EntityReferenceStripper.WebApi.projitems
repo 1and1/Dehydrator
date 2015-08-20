@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)EntityApiController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityCrudApiController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityResolver.cs" />
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace EntityReferenceStripper
 {
     /// <summary>
-    /// Resolves incomplete <see cref="IEntity"/>s that only specify <see cref="IEntity.Id"/> to a full entity from a database.
+    /// Resolves incomplete <see cref="IEntity"/>s that only specify <see cref="IEntity.Id"/> to full entities.
     /// </summary>
     public interface IEntityResolver
     {
