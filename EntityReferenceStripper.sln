@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
+MinimumVisualStudioVersion = 14.0.23107.0
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EntityReferenceStripper", "EntityReferenceStripper\EntityReferenceStripper.shproj", "{D7419180-F830-4E67-AA49-B40A0738C442}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.Net40", "EntityReferenceStripper.Net40\EntityReferenceStripper.Net40.csproj", "{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}"
