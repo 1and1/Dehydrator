@@ -14,7 +14,7 @@ namespace EntityReferenceStripper.WebApi
     public abstract class EntityCrudApiController<TEntity> : EntityApiController<TEntity>
         where TEntity : class, IEntity, new()
     {
-        protected EntityCrudApiController([NotNull] DbContext db, [NotNull] IEntityResolver resolver) : base(db, resolver)
+        protected EntityCrudApiController([NotNull] DbContext db) : base(db)
         {
         }
 

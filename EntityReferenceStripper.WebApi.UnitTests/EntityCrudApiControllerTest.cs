@@ -18,22 +18,24 @@ namespace EntityReferenceStripper.WebApi
         private static readonly MockEntity ResolvedRef = new MockEntity {Id = 2, Resolved = true};
         private static readonly MockEntity EntityWithResolvedReference = new MockEntity {Id = 1, Reference = ResolvedRef};
 
-        private Mock<DbSet<MockEntity>> _dbSetMock;
         private Mock<DbContext> _dbContextMock;
-        private Mock<IEntityResolver> _entityResolverMock;
+        private Mock<DbSet<MockEntity>> _dbGenericSetMock;
+        private Mock<DbSet> _dbUntypedSetMock;
+
         private EntityCrudApiController<MockEntity> _controller;
 
         [SetUp]
         public void SetUp()
         {
-            _dbSetMock = new Mock<DbSet<MockEntity>>(MockBehavior.Strict);
-
             _dbContextMock = new Mock<DbContext>(MockBehavior.Strict);
-            _dbContextMock.Setup(x => x.Set<MockEntity>()).Returns(_dbSetMock.Object);
 
-            _entityResolverMock = new Mock<IEntityResolver>(MockBehavior.Strict);
+            _dbGenericSetMock = new Mock<DbSet<MockEntity>>(MockBehavior.Strict);
+            _dbContextMock.Setup(x => x.Set<MockEntity>()).Returns(_dbGenericSetMock.Object);
 
-            _controller = new MockController(_dbContextMock.Object, _entityResolverMock.Object)
+            _dbUntypedSetMock = new Mock<DbSet>(MockBehavior.Strict);
+            _dbContextMock.Setup(x => x.Set(typeof(MockEntity))).Returns(_dbUntypedSetMock.Object);
+
+            _controller = new MockController(_dbContextMock.Object)
             {
                 Request = new HttpRequestMessage
                 {
@@ -46,16 +48,16 @@ namespace EntityReferenceStripper.WebApi
         [TearDown]
         public void TearDown()
         {
-            _dbSetMock.Verify();
             _dbContextMock.Verify();
-            _entityResolverMock.Verify();
+            _dbGenericSetMock.Verify();
+            _dbUntypedSetMock.Verify();
         }
 
         [Test]
         public async void TestCreate()
         {
-            _entityResolverMock.Setup(x => x.Resolve(StrippedRef, typeof (MockEntity))).Returns(ResolvedRef);
-            _dbSetMock.Setup(x => x.Add(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
+            _dbUntypedSetMock.Setup(x => x.Find(StrippedRef.Id)).Returns(ResolvedRef);
+            _dbGenericSetMock.Setup(x => x.Add(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
             _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 
             var result = await _controller.Create(EntityWithStrippedReference);
@@ -67,7 +69,7 @@ namespace EntityReferenceStripper.WebApi
         [Test]
         public async void TestRead()
         {
-            _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
+            _dbGenericSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
 
             var result = await _controller.Read(1);
             result.ShouldBeEqualTo(EntityWithStrippedReference);
@@ -76,8 +78,8 @@ namespace EntityReferenceStripper.WebApi
         [Test]
         public async void TestDelete()
         {
-            _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
-            _dbSetMock.Setup(x => x.Remove(EntityWithStrippedReference)).Returns(EntityWithResolvedReference).Verifiable();
+            _dbGenericSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
+            _dbGenericSetMock.Setup(x => x.Remove(EntityWithStrippedReference)).Returns(EntityWithResolvedReference).Verifiable();
             _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 
             var result = await _controller.Delete(1);
@@ -123,7 +125,7 @@ namespace EntityReferenceStripper.WebApi
 
         private class MockController : EntityCrudApiController<MockEntity>
         {
-            public MockController(DbContext db, IEntityResolver resolver) : base(db, resolver)
+            public MockController(DbContext db) : base(db)
             {
             }
         }

@@ -24,12 +24,11 @@ namespace EntityReferenceStripper.WebApi
         /// Instantiates a new Entity API controller.
         /// </summary>
         /// <param name="db">The database context used to store the entities.</param>
-        /// <param name="resolver">The resolver used to map stripped <see cref="IEntity"/>s to resolved ones.</param>
-        protected EntityApiController([NotNull] DbContext db, [NotNull] IEntityResolver resolver)
+        protected EntityApiController([NotNull] DbContext db)
         {
             _db = db;
             _dbSet = _db.Set<TEntity>();
-            _resolver = resolver;
+            _resolver = new EntityResolver(db);
         }
 
         protected override void Dispose(bool disposing)
