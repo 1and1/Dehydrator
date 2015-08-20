@@ -18,11 +18,12 @@ namespace EntityReferenceStripper
         /// Resolves references that were stripped to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
-        /// <param name="resolver">Used to aquire full entities based on their ID. Usually backed by a database.</param>
-        /// <seealso cref="IEntityResolver.Resolve"/>
+        /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
+        /// <seealso cref="EntitryRepositoryExtensions.Resolve{TEntity}"/>
         [Pure, NotNull]
-        public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity, [NotNull] IEntityResolver resolver)
-            where TEntity : class, IEntity, new()
+        public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity,
+            [NotNull] IEntityRepositoryFactory repositoryFactory)
+            where TEntity : class, IEntity
         {
             var clonedEntity = entity.CloneMemberwise();
 
@@ -33,7 +34,8 @@ namespace EntityReferenceStripper
 
                 if (IsEntity(prop))
                 {
-                    var resolvedRef = resolver.Resolve((IEntity)propertyValue, prop.PropertyType);
+                    var referenceFactory = repositoryFactory.Create(prop.PropertyType);
+                    var resolvedRef = referenceFactory.Resolve((IEntity)propertyValue);
                     prop.SetValue(clonedEntity, resolvedRef, null);
                 }
                 else if (IsEntityCollection(prop))
@@ -44,11 +46,12 @@ namespace EntityReferenceStripper
                     var resolvedRefs = Activator.CreateInstance(collectionType);
                     prop.SetValue(clonedEntity, resolvedRefs, null);
 
+                    var referenceRepository = repositoryFactory.Create(referenceType);
                     foreach (IEntity strippedRef in (IEnumerable)propertyValue)
                     {
                         if (strippedRef == null) continue;
 
-                        var resolvedRef = resolver.Resolve(strippedRef, referenceType);
+                        var resolvedRef = referenceRepository.Resolve(strippedRef);
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
                             resolvedRefs, new object[] {resolvedRef});
@@ -64,11 +67,12 @@ namespace EntityReferenceStripper
         /// Resolves references that were stripped to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
-        /// <param name="resolver">Used to aquire full entities based on their ID. Usually backed by a database.</param>
-        /// <seealso cref="IEntityResolver.ResolveAsync"/>
+        /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
+        /// <seealso cref="EntitryRepositoryExtensions.ResolveAsync{TEntity}"/>
         [Pure, NotNull]
-        public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity, [NotNull] IEntityResolver resolver)
-            where TEntity : class, IEntity, new()
+        public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity,
+            [NotNull] IEntityRepositoryFactory repositoryFactory)
+            where TEntity : class, IEntity
         {
             var clonedEntity = entity.CloneMemberwise();
 
@@ -79,7 +83,8 @@ namespace EntityReferenceStripper
 
                 if (IsEntity(prop))
                 {
-                    var resolvedRef = await resolver.ResolveAsync((IEntity)propertyValue, prop.PropertyType);
+                    var referenceFactory = repositoryFactory.Create(prop.PropertyType);
+                    var resolvedRef = await referenceFactory.ResolveAsync((IEntity)propertyValue);
                     prop.SetValue(clonedEntity, resolvedRef, null);
                 }
                 else if (IsEntityCollection(prop))
@@ -90,11 +95,12 @@ namespace EntityReferenceStripper
                     var resolvedRefs = Activator.CreateInstance(collectionType);
                     prop.SetValue(clonedEntity, resolvedRefs, null);
 
+                    var referenceRepository = repositoryFactory.Create(referenceType);
                     foreach (IEntity strippedRef in (IEnumerable)propertyValue)
                     {
                         if (strippedRef == null) continue;
 
-                        var resolvedRef = await resolver.ResolveAsync(strippedRef, referenceType);
+                        var resolvedRef = await referenceRepository.ResolveAsync(strippedRef);
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
                             resolvedRefs, new object[] {resolvedRef});
@@ -111,7 +117,8 @@ namespace EntityReferenceStripper
         /// </summary>
         /// <param name="entity">The entity to strip.</param>
         [Pure, NotNull]
-        public static TEntity StripReferences<TEntity>([NotNull] this TEntity entity) where TEntity : class, IEntity, new()
+        public static TEntity StripReferences<TEntity>([NotNull] this TEntity entity)
+            where TEntity : class, IEntity
         {
             var clonedEntity = entity.CloneMemberwise();
 

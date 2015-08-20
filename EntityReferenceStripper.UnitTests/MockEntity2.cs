@@ -1,16 +1,13 @@
-﻿using JetBrains.Annotations;
-
 namespace EntityReferenceStripper
 {
-    [PublicAPI]
-    public abstract class Entity : IEntity
+    public class MockEntity2 : Entity
     {
-        public int Id { get; set; }
+        public string FriendlyName { get; set; }
 
         #region Equality
-        protected bool Equals(Entity other)
+        protected bool Equals(MockEntity2 other)
         {
-            return Id == other.Id;
+            return base.Equals(other) && string.Equals(FriendlyName, other.FriendlyName);
         }
 
         public override bool Equals(object obj)
@@ -18,12 +15,15 @@ namespace EntityReferenceStripper
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((Entity) obj);
+            return Equals((MockEntity2)obj);
         }
 
         public override int GetHashCode()
         {
-            return Id;
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ (FriendlyName?.GetHashCode() ?? 0);
+            }
         }
         #endregion
     }

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>EntityReferenceStripper.WebApi</id>
+		<version>$version$</version>
+		<authors>1&amp;1 Internet SE</authors>
+		<projectUrl>https://github.com/1and1-webhosting-infrastructure/EntityReferenceStripper</projectUrl>
+		<description>...</description>
+		<summary>Base classes for creating WebAPI controllers using EntityReferenceStripper</summary>
+		<dependencies>
+			<dependency id="EntityReferenceStripper" version="$version$" />
+			<dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="build\Release\net45\EntityReferenceStripper.WebApi.dll" target="lib\net45" />
+		<file src="build\Release\net45\EntityReferenceStripper.WebApi.pdb" target="lib\net45" />
+		<file src="build\Release\net45\EntityReferenceStripper.WebApi.xml" target="lib\net45" />
+		<file src="EntityReferenceStripper.WebApi\**\*.cs" target="src" />
+	</files>
+</package>

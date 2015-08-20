@@ -9,10 +9,15 @@
     <Import_RootNamespace>EntityReferenceStripper</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityRepositoryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEntity.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IEntityResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEntityRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEntityRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StrippingEntityRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StrippingEntityRepositoryFactory.cs" />
   </ItemGroup>
 </Project>

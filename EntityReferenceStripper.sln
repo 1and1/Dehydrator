@@ -15,13 +15,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.UnitTests", "EntityReferenceStripper.UnitTests\EntityReferenceStripper.UnitTests.csproj", "{1C898342-B01A-44A0-81FB-EC09FA2982E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.WebApi.UnitTests", "EntityReferenceStripper.WebApi.UnitTests\EntityReferenceStripper.WebApi.UnitTests.csproj", "{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EntityReferenceStripper.EntityFramework", "EntityReferenceStripper.EntityFramework\EntityReferenceStripper.EntityFramework.shproj", "{CE292E85-F3DE-4E7F-B941-8F8940D2F4F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.EntityFramework.Net40", "EntityReferenceStripper.EntityFramework.Net40\EntityReferenceStripper.EntityFramework.Net40.csproj", "{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityReferenceStripper.EntityFramework.Net45", "EntityReferenceStripper.EntityFramework.Net45\EntityReferenceStripper.EntityFramework.Net45.csproj", "{63A4C204-ECA0-446E-B461-064413200072}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		EntityReferenceStripper.WebApi\EntityReferenceStripper.WebApi.projitems*{368aba94-aa57-482e-b696-1c104eb57bd6}*SharedItemsImports = 4
+		EntityReferenceStripper.EntityFramework\EntityReferenceStripper.EntityFramework.projitems*{63a4c204-eca0-446e-b461-064413200072}*SharedItemsImports = 4
+		EntityReferenceStripper.EntityFramework\EntityReferenceStripper.EntityFramework.projitems*{94c89c45-4bb7-4a7f-98d2-4b24bcd0548b}*SharedItemsImports = 4
 		EntityReferenceStripper\EntityReferenceStripper.projitems*{d7419180-f830-4e67-aa49-b40a0738c442}*SharedItemsImports = 13
 		EntityReferenceStripper\EntityReferenceStripper.projitems*{fe22975b-b3a0-4855-beeb-ef8b58c3df21}*SharedItemsImports = 4
+		EntityReferenceStripper.EntityFramework\EntityReferenceStripper.EntityFramework.projitems*{ce292e85-f3de-4e7f-b941-8f8940d2f4f7}*SharedItemsImports = 13
 		EntityReferenceStripper\EntityReferenceStripper.projitems*{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}*SharedItemsImports = 4
 		EntityReferenceStripper.WebApi\EntityReferenceStripper.WebApi.projitems*{21193dbc-438e-4d31-8c86-471a63dc833b}*SharedItemsImports = 13
 	EndGlobalSection
@@ -46,10 +53,14 @@ Global
 		{1C898342-B01A-44A0-81FB-EC09FA2982E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C898342-B01A-44A0-81FB-EC09FA2982E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C898342-B01A-44A0-81FB-EC09FA2982E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4F1ADC3-0E68-40FF-9901-8C1D1A7BD3DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63A4C204-ECA0-446E-B461-064413200072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A4C204-ECA0-446E-B461-064413200072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63A4C204-ECA0-446E-B461-064413200072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A4C204-ECA0-446E-B461-064413200072}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

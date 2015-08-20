@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,38 +8,42 @@ using JetBrains.Annotations;
 
 namespace EntityReferenceStripper.WebApi
 {
+    /// <summary>
+    /// A generic REST controller that provides CRUD access to a set of entities exposed via an <see cref="IEntityRepository{TEntity}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">The specific type of entities accessible via this controller.</typeparam>
     [PublicAPI]
-    public abstract class EntityCrudApiController<TEntity> : EntityApiController<TEntity>
+    public abstract class EntityCrudApiController<TEntity> : ApiController
         where TEntity : class, IEntity, new()
     {
-        protected EntityCrudApiController([NotNull] DbContext db) : base(db)
+        [NotNull] private readonly IEntityRepository<TEntity> _repository;
+
+        protected EntityCrudApiController([NotNull] IEntityRepository<TEntity> repository)
         {
+            _repository = repository;
         }
 
         [HttpGet, Route("")]
         public IEnumerable<TEntity> ReadAll()
         {
-            return GetAll();
+            return _repository.GetAll();
         }
 
         [HttpPost, Route("")]
         public async Task<IHttpActionResult> Create(TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var storedEntity = await AddAsync(entity);
-
+            var storedEntity = await _repository.AddAsync(entity);
             return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.StripReferences());
-            //return CreatedAtRoute("bla", new { id = resolvedEntity.Id }, storedEntity);
         }
 
         [HttpGet, Route("{id}", Name = "bla")]
         public async Task<TEntity> Read(int id)
         {
-            var entity = await FindAsync(id);
+            var entity = await _repository.FindAsync(id);
             if (entity == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, typeof(TEntity).Name + " not found."));
-
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    typeof (TEntity).Name + " not found."));
             return entity;
         }
 
@@ -51,23 +53,14 @@ namespace EntityReferenceStripper.WebApi
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (id != entity.Id) return BadRequest("ID in URI does not match ID in Entity data.");
 
-            try
-            {
-                await ModifyAsync(entity);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!(await ExistsAsync(id))) return NotFound();
-                else throw;
-            }
-
+            await _repository.ModifyAsync(entity);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         [HttpDelete, Route("{id}")]
         public async Task<IHttpActionResult> Delete(int id)
         {
-            if (await RemoveAsync(id)) return StatusCode(HttpStatusCode.NoContent);
+            if (await _repository.RemoveAsync(id)) return StatusCode(HttpStatusCode.NoContent);
             else return NotFound();
         }
     }
