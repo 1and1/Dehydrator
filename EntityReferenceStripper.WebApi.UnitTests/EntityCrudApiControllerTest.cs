@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,24 +20,24 @@ namespace EntityReferenceStripper.WebApi
         private static readonly MockEntity ResolvedRef = new MockEntity {Id = 2, Resolved = true};
         private static readonly MockEntity EntityWithResolvedReference = new MockEntity {Id = 1, Reference = ResolvedRef};
 
-        private Mock<DbContext> _dbContextMock;
-        private Mock<DbSet<MockEntity>> _dbGenericSetMock;
-        private Mock<DbSet> _dbUntypedSetMock;
+        private Mock<DbContext> _dbMock;
+        private Mock<DbSet<MockEntity>> _dbSetGenericMock;
+        private Mock<DbSet> _dbSetUntypedMock;
 
-        private EntityCrudApiController<MockEntity> _controller;
+        private MockController _controller;
 
         [SetUp]
         public void SetUp()
         {
-            _dbContextMock = new Mock<DbContext>(MockBehavior.Strict);
+            _dbMock = new Mock<DbContext>(MockBehavior.Strict);
 
-            _dbGenericSetMock = new Mock<DbSet<MockEntity>>(MockBehavior.Strict);
-            _dbContextMock.Setup(x => x.Set<MockEntity>()).Returns(_dbGenericSetMock.Object);
+            _dbSetGenericMock = new Mock<DbSet<MockEntity>>(MockBehavior.Strict);
+            _dbMock.Setup(x => x.Set<MockEntity>()).Returns(_dbSetGenericMock.Object);
 
-            _dbUntypedSetMock = new Mock<DbSet>(MockBehavior.Strict);
-            _dbContextMock.Setup(x => x.Set(typeof(MockEntity))).Returns(_dbUntypedSetMock.Object);
+            _dbSetUntypedMock = new Mock<DbSet>(MockBehavior.Strict);
+            _dbMock.Setup(x => x.Set(typeof(MockEntity))).Returns(_dbSetUntypedMock.Object);
 
-            _controller = new MockController(_dbContextMock.Object)
+            _controller = new MockController(_dbMock.Object)
             {
                 Request = new HttpRequestMessage
                 {
@@ -48,17 +50,17 @@ namespace EntityReferenceStripper.WebApi
         [TearDown]
         public void TearDown()
         {
-            _dbContextMock.Verify();
-            _dbGenericSetMock.Verify();
-            _dbUntypedSetMock.Verify();
+            _dbMock.Verify();
+            _dbSetGenericMock.Verify();
+            _dbSetUntypedMock.Verify();
         }
 
         [Test]
         public async void TestCreate()
         {
-            _dbUntypedSetMock.Setup(x => x.Find(StrippedRef.Id)).Returns(ResolvedRef);
-            _dbGenericSetMock.Setup(x => x.Add(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
-            _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
+            _dbSetUntypedMock.Setup(x => x.Find(StrippedRef.Id)).Returns(ResolvedRef);
+            _dbSetGenericMock.Setup(x => x.Add(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
+            _dbMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 
             var result = await _controller.Create(EntityWithStrippedReference);
             var response = await result.ExecuteAsync(CancellationToken.None);
@@ -69,7 +71,7 @@ namespace EntityReferenceStripper.WebApi
         [Test]
         public async void TestRead()
         {
-            _dbGenericSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
+            _dbSetGenericMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
 
             var result = await _controller.Read(1);
             result.ShouldBeEqualTo(EntityWithStrippedReference);
@@ -78,49 +80,14 @@ namespace EntityReferenceStripper.WebApi
         [Test]
         public async void TestDelete()
         {
-            _dbGenericSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
-            _dbGenericSetMock.Setup(x => x.Remove(EntityWithStrippedReference)).Returns(EntityWithResolvedReference).Verifiable();
-            _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
+            _dbSetGenericMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
+            _dbSetGenericMock.Setup(x => x.Remove(EntityWithStrippedReference)).Returns(EntityWithResolvedReference).Verifiable();
+            _dbMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 
             var result = await _controller.Delete(1);
             var response = await result.ExecuteAsync(CancellationToken.None);
 
             response.IsSuccessStatusCode.ShouldBeTrue();
-        }
-
-        // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-        public class MockEntity : Entity
-        {
-            public virtual MockEntity Reference { get; set; }
-            public bool Resolved { get; set; }
-
-            #region Equality
-
-            protected bool Equals(MockEntity other)
-            {
-                return base.Equals(other) && Equals(Reference, other.Reference) && Resolved == other.Resolved;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != GetType()) return false;
-                return Equals((MockEntity) obj);
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    int hashCode = base.GetHashCode();
-                    hashCode = (hashCode*397) ^ (Reference?.GetHashCode() ?? 0);
-                    hashCode = (hashCode*397) ^ Resolved.GetHashCode();
-                    return hashCode;
-                }
-            }
-
-            #endregion
         }
 
         private class MockController : EntityCrudApiController<MockEntity>

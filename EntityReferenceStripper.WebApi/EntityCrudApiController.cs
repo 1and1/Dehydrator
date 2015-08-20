@@ -24,6 +24,17 @@ namespace EntityReferenceStripper.WebApi
             return GetAll();
         }
 
+        [HttpPost, Route("")]
+        public async Task<IHttpActionResult> Create(TEntity entity)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var storedEntity = await AddAsync(entity);
+
+            return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.StripReferences());
+            //return CreatedAtRoute("bla", new { id = resolvedEntity.Id }, storedEntity);
+        }
+
         [HttpGet, Route("{id}", Name = "bla")]
         public async Task<TEntity> Read(int id)
         {
@@ -51,17 +62,6 @@ namespace EntityReferenceStripper.WebApi
             }
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        [HttpPost, Route("")]
-        public async Task<IHttpActionResult> Create(TEntity entity)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var storedEntity = await AddAsync(entity);
-
-            return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.StripReferences());
-            //return CreatedAtRoute("bla", new { id = resolvedEntity.Id }, storedEntity);
         }
 
         [HttpDelete, Route("{id}")]
