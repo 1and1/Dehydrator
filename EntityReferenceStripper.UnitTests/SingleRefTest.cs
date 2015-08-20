@@ -3,28 +3,26 @@
 namespace EntityReferenceStripper
 {
     [TestFixture]
-    public class SingleRefTest : EntityReferenceTests
+    public class SingleRefTest : EntityReferenceTests<MockEntity2>
     {
         [SetUp]
         public void SetUp()
         {
-            var strippedRef = new MockEntity2 {Id = 2};
+            StrippedRef = new MockEntity2 {Id = 2};
             EntityWithStrippedRefs = new MockEntity1
             {
                 Id = 1,
                 FriendlyName = "Foo",
-                SingleRef = strippedRef
+                SingleRef = StrippedRef
             };
 
-            var resolvedRef = new MockEntity2 {Id = 2, FriendlyName = "Bar"};
+            ResolvedRef = new MockEntity2 {Id = 2, FriendlyName = "Bar"};
             EntityWithResolvedRefs = new MockEntity1
             {
                 Id = 1,
                 FriendlyName = "Foo",
-                SingleRef = resolvedRef
+                SingleRef = ResolvedRef
             };
-
-            EntityResolverMock.Setup(x => x.Resolve(strippedRef, typeof (MockEntity2))).Returns(resolvedRef);
         }
     }
 }
