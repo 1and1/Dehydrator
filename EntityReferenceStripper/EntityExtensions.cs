@@ -17,8 +17,8 @@ namespace EntityReferenceStripper
         /// <param name="resolver">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         /// <seealso cref="IEntityResolver.Resolve"/>
         [Pure, NotNull]
-        public static T ResolveReferences<T>([NotNull] this T entity, [NotNull] IEntityResolver resolver)
-            where T : class, IEntity, new()
+        public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity, [NotNull] IEntityResolver resolver)
+            where TEntity : class, IEntity, new()
         {
             var clonedEntity = entity.CloneMemberwise();
 
@@ -60,7 +60,7 @@ namespace EntityReferenceStripper
         /// </summary>
         /// <param name="entity">The entity to strip.</param>
         [Pure, NotNull]
-        public static T StripReferences<T>([NotNull] this T entity) where T : class, IEntity, new()
+        public static TEntity StripReferences<TEntity>([NotNull] this TEntity entity) where TEntity : class, IEntity, new()
         {
             var clonedEntity = entity.CloneMemberwise();
 
