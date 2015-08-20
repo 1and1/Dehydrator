@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,10 +13,10 @@ namespace EntityReferenceStripper.WebApi
     [TestFixture]
     public class EntityCrudApiControllerTest
     {
-        private static readonly MockEntity _strippedRef = new MockEntity { Id = 2 };
-        private static readonly MockEntity _entityWithStrippedReference = new MockEntity { Id = 1, Reference = _strippedRef };
-        private static readonly MockEntity _resolvedRef = new MockEntity { Id = 2, Resolved = true };
-        private static readonly MockEntity _entityWithResolvedReference = new MockEntity { Id = 1, Reference = _resolvedRef };
+        private static readonly MockEntity StrippedRef = new MockEntity {Id = 2};
+        private static readonly MockEntity EntityWithStrippedReference = new MockEntity {Id = 1, Reference = StrippedRef};
+        private static readonly MockEntity ResolvedRef = new MockEntity {Id = 2, Resolved = true};
+        private static readonly MockEntity EntityWithResolvedReference = new MockEntity {Id = 1, Reference = ResolvedRef};
 
         private Mock<DbSet<MockEntity>> _dbSetMock;
         private Mock<DbContext> _dbContextMock;
@@ -55,31 +54,30 @@ namespace EntityReferenceStripper.WebApi
         [Test]
         public async void TestCreate()
         {
-            _entityResolverMock.Setup(x => x.Resolve(_strippedRef, typeof (MockEntity))).Returns(_resolvedRef);
-            _dbSetMock.Setup(x => x.Add(_entityWithResolvedReference)).Returns(_entityWithResolvedReference).Verifiable();
+            _entityResolverMock.Setup(x => x.Resolve(StrippedRef, typeof (MockEntity))).Returns(ResolvedRef);
+            _dbSetMock.Setup(x => x.Add(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
             _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 
-            var result = await _controller.Create(_entityWithStrippedReference);
+            var result = await _controller.Create(EntityWithStrippedReference);
             var response = await result.ExecuteAsync(CancellationToken.None);
 
             response.IsSuccessStatusCode.ShouldBeTrue();
-
         }
 
         [Test]
         public async void TestRead()
         {
-            _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(_entityWithResolvedReference)).Verifiable();
+            _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
 
             var result = await _controller.Read(1);
-            result.ShouldBeEqualTo(_entityWithStrippedReference);
+            result.ShouldBeEqualTo(EntityWithStrippedReference);
         }
 
         [Test]
         public async void TestDelete()
         {
-            _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(_entityWithResolvedReference)).Verifiable();
-            _dbSetMock.Setup(x => x.Remove(_entityWithResolvedReference)).Returns(_entityWithResolvedReference).Verifiable();
+            _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
+            _dbSetMock.Setup(x => x.Remove(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
             _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 
             var result = await _controller.Delete(1);
@@ -88,6 +86,7 @@ namespace EntityReferenceStripper.WebApi
             response.IsSuccessStatusCode.ShouldBeTrue();
         }
 
+        // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
         public class MockEntity : Entity
         {
             public virtual MockEntity Reference { get; set; }
@@ -104,7 +103,7 @@ namespace EntityReferenceStripper.WebApi
             {
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
+                if (obj.GetType() != GetType()) return false;
                 return Equals((MockEntity) obj);
             }
 
@@ -113,7 +112,7 @@ namespace EntityReferenceStripper.WebApi
                 unchecked
                 {
                     int hashCode = base.GetHashCode();
-                    hashCode = (hashCode*397) ^ (Reference != null ? Reference.GetHashCode() : 0);
+                    hashCode = (hashCode*397) ^ (Reference?.GetHashCode() ?? 0);
                     hashCode = (hashCode*397) ^ Resolved.GetHashCode();
                     return hashCode;
                 }

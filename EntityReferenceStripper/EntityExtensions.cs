@@ -47,7 +47,7 @@ namespace EntityReferenceStripper
                         var resolvedReference = resolver.Resolve(strippedReference, referenceType);
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            resolvedReferences, new object[] { resolvedReference });
+                            resolvedReferences, new object[] {resolvedReference});
                     }
                 }
             }

@@ -7,7 +7,7 @@ namespace EntityReferenceStripper
 {
     internal static class ObjectExtensions
     {
-        private static readonly MethodInfo _memberwiseCloneMethod = typeof (object).GetMethod(nameof(MemberwiseClone),
+        private static readonly MethodInfo MemberwiseCloneMethod = typeof (object).GetMethod(nameof(MemberwiseClone),
             BindingFlags.Instance | BindingFlags.NonPublic);
 
         /// <summary>
@@ -16,7 +16,7 @@ namespace EntityReferenceStripper
         [Pure, NotNull]
         public static T CloneMemberwise<T>([NotNull] this T obj)
         {
-            return (T) _memberwiseCloneMethod.Invoke(obj, null);
+            return (T) MemberwiseCloneMethod.Invoke(obj, null);
         }
 
         /// <summary>

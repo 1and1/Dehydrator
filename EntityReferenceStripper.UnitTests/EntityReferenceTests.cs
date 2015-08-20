@@ -33,6 +33,7 @@ namespace EntityReferenceStripper
             result.ShouldBeEqualTo(EntityWithStrippedRefs);
         }
 
+        // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
         protected class MockEntity1 : Entity
         {
             public string FriendlyName { get; set; }
@@ -56,7 +57,7 @@ namespace EntityReferenceStripper
             {
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
+                if (obj.GetType() != GetType()) return false;
                 return Equals((MockEntity1) obj);
             }
 
@@ -65,12 +66,12 @@ namespace EntityReferenceStripper
                 unchecked
                 {
                     int hashCode = base.GetHashCode();
-                    hashCode = (hashCode*397) ^ (FriendlyName != null ? FriendlyName.GetHashCode() : 0);
-                    hashCode = (hashCode*397) ^ (SingleRef != null ? SingleRef.GetHashCode() : 0);
-                    hashCode = (hashCode*397) ^ (MultiRef != null ? MultiRef.GetHashCode() : 0);
-                    hashCode = (hashCode*397) ^ (SingleSelfRef != null ? SingleSelfRef.GetHashCode() : 0);
-                    hashCode = (hashCode*397) ^ (MultiSelfRef != null ? MultiSelfRef.GetHashCode() : 0);
-                    hashCode = (hashCode*397) ^ (SingleNonRef != null ? SingleNonRef.GetHashCode() : 0);
+                    hashCode = (hashCode*397) ^ (FriendlyName?.GetHashCode() ?? 0);
+                    hashCode = (hashCode*397) ^ (SingleRef?.GetHashCode() ?? 0);
+                    hashCode = (hashCode*397) ^ (MultiRef?.GetHashCode() ?? 0);
+                    hashCode = (hashCode*397) ^ (SingleSelfRef?.GetHashCode() ?? 0);
+                    hashCode = (hashCode*397) ^ (MultiSelfRef?.GetHashCode() ?? 0);
+                    hashCode = (hashCode*397) ^ (SingleNonRef?.GetHashCode() ?? 0);
                     return hashCode;
                 }
             }
@@ -93,7 +94,7 @@ namespace EntityReferenceStripper
             {
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
+                if (obj.GetType() != GetType()) return false;
                 return Equals((MockEntity2) obj);
             }
 
@@ -101,7 +102,7 @@ namespace EntityReferenceStripper
             {
                 unchecked
                 {
-                    return (base.GetHashCode()*397) ^ (FriendlyName != null ? FriendlyName.GetHashCode() : 0);
+                    return (base.GetHashCode()*397) ^ (FriendlyName?.GetHashCode() ?? 0);
                 }
             }
 
