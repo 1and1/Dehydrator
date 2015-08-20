@@ -14,6 +14,6 @@ namespace EntityReferenceStripper
         /// <param name="entity">The entity to resolve.</param>
         /// <param name="entityType">The concrete type of <paramref name="entity"/>.</param>
         [Pure, NotNull]
-        IEntity Resolve([NotNull] IEntity entity, Type entityType);
+        IEntity Resolve([NotNull] IEntity entity, [NotNull] Type entityType);
     }
 }

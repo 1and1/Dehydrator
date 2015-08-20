@@ -60,7 +60,7 @@ namespace EntityReferenceStripper
         /// </summary>
         /// <param name="entity">The entity to strip.</param>
         [Pure, NotNull]
-        public static T StripReferences<T>(this T entity) where T : class, IEntity, new()
+        public static T StripReferences<T>([NotNull] this T entity) where T : class, IEntity, new()
         {
             var clonedEntity = entity.CloneMemberwise();
 
@@ -99,12 +99,12 @@ namespace EntityReferenceStripper
             return clonedEntity;
         }
 
-        private static bool IsEntity(PropertyInfo prop)
+        private static bool IsEntity([NotNull] PropertyInfo prop)
         {
             return typeof(IEntity).IsAssignableFrom(prop.PropertyType);
         }
 
-        private static bool IsEntityCollection(PropertyInfo prop)
+        private static bool IsEntityCollection([NotNull] PropertyInfo prop)
         {
             return prop.PropertyType.IsGenericType &&
                    prop.PropertyType.GetGenericTypeDefinition() ==
