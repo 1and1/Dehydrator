@@ -9,6 +9,7 @@
     <Import_RootNamespace>EntityReferenceStripper.WebApi</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)EntityApiController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityCrudApiController.cs" />
   </ItemGroup>
 </Project>

@@ -77,7 +77,7 @@ namespace EntityReferenceStripper.WebApi
         public async void TestDelete()
         {
             _dbSetMock.Setup(x => x.FindAsync(1)).Returns(Task.FromResult(EntityWithResolvedReference)).Verifiable();
-            _dbSetMock.Setup(x => x.Remove(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
+            _dbSetMock.Setup(x => x.Remove(EntityWithStrippedReference)).Returns(EntityWithResolvedReference).Verifiable();
             _dbContextMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 
             var result = await _controller.Delete(1);

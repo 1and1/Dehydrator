@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,110 +11,64 @@ using JetBrains.Annotations;
 namespace EntityReferenceStripper.WebApi
 {
     [PublicAPI]
-    public abstract class EntityCrudApiController<T> : ApiController
-        where T : class, IEntity, new()
+    public abstract class EntityCrudApiController<TEntity> : EntityApiController<TEntity>
+        where TEntity : class, IEntity, new()
     {
-        protected readonly DbContext Db;
-        protected readonly IEntityResolver Resolver;
-
-        protected EntityCrudApiController(DbContext db, IEntityResolver resolver)
+        protected EntityCrudApiController([NotNull] DbContext db, [NotNull] IEntityResolver resolver) : base(db, resolver)
         {
-            Db = db;
-            Resolver = resolver;
         }
 
         [HttpGet, Route("")]
-        public IEnumerable<T> ReadAll()
+        public IEnumerable<TEntity> ReadAll()
         {
-            return Db.Set<T>().Select(x => x.StripReferences());
+            return GetAll();
         }
 
         [HttpGet, Route("{id}", Name = "bla")]
-        public async Task<T> Read(int id)
+        public async Task<TEntity> Read(int id)
         {
-            var entity = await Db.Set<T>().FindAsync(id);
+            var entity = await FindAsync(id);
             if (entity == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    typeof (T).Name + " not found."));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, typeof(TEntity).Name + " not found."));
 
-            return entity.StripReferences();
+            return entity;
         }
 
         [HttpPut, Route("{id}")]
-        public async Task<IHttpActionResult> Update(int id, T entity)
+        public async Task<IHttpActionResult> Update(int id, TEntity entity)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != entity.Id)
-            {
-                return BadRequest();
-            }
-
-            var resolvedEntity = entity.ResolveReferences(Resolver);
-            Db.Entry(resolvedEntity).State = EntityState.Modified;
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (id != entity.Id) return BadRequest("ID in URI does not match ID in Entity data.");
 
             try
             {
-                await Db.SaveChangesAsync();
+                await ModifyAsync(entity);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(id))
-                {
-                    return NotFound();
-                }
-                throw;
+                if (!(await ExistsAsync(id))) return NotFound();
+                else throw;
             }
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private bool Exists(int id)
-        {
-            return Db.Set<T>().Any(e => e.Id == id);
-        }
-
         [HttpPost, Route("")]
-        public async Task<IHttpActionResult> Create(T entity)
+        public async Task<IHttpActionResult> Create(TEntity entity)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var resolvedEntity = entity.ResolveReferences(Resolver);
-            var storedEntity = Db.Set<T>().Add(resolvedEntity);
-            await Db.SaveChangesAsync();
+            var storedEntity = await AddAsync(entity);
 
-            return Created(new Uri(resolvedEntity.Id.ToString(), UriKind.Relative), storedEntity.StripReferences());
+            return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.StripReferences());
             //return CreatedAtRoute("bla", new { id = resolvedEntity.Id }, storedEntity);
         }
 
         [HttpDelete, Route("{id}")]
         public async Task<IHttpActionResult> Delete(int id)
         {
-            T entity = await Db.Set<T>().FindAsync(id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            Db.Set<T>().Remove(entity);
-            await Db.SaveChangesAsync();
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Db.Dispose();
-            }
-            base.Dispose(disposing);
+            if (await RemoveAsync(id)) return StatusCode(HttpStatusCode.NoContent);
+            else return NotFound();
         }
     }
 }
