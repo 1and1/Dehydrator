@@ -5,6 +5,10 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 
+#if NET45
+using System.Threading.Tasks;
+#endif
+
 namespace EntityReferenceStripper
 {
     [PublicAPI]
@@ -54,6 +58,53 @@ namespace EntityReferenceStripper
 
             return clonedEntity;
         }
+
+#if NET45
+        /// <summary>
+        /// Resolves references that were stripped to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
+        /// </summary>
+        /// <param name="entity">The entity to resolve.</param>
+        /// <param name="resolver">Used to aquire full entities based on their ID. Usually backed by a database.</param>
+        /// <seealso cref="IEntityResolver.ResolveAsync"/>
+        [Pure, NotNull]
+        public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity, [NotNull] IEntityResolver resolver)
+            where TEntity : class, IEntity, new()
+        {
+            var clonedEntity = entity.CloneMemberwise();
+
+            foreach (var prop in entity.GetVirtualProperties())
+            {
+                var propertyValue = prop.GetValue(entity, null);
+                if (propertyValue == null) continue;
+
+                if (IsEntity(prop))
+                {
+                    var resolvedReference = await resolver.ResolveAsync((IEntity)propertyValue, prop.PropertyType);
+                    prop.SetValue(clonedEntity, resolvedReference, null);
+                }
+                else if (IsEntityCollection(prop))
+                {
+                    var referenceType = prop.PropertyType.GetGenericArguments().First();
+                    var collectionType = typeof(List<>).MakeGenericType(referenceType);
+
+                    var resolvedReferences = Activator.CreateInstance(collectionType);
+                    prop.SetValue(clonedEntity, resolvedReferences, null);
+
+                    foreach (IEntity strippedReference in (IEnumerable)propertyValue)
+                    {
+                        if (strippedReference == null) continue;
+
+                        var resolvedReference = await resolver.ResolveAsync(strippedReference, referenceType);
+                        collectionType.InvokeMember("Add",
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
+                            resolvedReferences, new object[] { resolvedReference });
+                    }
+                }
+            }
+
+            return clonedEntity;
+        }
+#endif
 
         /// <summary>
         /// Strips all references to contain nothing but their <see cref="IEntity.Id"/>s and returns the result as a new object.

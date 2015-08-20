@@ -58,7 +58,7 @@ namespace EntityReferenceStripper.WebApi
         [Test]
         public async void TestCreate()
         {
-            _dbSetUntypedMock.Setup(x => x.Find(StrippedRef.Id)).Returns(ResolvedRef);
+            _dbSetUntypedMock.Setup(x => x.FindAsync(StrippedRef.Id)).Returns(Task.FromResult((object)ResolvedRef));
             _dbSetGenericMock.Setup(x => x.Add(EntityWithResolvedReference)).Returns(EntityWithResolvedReference).Verifiable();
             _dbMock.Setup(x => x.SaveChangesAsync()).Returns(Task.FromResult(1)).Verifiable();
 

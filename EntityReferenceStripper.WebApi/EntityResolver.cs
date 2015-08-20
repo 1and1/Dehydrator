@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 namespace EntityReferenceStripper.WebApi
@@ -23,6 +24,12 @@ namespace EntityReferenceStripper.WebApi
         public IEntity Resolve(IEntity entity, Type entityType)
         {
             return (IEntity)_db.Set(entityType).Find(entity.Id);
+        }
+
+        public async Task<IEntity> ResolveAsync(IEntity entity, Type entityType)
+        {
+            var result = await _db.Set(entityType).FindAsync(entity.Id);
+            return (IEntity)result;
         }
     }
 }

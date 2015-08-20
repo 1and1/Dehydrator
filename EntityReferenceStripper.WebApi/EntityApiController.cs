@@ -89,7 +89,7 @@ namespace EntityReferenceStripper.WebApi
         /// <param name="entity">The modified entity with stripped resources.</param>
         protected async Task ModifyAsync([NotNull] TEntity entity)
         {
-            var entityWithResolvedReferences = entity.ResolveReferences(_resolver);
+            var entityWithResolvedReferences = await entity.ResolveReferencesAsync(_resolver);
             _db.Entry(entityWithResolvedReferences).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
@@ -131,7 +131,7 @@ namespace EntityReferenceStripper.WebApi
         /// <returns>The added entity with <see cref="IEntity.Id"/> set.</returns>
         protected async Task<TEntity> AddAsync([NotNull] TEntity entity)
         {
-            var entityWithResolvedReferences = entity.ResolveReferences(_resolver);
+            var entityWithResolvedReferences = await entity.ResolveReferencesAsync(_resolver);
             var storedEntity = _dbSet.Add(entityWithResolvedReferences);
             await _db.SaveChangesAsync();
             return storedEntity;

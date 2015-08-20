@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssert;
 using Moq;
 using NUnit.Framework;
@@ -19,6 +20,18 @@ namespace EntityReferenceStripper
             entityResolverMock.Setup(x => x.Resolve(StrippedRef, typeof(TRef))).Returns(ResolvedRef);
 
             var result = EntityWithStrippedRefs.ResolveReferences(entityResolverMock.Object);
+            result.ShouldBeEqualTo(EntityWithResolvedRefs);
+
+            entityResolverMock.Verify();
+        }
+
+        [Test]
+        public async void ResolveAsync()
+        {
+            var entityResolverMock = new Mock<IEntityResolver>(MockBehavior.Strict);
+            entityResolverMock.Setup(x => x.ResolveAsync(StrippedRef, typeof(TRef))).Returns(Task.FromResult((IEntity)ResolvedRef));
+
+            var result = await EntityWithStrippedRefs.ResolveReferencesAsync(entityResolverMock.Object);
             result.ShouldBeEqualTo(EntityWithResolvedRefs);
 
             entityResolverMock.Verify();
