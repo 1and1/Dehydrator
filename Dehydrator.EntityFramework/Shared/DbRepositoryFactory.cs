@@ -5,10 +5,10 @@ using JetBrains.Annotations;
 namespace Dehydrator.WebApi
 {
     /// <summary>
-    /// Provides <see cref="IEntityRepository{T}"/>s that are backed by a database accessed via Microsoft's Entity Framework.
+    /// Provides <see cref="IRepository{T}"/>s that are backed by a database accessed via Microsoft's Entity Framework.
     /// </summary>
     [PublicAPI]
-    public class DbEntityRepositoryFactory : IEntityRepositoryFactory
+    public class DbRepositoryFactory : IRepositoryFactory
     {
         [NotNull] private readonly DbContext _db;
 
@@ -16,20 +16,20 @@ namespace Dehydrator.WebApi
         /// Creates a new database-backed entity repository factory.
         /// </summary>
         /// <param name="db">The database context used to store the entities.</param>>
-        public DbEntityRepositoryFactory([NotNull] DbContext db)
+        public DbRepositoryFactory([NotNull] DbContext db)
         {
             _db = db;
         }
 
-        public IEntityRepository<TEntity> Create<TEntity>()
+        public IRepository<TEntity> Create<TEntity>()
             where TEntity : class, IEntity, new()
         {
-            return new DbEntityRepository<TEntity>(_db);
+            return new DbRepository<TEntity>(_db);
         }
 
-        public IEntityRepository<IEntity> Create(Type entityType)
+        public IRepository<IEntity> Create(Type entityType)
         {
-            return new DbEntityRepository(_db, entityType);
+            return new DbRepository(_db, entityType);
         }
     }
 }

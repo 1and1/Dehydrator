@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 namespace Dehydrator
 {
     /// <summary>
-    /// Decorator for <see cref="IEntityRepository{TEntity}"/> instances that transparently dehydrates references on entities it returns and resolves them on entities that are put it.
+    /// Decorator for <see cref="IRepository{TEntity}"/> instances that transparently dehydrates references on entities it returns and resolves them on entities that are put it.
     /// </summary>
-    internal class DehydratingEntityRepository<TEntity> : IEntityRepository<TEntity>
+    internal class DehydratingRepository<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity
     {
-        [NotNull] private readonly IEntityRepository<TEntity> _inner;
-        [NotNull] private readonly IEntityRepositoryFactory _repositoryFactory;
+        [NotNull] private readonly IRepository<TEntity> _inner;
+        [NotNull] private readonly IRepositoryFactory _repositoryFactory;
 
         /// <summary>
         /// Creates a new reference-dehydrating decorator.
         /// </summary>
         /// <param name="inner">The inner repository to use for the actual storage.</param>
         /// <param name="repositoryFactory">Used to aquire additional repositories for resolving references.</param>
-        public DehydratingEntityRepository([NotNull] IEntityRepository<TEntity> inner,
-            [NotNull] IEntityRepositoryFactory repositoryFactory)
+        public DehydratingRepository([NotNull] IRepository<TEntity> inner,
+            [NotNull] IRepositoryFactory repositoryFactory)
         {
             _inner = inner;
             _repositoryFactory = repositoryFactory;

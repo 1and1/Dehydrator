@@ -4,21 +4,21 @@ using JetBrains.Annotations;
 namespace Dehydrator
 {
     /// <summary>
-    /// Provides <see cref="IEntityRepository{T}"/>s for specific <see cref="IEntity"/> types.
+    /// Provides <see cref="IRepository{T}"/>s for specific <see cref="IEntity"/> types.
     /// </summary>
-    public interface IEntityRepositoryFactory
+    public interface IRepositoryFactory
     {
         /// <summary>
         /// Returns a repository for a specific type of <see cref="IEntity"/>.
         /// </summary>
         [NotNull]
-        IEntityRepository<TEntity> Create<TEntity>()
+        IRepository<TEntity> Create<TEntity>()
             where TEntity : class, IEntity, new();
 
         /// <summary>
         /// Returns a repository for a specific type of <see cref="IEntity"/>.
         /// </summary>
         [NotNull]
-        IEntityRepository<IEntity> Create([NotNull] Type entityType);
+        IRepository<IEntity> Create([NotNull] Type entityType);
     }
 }

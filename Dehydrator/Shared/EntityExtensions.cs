@@ -22,7 +22,7 @@ namespace Dehydrator
         /// <seealso cref="EntitryRepositoryExtensions.Resolve{TEntity}"/>
         [Pure, NotNull]
         public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity,
-            [NotNull] IEntityRepositoryFactory repositoryFactory)
+            [NotNull] IRepositoryFactory repositoryFactory)
             where TEntity : class, IEntity
         {
             var clonedEntity = entity.CloneMemberwise();
@@ -71,7 +71,7 @@ namespace Dehydrator
         /// <seealso cref="EntitryRepositoryExtensions.ResolveAsync{TEntity}"/>
         [Pure, NotNull]
         public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity,
-            [NotNull] IEntityRepositoryFactory repositoryFactory)
+            [NotNull] IRepositoryFactory repositoryFactory)
             where TEntity : class, IEntity
         {
             var clonedEntity = entity.CloneMemberwise();

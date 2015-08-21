@@ -9,16 +9,16 @@ using JetBrains.Annotations;
 namespace Dehydrator.WebApi
 {
     /// <summary>
-    /// A generic REST controller that provides CRUD access to a set of entities exposed via an <see cref="IEntityRepository{TEntity}"/>.
+    /// A generic REST controller that provides CRUD access to a set of entities exposed via an <see cref="IRepository{TEntity}"/>.
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities accessible via this controller.</typeparam>
     [PublicAPI]
     public abstract class EntityCrudApiController<TEntity> : ApiController
         where TEntity : class, IEntity, new()
     {
-        [NotNull] protected readonly IEntityRepository<TEntity> Repository;
+        [NotNull] protected readonly IRepository<TEntity> Repository;
 
-        protected EntityCrudApiController([NotNull] IEntityRepository<TEntity> repository)
+        protected EntityCrudApiController([NotNull] IRepository<TEntity> repository)
         {
             Repository = repository;
         }

@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DbEntityRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DbEntityRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbRepositoryFactory.cs" />
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ namespace Dehydrator.WebApi
     /// Provides CRUD access to a set of <see cref="IEntity"/>s that is backed by a database accessed via Microsoft's Entity Framework.
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities managed by this repository.</typeparam>
-    internal class DbEntityRepository<TEntity> : IEntityRepository<TEntity>
+    internal class DbRepository<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
         [NotNull] private readonly DbContext _db;
@@ -24,7 +24,7 @@ namespace Dehydrator.WebApi
         /// Creates a new database-backed repository.
         /// </summary>
         /// <param name="db">The database context used to store the entities.</param>>
-        public DbEntityRepository(DbContext db)
+        public DbRepository(DbContext db)
         {
             _db = db;
             _dbSet = db.Set<TEntity>();
@@ -102,7 +102,7 @@ namespace Dehydrator.WebApi
     /// <summary>
     /// Provides CRUD access to a set of <see cref="IEntity"/>s that is backed by a database accessed via Microsoft's Entity Framework.
     /// </summary>
-    internal class DbEntityRepository : IEntityRepository<IEntity>
+    internal class DbRepository : IRepository<IEntity>
     {
         [NotNull] private readonly DbContext _db;
         [NotNull] private readonly DbSet _dbSet;
@@ -113,7 +113,7 @@ namespace Dehydrator.WebApi
         /// <param name="db">The database context used to store the entities.</param>
         /// <param name="entityType">The specific type of entities managed by this repository.</param>
         /// >
-        public DbEntityRepository(DbContext db, Type entityType)
+        public DbRepository(DbContext db, Type entityType)
         {
             _db = db;
             _dbSet = db.Set(entityType);
