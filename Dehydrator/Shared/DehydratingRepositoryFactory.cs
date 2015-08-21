@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Dehydrator.WebApi
 {
@@ -20,14 +19,10 @@ namespace Dehydrator.WebApi
             _inner = inner;
         }
 
-        public IRepository<TEntity> Create<TEntity>() where TEntity : class, IEntity, new()
+        public IRepository<TEntity> Create<TEntity>()
+            where TEntity : class, IEntity, new()
         {
-            return new DehydratingRepository<TEntity>(_inner.Create<TEntity>(), _inner);
-        }
-
-        public IRepository<IEntity> Create(Type entityType)
-        {
-            return new DehydratingRepository<IEntity>(_inner.Create(entityType), _inner);
+            return new DehydratingRepository<TEntity>(_inner);
         }
     }
 }

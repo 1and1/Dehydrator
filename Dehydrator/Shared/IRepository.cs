@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 #if NET45
 using System.Threading.Tasks;
@@ -10,29 +9,9 @@ namespace Dehydrator
     /// <summary>
     /// Provides CRUD access to a set of <see cref="IEntity"/>s. Usually backed by a database.
     /// </summary>
-    public interface IRepository<TEntity>
-        where TEntity : IEntity
+    public interface IRepository<TEntity> : IReadRepository<TEntity>
+        where TEntity : class, IEntity, new()
     {
-        /// <summary>
-        /// Returns all entities of a certain type from the backing database.
-        /// </summary>
-        [NotNull]
-        IEnumerable<TEntity> GetAll();
-
-        /// <summary>
-        /// Checks whether an entity with a given <see cref="IEntity.Id"/> exists in the database.
-        /// </summary>
-        /// <param name="id">The <see cref="IEntity.Id"/> of the entity to check.</param>
-        bool Exists(int id);
-
-        /// <summary>
-        /// Returns a specific entity from the backing database.
-        /// </summary>
-        /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
-        /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
-        [CanBeNull]
-        TEntity Find(int id);
-
         /// <summary>
         /// Modifies an existing entity in the database.
         /// </summary>

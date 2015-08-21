@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Dehydrator
 {
@@ -14,11 +13,5 @@ namespace Dehydrator
         [NotNull]
         IRepository<TEntity> Create<TEntity>()
             where TEntity : class, IEntity, new();
-
-        /// <summary>
-        /// Returns a repository for a specific type of <see cref="IEntity"/>.
-        /// </summary>
-        [NotNull]
-        IRepository<IEntity> Create([NotNull] Type entityType);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 #if NET45
 using System.Threading.Tasks;
@@ -11,42 +9,36 @@ namespace Dehydrator
     /// <summary>
     /// Decorator for <see cref="IRepository{TEntity}"/> instances that transparently dehydrates references on entities it returns and resolves them on entities that are put it.
     /// </summary>
-    internal class DehydratingRepository<TEntity> : IRepository<TEntity>
-        where TEntity : class, IEntity
+    public class DehydratingRepository<TEntity> : DehydratingReadRepository<TEntity>, IRepository<TEntity>
+        where TEntity : class, IEntity, new()
     {
-        [NotNull] private readonly IRepository<TEntity> _inner;
         [NotNull] private readonly IRepositoryFactory _repositoryFactory;
+        [NotNull] private readonly IRepository<TEntity> _inner;
 
         /// <summary>
         /// Creates a new reference-dehydrating decorator.
         /// </summary>
-        /// <param name="inner">The inner repository to use for the actual storage.</param>
         /// <param name="repositoryFactory">Used to aquire additional repositories for resolving references.</param>
-        public DehydratingRepository([NotNull] IRepository<TEntity> inner,
-            [NotNull] IRepositoryFactory repositoryFactory)
+        /// <param name="inner">The inner repository to use for the actual storage.</param>
+        public DehydratingRepository([NotNull] IRepositoryFactory repositoryFactory,
+            [NotNull] IRepository<TEntity> inner) : base(inner)
         {
-            _inner = inner;
             _repositoryFactory = repositoryFactory;
+            _inner = inner;
         }
 
-        public IEnumerable<TEntity> GetAll()
+        /// <summary>
+        /// Creates a new reference-dehydrating decorator.
+        /// </summary>
+        /// <param name="repositoryFactory">Used to aquire the repository for <typeparamref name="TEntity"/> and repositories for resolving references.</param>
+        public DehydratingRepository([NotNull] IRepositoryFactory repositoryFactory)
+            : this(repositoryFactory, repositoryFactory.Create<TEntity>())
         {
-            return _inner.GetAll().Select(x => x.DehydrateReferences());
-        }
-
-        public TEntity Find(int id)
-        {
-            return _inner.Find(id)?.DehydrateReferences();
         }
 
         public void Modify(TEntity entity)
         {
             _inner.Modify(entity.ResolveReferences(_repositoryFactory));
-        }
-
-        public bool Exists(int id)
-        {
-            return _inner.Exists(id);
         }
 
         public TEntity Add(TEntity entity)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using JetBrains.Annotations;
 
 namespace Dehydrator.WebApi
@@ -10,26 +9,21 @@ namespace Dehydrator.WebApi
     [PublicAPI]
     public class DbRepositoryFactory : IRepositoryFactory
     {
-        [NotNull] private readonly DbContext _db;
+        [NotNull] private readonly DbContext _dbContext;
 
         /// <summary>
         /// Creates a new database-backed entity repository factory.
         /// </summary>
-        /// <param name="db">The database context used to store the entities.</param>>
-        public DbRepositoryFactory([NotNull] DbContext db)
+        /// <param name="dbContext">The database context used to access the database.</param>
+        public DbRepositoryFactory([NotNull] DbContext dbContext)
         {
-            _db = db;
+            _dbContext = dbContext;
         }
 
         public IRepository<TEntity> Create<TEntity>()
             where TEntity : class, IEntity, new()
         {
-            return new DbRepository<TEntity>(_db);
-        }
-
-        public IRepository<IEntity> Create(Type entityType)
-        {
-            return new DbRepository(_db, entityType);
+            return new DbRepository<TEntity>(_dbContext);
         }
     }
 }

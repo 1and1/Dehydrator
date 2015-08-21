@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DehydratingReadRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RepositoryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityExtensions.cs" />
@@ -19,5 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ObjectExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RepositoryFactoryExtensions.cs" />
   </ItemGroup>
 </Project>
