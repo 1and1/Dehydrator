@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityCrudApiController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InheritanceRouteProvider.cs" />
   </ItemGroup>
 </Project>
