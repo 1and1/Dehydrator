@@ -21,7 +21,8 @@ namespace Dehydrator.WebApi
             _db = db;
         }
 
-        public IEntityRepository<TEntity> Create<TEntity>() where TEntity : class, IEntity, new()
+        public IEntityRepository<TEntity> Create<TEntity>()
+            where TEntity : class, IEntity, new()
         {
             return new DbEntityRepository<TEntity>(_db);
         }

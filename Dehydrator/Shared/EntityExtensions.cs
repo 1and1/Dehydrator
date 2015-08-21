@@ -34,8 +34,8 @@ namespace Dehydrator
 
                 if (IsEntity(prop))
                 {
-                    var referenceFactory = repositoryFactory.Create(prop.PropertyType);
-                    var resolvedRef = referenceFactory.Resolve((IEntity)propertyValue);
+                    var referenceRepository = repositoryFactory.Create(prop.PropertyType);
+                    var resolvedRef = referenceRepository.Resolve((IEntity)propertyValue);
                     prop.SetValue(clonedEntity, resolvedRef, null);
                 }
                 else if (IsEntityCollection(prop))

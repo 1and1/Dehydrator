@@ -18,7 +18,7 @@ namespace Dehydrator
         [Pure, NotNull]
         public static TEntity Resolve<TEntity>([NotNull] this IEntityRepository<TEntity> repository,
             [NotNull] IEntity entity)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             var entityWithResolvedRefs = repository.Find(entity.Id);
             if (entityWithResolvedRefs == null) throw new KeyNotFoundException();
@@ -35,7 +35,7 @@ namespace Dehydrator
         [Pure, NotNull]
         public static async Task<TEntity> ResolveAsync<TEntity>([NotNull] this IEntityRepository<TEntity> repository,
             [NotNull] IEntity entity)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             var entityWithResolvedRefs = await repository.FindAsync(entity.Id);
             if (entityWithResolvedRefs == null) throw new KeyNotFoundException();

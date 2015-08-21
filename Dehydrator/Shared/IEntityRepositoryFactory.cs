@@ -9,14 +9,14 @@ namespace Dehydrator
     public interface IEntityRepositoryFactory
     {
         /// <summary>
-        /// Creates a new repository for a specific type of <see cref="IEntity"/>.
+        /// Returns a repository for a specific type of <see cref="IEntity"/>.
         /// </summary>
         [NotNull]
         IEntityRepository<TEntity> Create<TEntity>()
             where TEntity : class, IEntity, new();
 
         /// <summary>
-        /// Creates a new repository for a specific type of <see cref="IEntity"/>.
+        /// Returns a repository for a specific type of <see cref="IEntity"/>.
         /// </summary>
         [NotNull]
         IEntityRepository<IEntity> Create([NotNull] Type entityType);

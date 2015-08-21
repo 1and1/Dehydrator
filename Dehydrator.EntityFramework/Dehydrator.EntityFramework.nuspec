@@ -5,7 +5,7 @@
 		<version>$version$</version>
 		<authors>1&amp;1 Internet SE</authors>
 		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
-		<description>...</description>
+		<description>Implements Dehydrator interfaces for Microsoft's Entity Framework.</description>
 		<summary>Implements Dehydrator interfaces for Microsoft's Entity Framework</summary>
 		<dependencies>
 			<dependency id="Dehydrator" version="$version$" />
