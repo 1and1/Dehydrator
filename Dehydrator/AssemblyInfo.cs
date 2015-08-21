@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Dehydrator")]
-[assembly: AssemblyDescription("Strips and resolves references in Entity objects for better serializability")]
+[assembly: AssemblyDescription("Dehydrates references in Entity objects down to nothing but their ID for better serializability")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("1&1 Internet SE")]
 [assembly: AssemblyProduct("Dehydrator")]

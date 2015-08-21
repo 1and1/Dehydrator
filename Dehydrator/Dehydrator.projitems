@@ -17,7 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IEntityRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEntityRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StrippingEntityRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StrippingEntityRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DehydratingEntityRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DehydratingEntityRepositoryFactory.cs" />
   </ItemGroup>
 </Project>

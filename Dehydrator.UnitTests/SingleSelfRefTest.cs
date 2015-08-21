@@ -8,12 +8,12 @@ namespace Dehydrator
         [SetUp]
         public void SetUp()
         {
-            StrippedRef = new MockEntity1 {Id = 2};
-            EntityWithStrippedRefs = new MockEntity1
+            DehydratedRef = new MockEntity1 {Id = 2};
+            EntityWithDehydratedRefs = new MockEntity1
             {
                 Id = 1,
                 FriendlyName = "Foo",
-                SingleSelfRef = StrippedRef
+                SingleSelfRef = DehydratedRef
             };
 
             ResolvedRef = new MockEntity1 {Id = 2, FriendlyName = "Bar"};

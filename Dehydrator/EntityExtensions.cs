@@ -15,7 +15,7 @@ namespace Dehydrator
     public static class EntityExtensions
     {
         /// <summary>
-        /// Resolves references that were stripped to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
+        /// Resolves references that were dehydrated to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
@@ -47,11 +47,11 @@ namespace Dehydrator
                     prop.SetValue(clonedEntity, resolvedRefs, null);
 
                     var referenceRepository = repositoryFactory.Create(referenceType);
-                    foreach (IEntity strippedRef in (IEnumerable)propertyValue)
+                    foreach (IEntity dehydratedRef in (IEnumerable)propertyValue)
                     {
-                        if (strippedRef == null) continue;
+                        if (dehydratedRef == null) continue;
 
-                        var resolvedRef = referenceRepository.Resolve(strippedRef);
+                        var resolvedRef = referenceRepository.Resolve(dehydratedRef);
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
                             resolvedRefs, new object[] {resolvedRef});
@@ -64,7 +64,7 @@ namespace Dehydrator
 
 #if NET45
         /// <summary>
-        /// Resolves references that were stripped to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
+        /// Resolves references that were dehydrated to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
@@ -96,11 +96,11 @@ namespace Dehydrator
                     prop.SetValue(clonedEntity, resolvedRefs, null);
 
                     var referenceRepository = repositoryFactory.Create(referenceType);
-                    foreach (IEntity strippedRef in (IEnumerable)propertyValue)
+                    foreach (IEntity dehydratedRef in (IEnumerable)propertyValue)
                     {
-                        if (strippedRef == null) continue;
+                        if (dehydratedRef == null) continue;
 
-                        var resolvedRef = await referenceRepository.ResolveAsync(strippedRef);
+                        var resolvedRef = await referenceRepository.ResolveAsync(dehydratedRef);
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
                             resolvedRefs, new object[] {resolvedRef});
@@ -113,11 +113,11 @@ namespace Dehydrator
 #endif
 
         /// <summary>
-        /// Strips all references to contain nothing but their <see cref="IEntity.Id"/>s and returns the result as a new object.
+        /// Dehydrates all references to contain nothing but their <see cref="IEntity.Id"/>s and returns the result as a new object.
         /// </summary>
-        /// <param name="entity">The entity to strip.</param>
+        /// <param name="entity">The entity to dehydrate.</param>
         [Pure, NotNull]
-        public static TEntity StripReferences<TEntity>([NotNull] this TEntity entity)
+        public static TEntity DehydrateReferences<TEntity>([NotNull] this TEntity entity)
             where TEntity : class, IEntity
         {
             var clonedEntity = entity.CloneMemberwise();
@@ -129,27 +129,27 @@ namespace Dehydrator
 
                 if (IsEntity(prop))
                 {
-                    var strippedRef = (IEntity)Activator.CreateInstance(prop.PropertyType);
-                    strippedRef.Id = ((IEntity)propertyValue).Id;
-                    prop.SetValue(clonedEntity, strippedRef, null);
+                    var dehydratedRef = (IEntity)Activator.CreateInstance(prop.PropertyType);
+                    dehydratedRef.Id = ((IEntity)propertyValue).Id;
+                    prop.SetValue(clonedEntity, dehydratedRef, null);
                 }
                 else if (IsEntityCollection(prop))
                 {
                     var referenceType = prop.PropertyType.GetGenericArguments().First();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
-                    var strippedRefs = Activator.CreateInstance(collectionType);
-                    prop.SetValue(clonedEntity, strippedRefs, null);
+                    var dehydratedRefs = Activator.CreateInstance(collectionType);
+                    prop.SetValue(clonedEntity, dehydratedRefs, null);
 
                     foreach (IEntity resolvedRef in (IEnumerable)propertyValue)
                     {
                         if (resolvedRef == null) continue;
 
-                        var strippedRef = (IEntity)Activator.CreateInstance(referenceType);
-                        strippedRef.Id = resolvedRef.Id;
+                        var dehydratedRef = (IEntity)Activator.CreateInstance(referenceType);
+                        dehydratedRef.Id = resolvedRef.Id;
                         collectionType.InvokeMember("Add",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            strippedRefs, new object[] {strippedRef});
+                            dehydratedRefs, new object[] {dehydratedRef});
                     }
                 }
             }

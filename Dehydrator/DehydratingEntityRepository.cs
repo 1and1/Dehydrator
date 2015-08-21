@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 namespace Dehydrator
 {
     /// <summary>
-    /// Decorator for <see cref="IEntityRepository{TEntity}"/> instances that transparently strips references on entities it returns and resolves them on entities that are put it.
+    /// Decorator for <see cref="IEntityRepository{TEntity}"/> instances that transparently dehydrates references on entities it returns and resolves them on entities that are put it.
     /// </summary>
-    internal class StrippingEntityRepository<TEntity> : IEntityRepository<TEntity>
+    internal class DehydratingEntityRepository<TEntity> : IEntityRepository<TEntity>
         where TEntity : class, IEntity
     {
         [NotNull] private readonly IEntityRepository<TEntity> _inner;
         [NotNull] private readonly IEntityRepositoryFactory _repositoryFactory;
 
         /// <summary>
-        /// Creates a new reference-stripping decorator.
+        /// Creates a new reference-dehydrating decorator.
         /// </summary>
         /// <param name="inner">The inner repository to use for the actual storage.</param>
         /// <param name="repositoryFactory">Used to aquire additional repositories for resolving references.</param>
-        public StrippingEntityRepository([NotNull] IEntityRepository<TEntity> inner,
+        public DehydratingEntityRepository([NotNull] IEntityRepository<TEntity> inner,
             [NotNull] IEntityRepositoryFactory repositoryFactory)
         {
             _inner = inner;
@@ -31,12 +31,12 @@ namespace Dehydrator
 
         public IEnumerable<TEntity> GetAll()
         {
-            return _inner.GetAll().Select(x => x.StripReferences());
+            return _inner.GetAll().Select(x => x.DehydrateReferences());
         }
 
         public TEntity Find(int id)
         {
-            return _inner.Find(id)?.StripReferences();
+            return _inner.Find(id)?.DehydrateReferences();
         }
 
         public void Modify(TEntity entity)
@@ -63,7 +63,7 @@ namespace Dehydrator
         public async Task<TEntity> FindAsync(int id)
         {
             var entity = await _inner.FindAsync(id);
-            return entity?.StripReferences();
+            return entity?.DehydrateReferences();
         }
 
         public async Task ModifyAsync(TEntity entity)

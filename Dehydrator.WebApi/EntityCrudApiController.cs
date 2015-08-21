@@ -34,7 +34,7 @@ namespace Dehydrator.WebApi
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var storedEntity = await _repository.AddAsync(entity);
-            return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.StripReferences());
+            return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.DehydrateReferences());
         }
 
         [HttpGet, Route("{id}", Name = "bla")]

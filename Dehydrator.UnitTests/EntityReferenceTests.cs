@@ -8,19 +8,19 @@ namespace Dehydrator
     public abstract class EntityReferenceTests<TRef>
         where TRef : class, IEntity, new()
     {
-        protected MockEntity1 EntityWithStrippedRefs, EntityWithResolvedRefs;
-        protected TRef ResolvedRef, StrippedRef;
+        protected MockEntity1 EntityWithDehydratedRefs, EntityWithResolvedRefs;
+        protected TRef ResolvedRef, DehydratedRef;
 
         [Test]
         public void Resolve()
         {
             var repositoryMock = new Mock<IEntityRepository<IEntity>>(MockBehavior.Strict);
-            repositoryMock.Setup(x => x.Find(StrippedRef.Id)).Returns(ResolvedRef);
+            repositoryMock.Setup(x => x.Find(DehydratedRef.Id)).Returns(ResolvedRef);
 
             var factoryMock = new Mock<IEntityRepositoryFactory>(MockBehavior.Loose);
             factoryMock.Setup(x => x.Create(typeof(TRef))).Returns(repositoryMock.Object);
 
-            var result = EntityWithStrippedRefs.ResolveReferences(factoryMock.Object);
+            var result = EntityWithDehydratedRefs.ResolveReferences(factoryMock.Object);
             result.ShouldBeEqualTo(EntityWithResolvedRefs);
 
             factoryMock.Verify();
@@ -31,12 +31,12 @@ namespace Dehydrator
         public async void ResolveAsync()
         {
             var repositoryMock = new Mock<IEntityRepository<IEntity>>(MockBehavior.Strict);
-            repositoryMock.Setup(x => x.FindAsync(StrippedRef.Id)).Returns(Task.FromResult((IEntity)ResolvedRef));
+            repositoryMock.Setup(x => x.FindAsync(DehydratedRef.Id)).Returns(Task.FromResult((IEntity)ResolvedRef));
 
             var factoryMock = new Mock<IEntityRepositoryFactory>(MockBehavior.Loose);
             factoryMock.Setup(x => x.Create(typeof(TRef))).Returns(repositoryMock.Object);
 
-            var result = await EntityWithStrippedRefs.ResolveReferencesAsync(factoryMock.Object);
+            var result = await EntityWithDehydratedRefs.ResolveReferencesAsync(factoryMock.Object);
             result.ShouldBeEqualTo(EntityWithResolvedRefs);
 
             factoryMock.Verify();
@@ -44,10 +44,10 @@ namespace Dehydrator
         }
 
         [Test]
-        public void Strip()
+        public void Dehydrate()
         {
-            var result = EntityWithResolvedRefs.StripReferences();
-            result.ShouldBeEqualTo(EntityWithStrippedRefs);
+            var result = EntityWithResolvedRefs.DehydrateReferences();
+            result.ShouldBeEqualTo(EntityWithDehydratedRefs);
         }
     }
 }

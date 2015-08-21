@@ -10,7 +10,7 @@ namespace Dehydrator
     public static class EntitryRepositoryExtensions
     {
         /// <summary>
-        /// Resolves an entity that has been stripped to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
+        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
         /// </summary>
         /// <param name="repository">The repository to retrieve entities from.</param>
         /// <param name="entity">The entity to resolve.</param>
@@ -27,7 +27,7 @@ namespace Dehydrator
 
 #if NET45
         /// <summary>
-        /// Resolves an entity that has been stripped to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
+        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
         /// </summary>
         /// <param name="repository">The repository to retrieve entities from.</param>
         /// <param name="entity">The entity to resolve.</param>
