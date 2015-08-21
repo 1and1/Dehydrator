@@ -3,34 +3,40 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 14.0.23107.0
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dehydrator", "Dehydrator\Dehydrator.shproj", "{D7419180-F830-4E67-AA49-B40A0738C442}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Dehydrator\Shared\Shared.shproj", "{D7419180-F830-4E67-AA49-B40A0738C442}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.Net40", "Dehydrator.Net40\Dehydrator.Net40.csproj", "{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net40", "Dehydrator\Net40\Net40.csproj", "{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.Net45", "Dehydrator.Net45\Dehydrator.Net45.csproj", "{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net45", "Dehydrator\Net45\Net45.csproj", "{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dehydrator.WebApi", "Dehydrator.WebApi\Dehydrator.WebApi.shproj", "{21193DBC-438E-4D31-8C86-471A63DC833B}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Dehydrator.WebApi\Shared\Shared.shproj", "{21193DBC-438E-4D31-8C86-471A63DC833B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.WebApi.Net45", "Dehydrator.WebApi.Net45\Dehydrator.WebApi.Net45.csproj", "{368ABA94-AA57-482E-B696-1C104EB57BD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net45", "Dehydrator.WebApi\Net45\Net45.csproj", "{368ABA94-AA57-482E-B696-1C104EB57BD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.UnitTests", "Dehydrator.UnitTests\Dehydrator.UnitTests.csproj", "{1C898342-B01A-44A0-81FB-EC09FA2982E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Dehydrator\UnitTests\UnitTests.csproj", "{1C898342-B01A-44A0-81FB-EC09FA2982E4}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dehydrator.EntityFramework", "Dehydrator.EntityFramework\Dehydrator.EntityFramework.shproj", "{CE292E85-F3DE-4E7F-B941-8F8940D2F4F7}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Dehydrator.EntityFramework\Shared\Shared.shproj", "{CE292E85-F3DE-4E7F-B941-8F8940D2F4F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.EntityFramework.Net40", "Dehydrator.EntityFramework.Net40\Dehydrator.EntityFramework.Net40.csproj", "{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net40", "Dehydrator.EntityFramework\Net40\Net40.csproj", "{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.EntityFramework.Net45", "Dehydrator.EntityFramework.Net45\Dehydrator.EntityFramework.Net45.csproj", "{63A4C204-ECA0-446E-B461-064413200072}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net45", "Dehydrator.EntityFramework\Net45\Net45.csproj", "{63A4C204-ECA0-446E-B461-064413200072}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dehydrator", "Dehydrator", "{E847A3B7-2805-4C3B-9897-E9F978EC5215}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dehydrator.EntityFramework", "Dehydrator.EntityFramework", "{08561628-F20D-4ABA-9B1A-B69212929606}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dehydrator.WebApi", "Dehydrator.WebApi", "{4F2FAE49-4FA4-454C-9F7E-A84898BAAE72}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Dehydrator.WebApi\Dehydrator.WebApi.projitems*{368aba94-aa57-482e-b696-1c104eb57bd6}*SharedItemsImports = 4
-		Dehydrator.EntityFramework\Dehydrator.EntityFramework.projitems*{63a4c204-eca0-446e-b461-064413200072}*SharedItemsImports = 4
-		Dehydrator.EntityFramework\Dehydrator.EntityFramework.projitems*{94c89c45-4bb7-4a7f-98d2-4b24bcd0548b}*SharedItemsImports = 4
-		Dehydrator\Dehydrator.projitems*{d7419180-f830-4e67-aa49-b40a0738c442}*SharedItemsImports = 13
-		Dehydrator\Dehydrator.projitems*{fe22975b-b3a0-4855-beeb-ef8b58c3df21}*SharedItemsImports = 4
-		Dehydrator.EntityFramework\Dehydrator.EntityFramework.projitems*{ce292e85-f3de-4e7f-b941-8f8940d2f4f7}*SharedItemsImports = 13
-		Dehydrator\Dehydrator.projitems*{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}*SharedItemsImports = 4
-		Dehydrator.WebApi\Dehydrator.WebApi.projitems*{21193dbc-438e-4d31-8c86-471a63dc833b}*SharedItemsImports = 13
+		Dehydrator.WebApi\Shared\Shared.projitems*{368aba94-aa57-482e-b696-1c104eb57bd6}*SharedItemsImports = 4
+		Dehydrator.EntityFramework\Shared\Shared.projitems*{63a4c204-eca0-446e-b461-064413200072}*SharedItemsImports = 4
+		Dehydrator.EntityFramework\Shared\Shared.projitems*{94c89c45-4bb7-4a7f-98d2-4b24bcd0548b}*SharedItemsImports = 4
+		Dehydrator\Shared\Shared.projitems*{d7419180-f830-4e67-aa49-b40a0738c442}*SharedItemsImports = 13
+		Dehydrator\Shared\Shared.projitems*{fe22975b-b3a0-4855-beeb-ef8b58c3df21}*SharedItemsImports = 4
+		Dehydrator.EntityFramework\Shared\Shared.projitems*{ce292e85-f3de-4e7f-b941-8f8940d2f4f7}*SharedItemsImports = 13
+		Dehydrator\Shared\Shared.projitems*{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}*SharedItemsImports = 4
+		Dehydrator.WebApi\Shared\Shared.projitems*{21193dbc-438e-4d31-8c86-471a63dc833b}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,5 +70,16 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7419180-F830-4E67-AA49-B40A0738C442} = {E847A3B7-2805-4C3B-9897-E9F978EC5215}
+		{FE22975B-B3A0-4855-BEEB-EF8B58C3DF21} = {E847A3B7-2805-4C3B-9897-E9F978EC5215}
+		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4} = {E847A3B7-2805-4C3B-9897-E9F978EC5215}
+		{21193DBC-438E-4D31-8C86-471A63DC833B} = {4F2FAE49-4FA4-454C-9F7E-A84898BAAE72}
+		{368ABA94-AA57-482E-B696-1C104EB57BD6} = {4F2FAE49-4FA4-454C-9F7E-A84898BAAE72}
+		{1C898342-B01A-44A0-81FB-EC09FA2982E4} = {E847A3B7-2805-4C3B-9897-E9F978EC5215}
+		{CE292E85-F3DE-4E7F-B941-8F8940D2F4F7} = {08561628-F20D-4ABA-9B1A-B69212929606}
+		{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B} = {08561628-F20D-4ABA-9B1A-B69212929606}
+		{63A4C204-ECA0-446E-B461-064413200072} = {08561628-F20D-4ABA-9B1A-B69212929606}
 	EndGlobalSection
 EndGlobal

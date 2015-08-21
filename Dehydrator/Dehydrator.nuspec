@@ -14,12 +14,12 @@ Also pull in Dehydrator.EntityFramework and EntityFramework.WebApi as needed!</d
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="build\Release\net40\Dehydrator.dll" target="lib\net40" />
-		<file src="build\Release\net40\Dehydrator.pdb" target="lib\net40" />
-		<file src="build\Release\net40\Dehydrator.xml" target="lib\net40" />
-		<file src="build\Release\net45\Dehydrator.dll" target="lib\net45" />
-		<file src="build\Release\net45\Dehydrator.pdb" target="lib\net45" />
-		<file src="build\Release\net45\Dehydrator.xml" target="lib\net45" />
-		<file src="Dehydrator\**\*.cs" target="src" />
+		<file src="..\build\Release\net40\Dehydrator.dll" target="lib\net40" />
+		<file src="..\build\Release\net40\Dehydrator.pdb" target="lib\net40" />
+		<file src="..\build\Release\net40\Dehydrator.xml" target="lib\net40" />
+		<file src="..\build\Release\net45\Dehydrator.dll" target="lib\net45" />
+		<file src="..\build\Release\net45\Dehydrator.pdb" target="lib\net45" />
+		<file src="..\build\Release\net45\Dehydrator.xml" target="lib\net45" />
+		<file src="Shared\**\*.cs" target="src" />
 	</files>
 </package>
