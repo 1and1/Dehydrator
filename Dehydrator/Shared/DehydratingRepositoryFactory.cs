@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Dehydrator.WebApi
+namespace Dehydrator
 {
     /// <summary>
     /// Decorator for <see cref="IRepositoryFactory"/> instances that transparently dehydrates references on entities it returns and resolves them on entities that are put it.

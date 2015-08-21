@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using System.Threading.Tasks;
 #endif
 
-namespace Dehydrator.WebApi
+namespace Dehydrator.EntityFramework
 {
     /// <summary>
     /// Provides CRUD access to a set of <see cref="IEntity"/>s that is backed by a database accessed via Microsoft's Entity Framework.

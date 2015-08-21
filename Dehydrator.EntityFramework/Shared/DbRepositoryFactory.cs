@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using JetBrains.Annotations;
 
-namespace Dehydrator.WebApi
+namespace Dehydrator.EntityFramework
 {
     /// <summary>
     /// Provides <see cref="IRepository{T}"/>s that are backed by a database accessed via Microsoft's Entity Framework.
