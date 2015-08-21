@@ -1,0 +1,28 @@
+﻿using NUnit.Framework;
+
+namespace Dehydrator
+{
+    [TestFixture]
+    public class SingleRefTest : EntityReferenceTests<MockEntity2>
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            StrippedRef = new MockEntity2 {Id = 2};
+            EntityWithStrippedRefs = new MockEntity1
+            {
+                Id = 1,
+                FriendlyName = "Foo",
+                SingleRef = StrippedRef
+            };
+
+            ResolvedRef = new MockEntity2 {Id = 2, FriendlyName = "Bar"};
+            EntityWithResolvedRefs = new MockEntity1
+            {
+                Id = 1,
+                FriendlyName = "Foo",
+                SingleRef = ResolvedRef
+            };
+        }
+    }
+}

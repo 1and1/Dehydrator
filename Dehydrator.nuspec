@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Dehydrator</id>
+		<version>$version$</version>
+		<authors>1&amp;1 Internet SE</authors>
+		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
+		<description>Dehydrator helps you combine ORMs like Entity Framework with REST service frameworks like WebAPI.
+By stripping navigational references in your entities down to only their IDs their serialized representation no longer contains redundant or cyclic data. When new or modified deserialized data needs to be persisted Dehydrator takes care of resolving the reference IDs again.
+Also pull in Dehydrator.EntityFramework and EntityFramework.WebApi as needed!</description>
+		<summary>Strips and resolves references in Entity objects for better serializability</summary>
+		<dependencies>
+			<dependency id="JetBrains.Annotations" version="9.2.0" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="build\Release\net40\Dehydrator.dll" target="lib\net40" />
+		<file src="build\Release\net40\Dehydrator.pdb" target="lib\net40" />
+		<file src="build\Release\net40\Dehydrator.xml" target="lib\net40" />
+		<file src="build\Release\net45\Dehydrator.dll" target="lib\net45" />
+		<file src="build\Release\net45\Dehydrator.pdb" target="lib\net45" />
+		<file src="build\Release\net45\Dehydrator.xml" target="lib\net45" />
+		<file src="Dehydrator\**\*.cs" target="src" />
+	</files>
+</package>

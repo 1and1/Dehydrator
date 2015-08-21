@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d7419180-f830-4e67-aa49-b40a0738c442</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Dehydrator</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityRepositoryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEntity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEntityRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEntityRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObjectExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StrippingEntityRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StrippingEntityRepositoryFactory.cs" />
+  </ItemGroup>
+</Project>

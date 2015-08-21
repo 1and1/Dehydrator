@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Dehydrator.WebApi</id>
+		<version>$version$</version>
+		<authors>1&amp;1 Internet SE</authors>
+		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
+		<description>...</description>
+		<summary>Base classes for creating WebAPI controllers using Dehydrator</summary>
+		<dependencies>
+			<dependency id="Dehydrator" version="$version$" />
+			<dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="build\Release\net45\Dehydrator.WebApi.dll" target="lib\net45" />
+		<file src="build\Release\net45\Dehydrator.WebApi.pdb" target="lib\net45" />
+		<file src="build\Release\net45\Dehydrator.WebApi.xml" target="lib\net45" />
+		<file src="Dehydrator.WebApi\**\*.cs" target="src" />
+	</files>
+</package>
