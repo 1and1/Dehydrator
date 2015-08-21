@@ -18,7 +18,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)IEntity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRepositoryFactory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ObjectExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RepositoryFactoryExtensions.cs" />

@@ -15,6 +15,55 @@ namespace Dehydrator
     public static class EntityExtensions
     {
         /// <summary>
+        /// Dehydrates all references to contain nothing but their <see cref="IEntity.Id"/>s and returns the result as a new object.
+        /// </summary>
+        /// <param name="entity">The entity to dehydrate.</param>
+        [Pure, NotNull]
+        public static TEntity DehydrateReferences<TEntity>([NotNull] this TEntity entity)
+            where TEntity : class, IEntity
+        {
+            var entityType = typeof(TEntity);
+
+            var newEntity = (TEntity)Activator.CreateInstance(entityType);
+            foreach (var prop in entityType.GetWritableProperties())
+            {
+                var propertyValue = prop.GetValue(entity, null);
+                if (propertyValue == null) continue;
+
+                if (prop.IsEntity())
+                {
+                    prop.SetValue(obj: newEntity,
+                        value: ((IEntity)propertyValue).Dehydrate(prop.PropertyType), index: null);
+                }
+                else if (prop.IsEntityCollection())
+                {
+                    var referenceType = prop.PropertyType.GetGenericArguments().First();
+                    var collectionType = typeof(List<>).MakeGenericType(referenceType);
+
+                    var dehydratedRefs = Activator.CreateInstance(collectionType);
+                    prop.SetValue(obj: newEntity, value: dehydratedRefs, index: null);
+
+                    foreach (IEntity resolvedRef in (IEnumerable)propertyValue)
+                    {
+                        if (resolvedRef == null) continue;
+                        collectionType.InvokeAdd(target: dehydratedRefs,
+                            value: resolvedRef.Dehydrate(referenceType));
+                    }
+                }
+                else prop.SetValue(obj: newEntity, value: propertyValue, index: null);
+            }
+            return newEntity;
+        }
+
+        [NotNull]
+        private static IEntity Dehydrate([NotNull] this IEntity value, [NotNull] Type type)
+        {
+            var dehydratedRef = (IEntity)Activator.CreateInstance(type);
+            dehydratedRef.Id = value.Id;
+            return dehydratedRef;
+        }
+
+        /// <summary>
         /// Resolves references that were dehydrated to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
@@ -23,43 +72,41 @@ namespace Dehydrator
         [Pure, NotNull]
         public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity,
             [NotNull] IRepositoryFactory repositoryFactory)
-            where TEntity : class, IEntity
+            where TEntity : class, IEntity, new()
         {
-            var clonedEntity = entity.CloneMemberwise();
+            var entityType = typeof(TEntity);
 
-            foreach (var prop in entity.GetVirtualProperties())
+            var newEntity = new TEntity();
+            foreach (var prop in entityType.GetWritableProperties())
             {
                 var propertyValue = prop.GetValue(entity, null);
                 if (propertyValue == null) continue;
 
-                if (IsEntity(prop))
+                if (prop.IsEntity())
                 {
                     var referenceRepository = repositoryFactory.Create(prop.PropertyType);
-                    var resolvedRef = referenceRepository.Resolve((IEntity)propertyValue);
-                    prop.SetValue(clonedEntity, resolvedRef, null);
+                    prop.SetValue(obj: newEntity,
+                        value: referenceRepository.Resolve((IEntity)propertyValue), index: null);
                 }
-                else if (IsEntityCollection(prop))
+                else if (prop.IsEntityCollection())
                 {
                     var referenceType = prop.PropertyType.GetGenericArguments().First();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var resolvedRefs = Activator.CreateInstance(collectionType);
-                    prop.SetValue(clonedEntity, resolvedRefs, null);
+                    prop.SetValue(newEntity, resolvedRefs, null);
 
                     var referenceRepository = repositoryFactory.Create(referenceType);
                     foreach (IEntity dehydratedRef in (IEnumerable)propertyValue)
                     {
                         if (dehydratedRef == null) continue;
-
-                        var resolvedRef = referenceRepository.Resolve(dehydratedRef);
-                        collectionType.InvokeMember("Add",
-                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            resolvedRefs, new object[] {resolvedRef});
+                        collectionType.InvokeAdd(target: resolvedRefs,
+                            value: referenceRepository.Resolve(dehydratedRef));
                     }
                 }
+                else prop.SetValue(newEntity, propertyValue, null);
             }
-
-            return clonedEntity;
+            return newEntity;
         }
 
 #if NET45
@@ -72,101 +119,69 @@ namespace Dehydrator
         [Pure, NotNull]
         public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity,
             [NotNull] IRepositoryFactory repositoryFactory)
-            where TEntity : class, IEntity
+            where TEntity : class, IEntity, new()
         {
-            var clonedEntity = entity.CloneMemberwise();
+            var entityType = typeof(TEntity);
 
-            foreach (var prop in entity.GetVirtualProperties())
+            var newEntity = new TEntity();
+            foreach (var prop in entityType.GetWritableProperties())
             {
                 var propertyValue = prop.GetValue(entity, null);
                 if (propertyValue == null) continue;
 
-                if (IsEntity(prop))
+                if (prop.IsEntity())
                 {
-                    var referenceFactory = repositoryFactory.Create(prop.PropertyType);
-                    var resolvedRef = await referenceFactory.ResolveAsync((IEntity)propertyValue);
-                    prop.SetValue(clonedEntity, resolvedRef, null);
+                    var referenceRepository = repositoryFactory.Create(prop.PropertyType);
+                    prop.SetValue(obj: newEntity,
+                        value: await referenceRepository.ResolveAsync((IEntity)propertyValue), index: null);
                 }
-                else if (IsEntityCollection(prop))
+                else if (prop.IsEntityCollection())
                 {
                     var referenceType = prop.PropertyType.GetGenericArguments().First();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var resolvedRefs = Activator.CreateInstance(collectionType);
-                    prop.SetValue(clonedEntity, resolvedRefs, null);
+                    prop.SetValue(newEntity, resolvedRefs, null);
 
                     var referenceRepository = repositoryFactory.Create(referenceType);
                     foreach (IEntity dehydratedRef in (IEnumerable)propertyValue)
                     {
                         if (dehydratedRef == null) continue;
-
-                        var resolvedRef = await referenceRepository.ResolveAsync(dehydratedRef);
-                        collectionType.InvokeMember("Add",
-                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            resolvedRefs, new object[] {resolvedRef});
+                        collectionType.InvokeAdd(target: resolvedRefs,
+                            value: await referenceRepository.ResolveAsync(dehydratedRef));
                     }
                 }
+                else prop.SetValue(newEntity, propertyValue, null);
             }
-
-            return clonedEntity;
+            return newEntity;
         }
 #endif
 
-        /// <summary>
-        /// Dehydrates all references to contain nothing but their <see cref="IEntity.Id"/>s and returns the result as a new object.
-        /// </summary>
-        /// <param name="entity">The entity to dehydrate.</param>
-        [Pure, NotNull]
-        public static TEntity DehydrateReferences<TEntity>([NotNull] this TEntity entity)
-            where TEntity : class, IEntity
+        private static void InvokeAdd([NotNull] this Type collectionType, [NotNull] object target, IEntity value)
         {
-            var clonedEntity = entity.CloneMemberwise();
-
-            foreach (var prop in entity.GetVirtualProperties())
-            {
-                var propertyValue = prop.GetValue(entity, null);
-                if (propertyValue == null) continue;
-
-                if (IsEntity(prop))
-                {
-                    var dehydratedRef = (IEntity)Activator.CreateInstance(prop.PropertyType);
-                    dehydratedRef.Id = ((IEntity)propertyValue).Id;
-                    prop.SetValue(clonedEntity, dehydratedRef, null);
-                }
-                else if (IsEntityCollection(prop))
-                {
-                    var referenceType = prop.PropertyType.GetGenericArguments().First();
-                    var collectionType = typeof(List<>).MakeGenericType(referenceType);
-
-                    var dehydratedRefs = Activator.CreateInstance(collectionType);
-                    prop.SetValue(clonedEntity, dehydratedRefs, null);
-
-                    foreach (IEntity resolvedRef in (IEnumerable)propertyValue)
-                    {
-                        if (resolvedRef == null) continue;
-
-                        var dehydratedRef = (IEntity)Activator.CreateInstance(referenceType);
-                        dehydratedRef.Id = resolvedRef.Id;
-                        collectionType.InvokeMember("Add",
-                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                            dehydratedRefs, new object[] {dehydratedRef});
-                    }
-                }
-            }
-
-            return clonedEntity;
+            collectionType.InvokeMember("Add",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
+                target: target, args: new object[] {value});
         }
 
-        private static bool IsEntity([NotNull] PropertyInfo prop)
+        [NotNull]
+        private static IEnumerable<PropertyInfo> GetWritableProperties([NotNull] this Type type)
         {
-            return typeof(IEntity).IsAssignableFrom(prop.PropertyType);
+            return type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => x.GetGetMethod() != null && x.GetSetMethod() != null);
         }
 
-        private static bool IsEntityCollection([NotNull] PropertyInfo prop)
+        private static bool IsEntity([NotNull] this PropertyInfo prop)
         {
-            return prop.PropertyType.IsGenericType &&
-                   prop.PropertyType.GetGenericTypeDefinition() ==
-                   typeof(ICollection<>) &&
+            return prop.GetGetMethod().IsVirtual &&
+                   typeof(IEntity).IsAssignableFrom(prop.PropertyType);
+        }
+
+        private static bool IsEntityCollection([NotNull] this PropertyInfo prop)
+        {
+            return prop.GetGetMethod().IsVirtual &&
+                   prop.PropertyType.IsGenericType &&
+                   prop.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>) &&
                    typeof(IEntity).IsAssignableFrom(prop.PropertyType.GetGenericArguments().First());
         }
     }
