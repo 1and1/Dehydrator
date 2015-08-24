@@ -31,18 +31,18 @@ namespace Dehydrator
             return _inner.GetAll().Select(x => x.DehydrateReferences());
         }
 
-        public TEntity Find(int id)
+        public TEntity Find(long id)
         {
             return _inner.Find(id)?.DehydrateReferences();
         }
 
-        public bool Exists(int id)
+        public bool Exists(long id)
         {
             return _inner.Exists(id);
         }
 
 #if NET45
-        public async Task<IEntity> FindUntypedAsync(int id)
+        public async Task<IEntity> FindUntypedAsync(long id)
         {
             var entity = await _inner.FindUntypedAsync(id);
             return entity?.DehydrateReferences();

@@ -30,7 +30,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
         /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
-        bool Remove(int id);
+        bool Remove(long id);
 
 #if NET45
         /// <summary>
@@ -38,7 +38,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
-        Task<TEntity> FindAsync(int id);
+        Task<TEntity> FindAsync(long id);
 
         /// <summary>
         /// Modifies an existing entity in the database.
@@ -57,7 +57,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
         /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
-        Task<bool> RemoveAsync(int id);
+        Task<bool> RemoveAsync(long id);
 #endif
     }
 }

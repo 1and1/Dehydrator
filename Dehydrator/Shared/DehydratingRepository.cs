@@ -46,13 +46,13 @@ namespace Dehydrator
             return _inner.Add(entity.ResolveReferences(_repositoryFactory));
         }
 
-        public bool Remove(int id)
+        public bool Remove(long id)
         {
             return _inner.Remove(id);
         }
 
 #if NET45
-        public async Task<TEntity> FindAsync(int id)
+        public async Task<TEntity> FindAsync(long id)
         {
             var entity = await _inner.FindAsync(id);
             return entity?.DehydrateReferences();
@@ -68,7 +68,7 @@ namespace Dehydrator
             return _inner.Add(await entity.ResolveReferencesAsync(_repositoryFactory));
         }
 
-        public Task<bool> RemoveAsync(int id)
+        public Task<bool> RemoveAsync(long id)
         {
             return _inner.RemoveAsync(id);
         }

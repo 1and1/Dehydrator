@@ -8,7 +8,7 @@ namespace Dehydrator
     [PublicAPI]
     public abstract class Entity : IEntity
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         #region Equality
         protected bool Equals(Entity other)
@@ -26,7 +26,7 @@ namespace Dehydrator
 
         public override int GetHashCode()
         {
-            return Id;
+            return Id.GetHashCode();
         }
         #endregion
     }

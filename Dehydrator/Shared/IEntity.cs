@@ -8,6 +8,6 @@
         /// <summary>
         /// The primary key used to store the object in a database.
         /// </summary>
-        int Id { get; set; }
+        long Id { get; set; }
     }
 }

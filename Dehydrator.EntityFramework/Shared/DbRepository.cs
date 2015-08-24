@@ -51,7 +51,7 @@ namespace Dehydrator.EntityFramework
             return storedEntity;
         }
 
-        public bool Remove(int id)
+        public bool Remove(long id)
         {
             var entity = Find(id);
             if (entity == null) return false;
@@ -62,7 +62,7 @@ namespace Dehydrator.EntityFramework
         }
 
 #if NET45
-        public Task<TEntity> FindAsync(int id)
+        public Task<TEntity> FindAsync(long id)
         {
             return _dbSet.FindAsync(id);
         }
@@ -80,7 +80,7 @@ namespace Dehydrator.EntityFramework
             return storedEntity;
         }
 
-        public async Task<bool> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(long id)
         {
             var entity = await FindAsync(id);
             if (entity == null) return false;

@@ -32,18 +32,18 @@ namespace Dehydrator.EntityFramework
             return _dbSet;
         }
 
-        public bool Exists(int id)
+        public bool Exists(long id)
         {
             return _dbSet.Any(e => e.Id == id);
         }
 
-        public TEntity Find(int id)
+        public TEntity Find(long id)
         {
             return _dbSet.Find(id);
         }
 
 #if NET45
-        public async Task<IEntity> FindUntypedAsync(int id)
+        public async Task<IEntity> FindUntypedAsync(long id)
         {
             return await _dbSet.FindAsync(id);
         }

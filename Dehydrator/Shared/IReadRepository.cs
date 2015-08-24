@@ -23,7 +23,7 @@ namespace Dehydrator
         /// Checks whether an entity with a given <see cref="IEntity.Id"/> exists in the database.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to check.</param>
-        bool Exists(int id);
+        bool Exists(long id);
 
         /// <summary>
         /// Returns a specific entity from the backing database.
@@ -31,7 +31,7 @@ namespace Dehydrator
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
         [CanBeNull]
-        TEntity Find(int id);
+        TEntity Find(long id);
 
 #if NET45
         /// <summary>
@@ -39,7 +39,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
-        Task<IEntity> FindUntypedAsync(int id);
+        Task<IEntity> FindUntypedAsync(long id);
 #endif
     }
 }
