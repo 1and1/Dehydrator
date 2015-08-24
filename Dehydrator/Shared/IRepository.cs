@@ -13,17 +13,17 @@ namespace Dehydrator
         where TEntity : class, IEntity, new()
     {
         /// <summary>
-        /// Modifies an existing entity in the database.
-        /// </summary>
-        /// <param name="entity">The modified entity.</param>
-        void Modify([NotNull] TEntity entity);
-
-        /// <summary>
         /// Adds a new entity to the database.
         /// </summary>
         /// <returns>The added entity with <see cref="IEntity.Id"/> set.</returns>
         [NotNull]
         TEntity Add([NotNull] TEntity entity);
+
+        /// <summary>
+        /// Modifies an existing entity in the database.
+        /// </summary>
+        /// <param name="entity">The modified entity.</param>
+        void Modify([NotNull] TEntity entity);
 
         /// <summary>
         /// Removes a specific entity from the database.
@@ -41,16 +41,16 @@ namespace Dehydrator
         Task<TEntity> FindAsync(long id);
 
         /// <summary>
-        /// Modifies an existing entity in the database.
-        /// </summary>
-        /// <param name="entity">The modified entity.</param>
-        Task ModifyAsync([NotNull] TEntity entity);
-
-        /// <summary>
         /// Adds a new entity to the database.
         /// </summary>
         /// <returns>The added entity with <see cref="IEntity.Id"/> set.</returns>
         Task<TEntity> AddAsync([NotNull] TEntity entity);
+
+        /// <summary>
+        /// Modifies an existing entity in the database.
+        /// </summary>
+        /// <param name="entity">The modified entity.</param>
+        Task ModifyAsync([NotNull] TEntity entity);
 
         /// <summary>
         /// Removes a specific entity from the database.

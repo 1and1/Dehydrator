@@ -38,17 +38,17 @@ namespace Dehydrator.EntityFramework
         {
         }
 
-        public void Modify(TEntity entity)
-        {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            _dbContext.SaveChanges();
-        }
-
         public TEntity Add(TEntity entity)
         {
             var storedEntity = _dbSet.Add(entity);
             _dbContext.SaveChanges();
             return storedEntity;
+        }
+
+        public void Modify(TEntity entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
 
         public bool Remove(long id)
@@ -67,17 +67,17 @@ namespace Dehydrator.EntityFramework
             return _dbSet.FindAsync(id);
         }
 
-        public async Task ModifyAsync(TEntity entity)
-        {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
-        }
-
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             var storedEntity = _dbSet.Add(entity);
             await _dbContext.SaveChangesAsync();
             return storedEntity;
+        }
+
+        public async Task ModifyAsync(TEntity entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> RemoveAsync(long id)

@@ -36,14 +36,14 @@ namespace Dehydrator
         {
         }
 
-        public void Modify(TEntity entity)
-        {
-            _inner.Modify(entity.ResolveReferences(_repositoryFactory));
-        }
-
         public TEntity Add(TEntity entity)
         {
             return _inner.Add(entity.ResolveReferences(_repositoryFactory));
+        }
+
+        public void Modify(TEntity entity)
+        {
+            _inner.Modify(entity.ResolveReferences(_repositoryFactory));
         }
 
         public bool Remove(long id)
@@ -58,14 +58,14 @@ namespace Dehydrator
             return entity?.DehydrateReferences();
         }
 
-        public async Task ModifyAsync(TEntity entity)
-        {
-            await _inner.ModifyAsync(await entity.ResolveReferencesAsync(_repositoryFactory));
-        }
-
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             return _inner.Add(await entity.ResolveReferencesAsync(_repositoryFactory));
+        }
+
+        public async Task ModifyAsync(TEntity entity)
+        {
+            await _inner.ModifyAsync(await entity.ResolveReferencesAsync(_repositoryFactory));
         }
 
         public Task<bool> RemoveAsync(long id)
