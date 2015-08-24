@@ -24,13 +24,13 @@ namespace Dehydrator.WebApi
         }
 
         [HttpGet, Route("")]
-        public IEnumerable<TEntity> ReadAll()
+        public virtual IEnumerable<TEntity> ReadAll()
         {
             return Repository.GetAll();
         }
 
         [HttpPost, Route("")]
-        public async Task<IHttpActionResult> Create(TEntity entity)
+        public virtual async Task<IHttpActionResult> Create(TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var storedEntity = await Repository.AddAsync(entity);
@@ -38,7 +38,7 @@ namespace Dehydrator.WebApi
         }
 
         [HttpGet, Route("{id}", Name = "bla")]
-        public async Task<TEntity> Read(long id)
+        public virtual async Task<TEntity> Read(long id)
         {
             var entity = await Repository.FindAsync(id);
             if (entity == null)
@@ -48,7 +48,7 @@ namespace Dehydrator.WebApi
         }
 
         [HttpPut, Route("{id}")]
-        public async Task<IHttpActionResult> Update(long id, TEntity entity)
+        public virtual async Task<IHttpActionResult> Update(long id, TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (id != entity.Id) return BadRequest("ID in URI does not match ID in Entity data.");
@@ -58,7 +58,7 @@ namespace Dehydrator.WebApi
         }
 
         [HttpDelete, Route("{id}")]
-        public async Task<IHttpActionResult> Delete(long id)
+        public virtual async Task<IHttpActionResult> Delete(long id)
         {
             if (await Repository.RemoveAsync(id)) return StatusCode(HttpStatusCode.NoContent);
             else return NotFound();
