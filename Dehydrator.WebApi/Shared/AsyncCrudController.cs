@@ -37,7 +37,7 @@ namespace Dehydrator.WebApi
             return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.DehydrateReferences());
         }
 
-        [HttpGet, Route("{id}", Name = "bla")]
+        [HttpGet, Route("{id}")]
         public virtual async Task<TEntity> Read(long id)
         {
             var entity = await Repository.FindAsync(id);
