@@ -9,16 +9,16 @@ using JetBrains.Annotations;
 namespace Dehydrator.WebApi
 {
     /// <summary>
-    /// A generic REST controller that provides CRUD access to a set of entities exposed via an <see cref="IRepository{TEntity}"/>.
+    /// A generic base for REST controllers that provide CRUD access to a set of entities exposed via an <see cref="IRepository{TEntity}"/>. Uses asynchronous processing.
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities accessible via this controller.</typeparam>
     [PublicAPI]
-    public abstract class EntityCrudApiController<TEntity> : ApiController
+    public abstract class AsyncCrudController<TEntity> : ApiController
         where TEntity : class, IEntity, new()
     {
         [NotNull] protected readonly IRepository<TEntity> Repository;
 
-        protected EntityCrudApiController([NotNull] IRepository<TEntity> repository)
+        protected AsyncCrudController([NotNull] IRepository<TEntity> repository)
         {
             Repository = repository;
         }
@@ -43,7 +43,7 @@ namespace Dehydrator.WebApi
             var entity = await Repository.FindAsync(id);
             if (entity == null)
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    typeof (TEntity).Name + " not found."));
+                    typeof(TEntity).Name + " not found."));
             return entity;
         }
 

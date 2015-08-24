@@ -10,7 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EntityCrudApiController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsyncCrudController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CrudController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InheritanceRouteProvider.cs" />
   </ItemGroup>
 </Project>
