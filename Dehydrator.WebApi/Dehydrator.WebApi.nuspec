@@ -5,7 +5,8 @@
 		<version>$version$</version>
 		<authors>1&amp;1 Internet SE</authors>
 		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
-		<description>Base classes for creating WebAPI controllers using Dehydrator.</description>
+		<description>This package provides base classes and sample configuration for building WebAPI controllers that use a dehydrated data model.
+Install this package in your controller if you use WebAPI.</description>
 		<summary>Base classes for creating WebAPI controllers using Dehydrator</summary>
 		<dependencies>
 			<dependency id="Dehydrator" version="$version$" />

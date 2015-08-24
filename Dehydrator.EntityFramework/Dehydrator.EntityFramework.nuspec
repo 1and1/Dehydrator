@@ -5,7 +5,8 @@
 		<version>$version$</version>
 		<authors>1&amp;1 Internet SE</authors>
 		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
-		<description>Implements Dehydrator interfaces for Microsoft's Entity Framework.</description>
+		<description>This package provides implementations for Dehydrator's repository interfaces using Entity Framework.
+Install this package in your controller if you use Entity Framework.</description>
 		<summary>Implements Dehydrator interfaces for Microsoft's Entity Framework</summary>
 		<dependencies>
 			<dependency id="Dehydrator" version="$version$" />
