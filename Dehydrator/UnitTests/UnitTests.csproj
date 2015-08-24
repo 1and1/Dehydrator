@@ -52,6 +52,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DehydratingRepositoryTest.cs" />
     <Compile Include="EntityExtensionsTest.cs" />
     <Compile Include="EntityExtensionsMultiRefTest.cs" />
     <Compile Include="EntityExtensionsMultiSelfRefTest.cs" />
