@@ -65,9 +65,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Net45\Net45.csproj">
+    <ProjectReference Include="..\Net45\Dehydrator.Net45.csproj">
       <Project>{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}</Project>
-      <Name>Net45</Name>
+      <Name>Dehydrator.Net45</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
