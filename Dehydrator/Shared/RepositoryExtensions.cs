@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dehydrator
 {
-    public static class EntitryRepositoryExtensions
+    public static class RepositoryExtensions
     {
         /// <summary>
         /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.

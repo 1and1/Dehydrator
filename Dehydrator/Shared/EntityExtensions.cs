@@ -68,7 +68,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
-        /// <seealso cref="EntitryRepositoryExtensions.Resolve{TEntity}"/>
+        /// <seealso cref="RepositoryExtensions.Resolve{TEntity}"/>
         [Pure, NotNull]
         public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity,
             [NotNull] IRepositoryFactory repositoryFactory)
@@ -115,7 +115,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
-        /// <seealso cref="EntitryRepositoryExtensions.ResolveAsync{TEntity}"/>
+        /// <seealso cref="RepositoryExtensions.ResolveAsync{TEntity}"/>
         [Pure, NotNull]
         public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity,
             [NotNull] IRepositoryFactory repositoryFactory)
