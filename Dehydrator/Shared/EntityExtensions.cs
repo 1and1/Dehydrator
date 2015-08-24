@@ -20,7 +20,7 @@ namespace Dehydrator
         /// <param name="entity">The entity to dehydrate.</param>
         [Pure, NotNull]
         public static TEntity DehydrateReferences<TEntity>([NotNull] this TEntity entity)
-            where TEntity : class, IEntity
+            where TEntity : class, IEntity, new()
         {
             var entityType = typeof(TEntity);
 

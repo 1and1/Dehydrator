@@ -37,9 +37,9 @@ namespace Dehydrator
             [NotNull] IEntity entity)
             where TEntity : class, IEntity
         {
-            var entityWithResolvedRefs = (await repository.FindUntypedAsync(entity.Id)) as TEntity;
+            var entityWithResolvedRefs = await repository.FindUntypedAsync(entity.Id);
             if (entityWithResolvedRefs == null) throw new KeyNotFoundException();
-            return entityWithResolvedRefs;
+            return (TEntity)entityWithResolvedRefs;
         }
 #endif
     }

@@ -12,7 +12,7 @@ namespace Dehydrator
     /// Decorator for <see cref="IReadRepository{TEntity}"/> instances that transparently dehydrates references on entities it returns.
     /// </summary>
     public class DehydratingReadRepository<TEntity> : IReadRepository<TEntity>
-        where TEntity : class, IEntity
+        where TEntity : class, IEntity, new()
     {
         [NotNull]
         private readonly IReadRepository<TEntity> _inner;
@@ -44,7 +44,7 @@ namespace Dehydrator
 #if NET45
         public async Task<IEntity> FindUntypedAsync(long id)
         {
-            var entity = await _inner.FindUntypedAsync(id);
+            var entity = (TEntity)(await _inner.FindUntypedAsync(id));
             return entity?.DehydrateReferences();
         }
 #endif
