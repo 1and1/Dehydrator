@@ -46,13 +46,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntityReferenceTests.cs" />
+    <Compile Include="EntityExtensionsTest.cs" />
+    <Compile Include="EntityExtensionsMultiRefTest.cs" />
+    <Compile Include="EntityExtensionsMultiSelfRefTest.cs" />
+    <Compile Include="EntityExtensionsSingleRefTest.cs" />
+    <Compile Include="EntityExtensionsSingleSelfRefTest.cs" />
     <Compile Include="MockEntity1.cs" />
     <Compile Include="MockEntity2.cs" />
-    <Compile Include="MultiRefTest.cs" />
-    <Compile Include="MultiSelfRefTest.cs" />
-    <Compile Include="SingleRefTest.cs" />
-    <Compile Include="SingleSelfRefTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

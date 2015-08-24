@@ -3,7 +3,7 @@
 namespace Dehydrator
 {
     [TestFixture]
-    public class MultiRefTest : EntityReferenceTests<MockEntity2>
+    public class EntityExtensionsMultiRefTest : EntityExtensionsTest<MockEntity2>
     {
         [SetUp]
         public void SetUp()

@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Dehydrator
 {
-    public abstract class EntityReferenceTests<TRef>
+    public abstract class EntityExtensionsTest<TRef>
         where TRef : class, IEntity, new()
     {
         protected MockEntity1 EntityWithDehydratedRefs, EntityWithResolvedRefs;
