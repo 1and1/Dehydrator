@@ -2,6 +2,9 @@
 
 namespace Dehydrator
 {
+    /// <summary>
+    /// A base implementation of <see cref="IEntity"/>. You can derive from this or implement <see cref="IEntity"/> directly.
+    /// </summary>
     [PublicAPI]
     public abstract class Entity : IEntity
     {
