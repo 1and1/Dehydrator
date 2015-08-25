@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using JetBrains.Annotations;
 
 #if NET45
@@ -11,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Dehydrator
 {
+    /// <summary>
+    /// Provides extension methods for <see cref="IEntity"/>s.
+    /// </summary>
     [PublicAPI]
     public static class EntityExtensions
     {
@@ -37,7 +38,7 @@ namespace Dehydrator
                 }
                 else if (prop.IsEntityCollection())
                 {
-                    var referenceType = prop.PropertyType.GetGenericArguments().First();
+                    var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var dehydratedRefs = Activator.CreateInstance(collectionType);
@@ -90,7 +91,7 @@ namespace Dehydrator
                 }
                 else if (prop.IsEntityCollection())
                 {
-                    var referenceType = prop.PropertyType.GetGenericArguments().First();
+                    var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var resolvedRefs = Activator.CreateInstance(collectionType);
@@ -104,7 +105,7 @@ namespace Dehydrator
                             value: referenceRepository.Resolve(dehydratedRef));
                     }
                 }
-                else prop.SetValue(newEntity, propertyValue, null);
+                else prop.SetValue(obj: newEntity, value: propertyValue, index: null);
             }
             return newEntity;
         }
@@ -137,7 +138,7 @@ namespace Dehydrator
                 }
                 else if (prop.IsEntityCollection())
                 {
-                    var referenceType = prop.PropertyType.GetGenericArguments().First();
+                    var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var resolvedRefs = Activator.CreateInstance(collectionType);
@@ -151,38 +152,10 @@ namespace Dehydrator
                             value: await referenceRepository.ResolveAsync(dehydratedRef));
                     }
                 }
-                else prop.SetValue(newEntity, propertyValue, null);
+                else prop.SetValue(obj: newEntity, value: propertyValue, index: null);
             }
             return newEntity;
         }
 #endif
-
-        private static void InvokeAdd([NotNull] this Type collectionType, [NotNull] object target, IEntity value)
-        {
-            collectionType.InvokeMember("Add",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                target: target, args: new object[] {value});
-        }
-
-        [NotNull]
-        private static IEnumerable<PropertyInfo> GetWritableProperties([NotNull] this Type type)
-        {
-            return type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(x => x.GetGetMethod() != null && x.GetSetMethod() != null);
-        }
-
-        private static bool IsEntity([NotNull] this PropertyInfo prop)
-        {
-            return prop.GetGetMethod().IsVirtual &&
-                   typeof(IEntity).IsAssignableFrom(prop.PropertyType);
-        }
-
-        private static bool IsEntityCollection([NotNull] this PropertyInfo prop)
-        {
-            return prop.GetGetMethod().IsVirtual &&
-                   prop.PropertyType.IsGenericType &&
-                   prop.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>) &&
-                   typeof(IEntity).IsAssignableFrom(prop.PropertyType.GetGenericArguments().First());
-        }
     }
 }
