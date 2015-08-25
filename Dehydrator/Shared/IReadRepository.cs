@@ -35,7 +35,8 @@ namespace Dehydrator
 
 #if NET45
         /// <summary>
-        /// Returns a specific entity from the backing database. Untyped method due to limitations of .NET's covariance support.
+        /// Returns a specific entity from the backing database.
+        /// This method is untyped due to limitations of .NET's covariance support. Use <seealso cref="RepositoryExtensions.FindAsync{TEntity}"/> as a wrapper.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>

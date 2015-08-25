@@ -44,7 +44,7 @@ namespace Dehydrator
 #if NET45
         public async Task<IEntity> FindUntypedAsync(long id)
         {
-            var entity = (TEntity)(await _inner.FindUntypedAsync(id));
+            var entity = await _inner.FindAsync(id);
             return entity?.DehydrateReferences();
         }
 #endif

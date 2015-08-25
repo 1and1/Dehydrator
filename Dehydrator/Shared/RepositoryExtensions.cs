@@ -38,10 +38,23 @@ namespace Dehydrator
             [NotNull] IEntity entity)
             where TEntity : class, IEntity
         {
-            var entityWithResolvedRefs = await repository.FindUntypedAsync(entity.Id);
+            var entityWithResolvedRefs = await repository.FindAsync(entity.Id);
             if (entityWithResolvedRefs == null)
                 throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
-            return (TEntity)entityWithResolvedRefs;
+            return entityWithResolvedRefs;
+        }
+
+        /// <summary>
+        /// Returns a specific entity from the backing database.
+        /// </summary>
+        /// <param name="repository">The repository to retrieve entities from.</param>
+        /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
+        /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
+        /// <remarks>This is a type-safe wrapper for <see cref="IReadRepository{TEntity}.FindUntypedAsync"/>.</remarks>
+        public static async Task<TEntity> FindAsync<TEntity>([NotNull] this IReadRepository<TEntity> repository, long id)
+            where TEntity : class, IEntity
+        {
+            return (TEntity)await repository.FindUntypedAsync(id);
         }
 #endif
     }
