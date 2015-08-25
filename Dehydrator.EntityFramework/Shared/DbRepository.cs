@@ -1,4 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Entity;
 using JetBrains.Annotations;
 
 #if NET45
@@ -47,7 +50,11 @@ namespace Dehydrator.EntityFramework
 
         public void Modify(TEntity entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            // NOTE: _dbContext.Entry(entity).State = EntityState.Modified; will not work here due to references
+            var existingEntity = Find(entity.Id);
+            if (existingEntity == null)
+                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
+            TransferState(from: entity, to: existingEntity);
             _dbContext.SaveChanges();
         }
 
@@ -59,6 +66,45 @@ namespace Dehydrator.EntityFramework
             _dbSet.Remove(entity);
             _dbContext.SaveChanges();
             return true;
+        }
+
+        /// <summary>
+        /// Copies all public properties <paramref name="from"/> one <see cref="IEntity"/> <paramref name="to"/> another. Special handling for <see cref="IEntity"/> collections.
+        /// </summary>
+        private static void TransferState([NotNull] TEntity from, [NotNull] TEntity to)
+        {
+            var entityType = typeof(TEntity);
+
+            foreach (var prop in entityType.GetWritableProperties())
+            {
+                var fromValue = prop.GetValue(from, null);
+                if (prop.IsEntityCollection())
+                {
+                    var referenceType = prop.GetGenericArg();
+
+                    object targetList = prop.GetValue(to, null);
+                    Type collectionType;
+                    if (targetList == null)
+                    {
+                        collectionType = typeof(List<>).MakeGenericType(referenceType);
+                        targetList = Activator.CreateInstance(collectionType);
+                        prop.SetValue(obj: to, value: targetList, index: null);
+                    }
+                    else
+                    {
+                        collectionType = targetList.GetType();
+                        collectionType.InvokeClear(target: targetList);
+                    }
+
+                    if (fromValue == null) continue;
+                    foreach (IEntity reference in (IEnumerable)fromValue)
+                    {
+                        collectionType.InvokeAdd(target: targetList,
+                            value: reference);
+                    }
+                }
+                else prop.SetValue(obj: to, value: fromValue, index: null);
+            }
         }
 
 #if NET45
@@ -76,7 +122,11 @@ namespace Dehydrator.EntityFramework
 
         public async Task ModifyAsync(TEntity entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            // NOTE: _dbContext.Entry(entity).State = EntityState.Modified; will not work here due to references
+            var existingEntity = await FindAsync(entity.Id);
+            if (existingEntity == null)
+                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
+            TransferState(from: entity, to: existingEntity);
             await _dbContext.SaveChangesAsync();
         }
 

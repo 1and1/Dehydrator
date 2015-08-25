@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
 #if NET45
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace Dehydrator
         /// Modifies an existing entity in the database.
         /// </summary>
         /// <param name="entity">The modified entity.</param>
+        /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
         void Modify([NotNull] TEntity entity);
 
         /// <summary>
@@ -50,6 +52,7 @@ namespace Dehydrator
         /// Modifies an existing entity in the database.
         /// </summary>
         /// <param name="entity">The modified entity.</param>
+        /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
         Task ModifyAsync([NotNull] TEntity entity);
 
         /// <summary>
