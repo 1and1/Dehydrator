@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using JetBrains.Annotations;
 
@@ -12,47 +11,42 @@ namespace Dehydrator.WebApi
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities accessible via this controller.</typeparam>
     [PublicAPI]
-    public abstract class CrudController<TEntity> : ApiController
+    public abstract class CrudController<TEntity> : ReadController<TEntity>
         where TEntity : class, IEntity, new()
     {
-        [NotNull] protected readonly IRepository<TEntity> Repository;
+        [NotNull] protected new readonly IRepository<TEntity> Repository;
 
         protected CrudController([NotNull] IRepository<TEntity> repository)
+            : base(repository)
         {
             Repository = repository;
-        }
-
-        [HttpGet, Route("")]
-        public virtual IEnumerable<TEntity> ReadAll()
-        {
-            return Repository.GetAll();
         }
 
         [HttpPost, Route("")]
         public virtual IHttpActionResult Create(TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var storedEntity = Repository.Add(entity);
-            return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.DehydrateReferences());
-        }
 
-        [HttpGet, Route("{id}", Name = "bla")]
-        public virtual TEntity Read(long id)
-        {
-            var entity = Repository.Find(id);
-            if (entity == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    typeof(TEntity).Name + " not found."));
-            return entity;
+            var storedEntity = Repository.Add(entity);
+            return Created(
+                location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
+                content: storedEntity.DehydrateReferences());
         }
 
         [HttpPut, Route("{id}")]
         public virtual IHttpActionResult Update(long id, TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (id != entity.Id) return BadRequest("ID in URI does not match ID in Entity data.");
+            if (id != entity.Id) return BadRequest($"ID in URI ({id}) does not match ID in entity data ({entity.Id}).");
 
-            Repository.Modify(entity);
+            try
+            {
+                Repository.Modify(entity);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return StatusCode(HttpStatusCode.NoContent);
         }
 

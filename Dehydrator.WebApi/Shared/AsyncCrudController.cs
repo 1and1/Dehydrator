@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using JetBrains.Annotations;
@@ -13,47 +12,42 @@ namespace Dehydrator.WebApi
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities accessible via this controller.</typeparam>
     [PublicAPI]
-    public abstract class AsyncCrudController<TEntity> : ApiController
+    public abstract class AsyncCrudController<TEntity> : AsyncReadController<TEntity>
         where TEntity : class, IEntity, new()
     {
-        [NotNull] protected readonly IRepository<TEntity> Repository;
+        [NotNull] protected new readonly IRepository<TEntity> Repository;
 
         protected AsyncCrudController([NotNull] IRepository<TEntity> repository)
+            : base(repository)
         {
             Repository = repository;
-        }
-
-        [HttpGet, Route("")]
-        public virtual IEnumerable<TEntity> ReadAll()
-        {
-            return Repository.GetAll();
         }
 
         [HttpPost, Route("")]
         public virtual async Task<IHttpActionResult> Create(TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var storedEntity = await Repository.AddAsync(entity);
-            return Created(new Uri(storedEntity.Id.ToString(), UriKind.Relative), storedEntity.DehydrateReferences());
-        }
 
-        [HttpGet, Route("{id}")]
-        public virtual async Task<TEntity> Read(long id)
-        {
-            var entity = await Repository.FindAsync(id);
-            if (entity == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    typeof(TEntity).Name + " not found."));
-            return entity;
+            var storedEntity = await Repository.AddAsync(entity);
+            return Created(
+                location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
+                content: storedEntity.DehydrateReferences());
         }
 
         [HttpPut, Route("{id}")]
         public virtual async Task<IHttpActionResult> Update(long id, TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (id != entity.Id) return BadRequest("ID in URI does not match ID in Entity data.");
+            if (id != entity.Id) return BadRequest($"ID in URI ({id}) does not match ID in entity data ({entity.Id}).");
 
-            await Repository.ModifyAsync(entity);
+            try
+            {
+                await Repository.ModifyAsync(entity);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return StatusCode(HttpStatusCode.NoContent);
         }
 
