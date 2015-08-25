@@ -79,7 +79,7 @@ namespace Dehydrator
         }
 
         [Test]
-        public void TestExsits()
+        public void TestExists()
         {
             _mainRepositoryMock.Setup(x => x.Exists(123))
                 .Returns(true).Verifiable();
