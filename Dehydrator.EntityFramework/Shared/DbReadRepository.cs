@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using JetBrains.Annotations;
@@ -32,6 +33,16 @@ namespace Dehydrator.EntityFramework
             return _dbSet;
         }
 
+        public TResult Query<TResult>(Func<IQueryable<TEntity>, TResult> query)
+        {
+            return query(_dbSet);
+        }
+
+        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        {
+            return query(_dbSet);
+        }
+
         public bool Exists(long id)
         {
             return _dbSet.Any(e => e.Id == id);
@@ -43,6 +54,11 @@ namespace Dehydrator.EntityFramework
         }
 
 #if NET45
+        public Task<TResult> Query<TResult>(Func<IQueryable<TEntity>, Task<TResult>> query)
+        {
+            return query(_dbSet);
+        }
+
         public async Task<IEntity> FindUntypedAsync(long id)
         {
             return await _dbSet.FindAsync(id);

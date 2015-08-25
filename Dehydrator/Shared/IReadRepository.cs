@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 #if NET45
@@ -20,6 +22,16 @@ namespace Dehydrator
         IEnumerable<TEntity> GetAll();
 
         /// <summary>
+        /// Performs a LINQ query on the backing database.
+        /// </summary>
+        TResult Query<TResult>([NotNull] Func<IQueryable<TEntity>, TResult> query);
+
+        /// <summary>
+        /// Performs a LINQ query on the backing database.
+        /// </summary>
+        IEnumerable<TResult> Query<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
+
+        /// <summary>
         /// Checks whether an entity with a given <see cref="IEntity.Id"/> exists in the database.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to check.</param>
@@ -34,6 +46,11 @@ namespace Dehydrator
         TEntity Find(long id);
 
 #if NET45
+        /// <summary>
+        /// Performs a LINQ query on the backing database.
+        /// </summary>
+        Task<TResult> Query<TResult>([NotNull] Func<IQueryable<TEntity>, Task<TResult>> query);
+
         /// <summary>
         /// Returns a specific entity from the backing database.
         /// This method is untyped due to limitations of .NET's covariance support. Use <seealso cref="RepositoryExtensions.FindAsync{TEntity}"/> as a wrapper.
