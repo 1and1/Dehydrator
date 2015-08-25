@@ -48,6 +48,11 @@ namespace Dehydrator.EntityFramework
             return storedEntity;
         }
 
+        /// <summary>
+        /// Modifies an existing entity in the database.
+        /// </summary>
+        /// <param name="entity">The modified entity. If any <see cref="IEntity"/> collections are <see langword="null"/> they are treated as unmodified rather than empty.</param>
+        /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
         public void Modify(TEntity entity)
         {
             // NOTE: _dbContext.Entry(entity).State = EntityState.Modified; will not work here due to references
@@ -80,6 +85,7 @@ namespace Dehydrator.EntityFramework
                 var fromValue = prop.GetValue(from, null);
                 if (prop.IsEntityCollection())
                 {
+                    if (fromValue == null) continue;
                     var referenceType = prop.GetGenericArg();
 
                     object targetList = prop.GetValue(to, null);
@@ -96,7 +102,6 @@ namespace Dehydrator.EntityFramework
                         collectionType.InvokeClear(target: targetList);
                     }
 
-                    if (fromValue == null) continue;
                     foreach (IEntity reference in (IEnumerable)fromValue)
                     {
                         collectionType.InvokeAdd(target: targetList,
@@ -120,6 +125,11 @@ namespace Dehydrator.EntityFramework
             return storedEntity;
         }
 
+        /// <summary>
+        /// Modifies an existing entity in the database.
+        /// </summary>
+        /// <param name="entity">The modified entity. If any <see cref="IEntity"/> collections are <see langword="null"/> they are treated as unmodified rather than empty.</param>
+        /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
         public async Task ModifyAsync(TEntity entity)
         {
             // NOTE: _dbContext.Entry(entity).State = EntityState.Modified; will not work here due to references
