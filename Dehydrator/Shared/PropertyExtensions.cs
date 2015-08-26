@@ -31,12 +31,19 @@ namespace Dehydrator
         }
 
         /// <summary>
+        /// Determines whether a property is marked with <see cref="DehydrateAttribute"/>.
+        /// </summary>
+        public static bool IsMarkedToDehydrate([NotNull] this PropertyInfo prop)
+        {
+            return prop.GetCustomAttributes(typeof(DehydrateAttribute), inherit: true).Any();
+        }
+
+        /// <summary>
         /// Determines whether a property holds an <see cref="IEntity"/>.
         /// </summary>
         public static bool IsEntity([NotNull] this PropertyInfo prop)
         {
-            return prop.GetGetMethod().IsVirtual &&
-                   typeof(IEntity).IsAssignableFrom(prop.PropertyType);
+            return typeof(IEntity).IsAssignableFrom(prop.PropertyType);
         }
 
         /// <summary>
@@ -44,8 +51,7 @@ namespace Dehydrator
         /// </summary>
         public static bool IsEntityCollection([NotNull] this PropertyInfo prop)
         {
-            return prop.GetGetMethod().IsVirtual &&
-                   prop.PropertyType.IsGenericType &&
+            return prop.PropertyType.IsGenericType &&
                    prop.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>) &&
                    typeof(IEntity).IsAssignableFrom(prop.PropertyType.GetGenericArguments().First());
         }

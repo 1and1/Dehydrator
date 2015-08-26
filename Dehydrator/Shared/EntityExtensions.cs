@@ -16,7 +16,7 @@ namespace Dehydrator
     public static class EntityExtensions
     {
         /// <summary>
-        /// Dehydrates all references to contain nothing but their <see cref="IEntity.Id"/>s and returns the result as a new object.
+        /// Dehydrates all references marked with <see cref="DehydrateAttribute"/> to contain nothing but their <see cref="IEntity.Id"/>s. Returns the result as a new object keeping the original unchanged.
         /// </summary>
         /// <param name="entity">The entity to dehydrate.</param>
         [Pure, NotNull]
@@ -31,12 +31,12 @@ namespace Dehydrator
                 var propertyValue = prop.GetValue(entity, null);
                 if (propertyValue == null) continue;
 
-                if (prop.IsEntity())
+                if (prop.IsEntity() && prop.IsMarkedToDehydrate())
                 {
                     prop.SetValue(obj: newEntity,
                         value: ((IEntity)propertyValue).Dehydrate(prop.PropertyType), index: null);
                 }
-                else if (prop.IsEntityCollection())
+                else if (prop.IsEntityCollection() && prop.IsMarkedToDehydrate())
                 {
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
@@ -65,7 +65,7 @@ namespace Dehydrator
         }
 
         /// <summary>
-        /// Resolves references that were dehydrated to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
+        /// Resolves references that were dehydrated by <see cref="DehydrateReferences{TEntity}"/> to the original full entities. Returns the result as a new object keeping the original unchanged.
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
@@ -83,13 +83,13 @@ namespace Dehydrator
                 var propertyValue = prop.GetValue(entity, null);
                 if (propertyValue == null) continue;
 
-                if (prop.IsEntity())
+                if (prop.IsEntity() && prop.IsMarkedToDehydrate())
                 {
                     var referenceRepository = repositoryFactory.Create(prop.PropertyType);
                     prop.SetValue(obj: newEntity,
                         value: referenceRepository.Resolve((IEntity)propertyValue), index: null);
                 }
-                else if (prop.IsEntityCollection())
+                else if (prop.IsEntityCollection() && prop.IsMarkedToDehydrate())
                 {
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
@@ -112,7 +112,7 @@ namespace Dehydrator
 
 #if NET45
         /// <summary>
-        /// Resolves references that were dehydrated to contain nothing but their <see cref="IEntity.Id"/>s to the original full entities and returns the result as a new object.
+        /// Resolves references that were dehydrated by <see cref="DehydrateReferences{TEntity}"/> to the original full entities. Returns the result as a new object keeping the original unchanged.
         /// </summary>
         /// <param name="entity">The entity to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
@@ -130,13 +130,13 @@ namespace Dehydrator
                 var propertyValue = prop.GetValue(entity, null);
                 if (propertyValue == null) continue;
 
-                if (prop.IsEntity())
+                if (prop.IsEntity() && prop.IsMarkedToDehydrate())
                 {
                     var referenceRepository = repositoryFactory.Create(prop.PropertyType);
                     prop.SetValue(obj: newEntity,
                         value: await referenceRepository.ResolveAsync((IEntity)propertyValue), index: null);
                 }
-                else if (prop.IsEntityCollection())
+                else if (prop.IsEntityCollection() && prop.IsMarkedToDehydrate())
                 {
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);

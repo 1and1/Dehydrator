@@ -5,7 +5,8 @@ namespace Dehydrator.Sample
 {
     public class SampleDbContext : DbContext
     {
-        public DbSet<Package> Resources { get; set; }
+        public DbSet<Package> Packages { get; set; }
+        public DbSet<PackageConfig> PackagesConfig { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
