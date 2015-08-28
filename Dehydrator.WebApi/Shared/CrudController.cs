@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using JetBrains.Annotations;
 
@@ -23,20 +24,31 @@ namespace Dehydrator.WebApi
         }
 
         [HttpPost, Route("")]
-        public virtual IHttpActionResult Create(TEntity entity)
+        public virtual IHttpActionResult Create([CanBeNull] TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (entity == null) return BadRequest("Missing request body.");
 
-            var storedEntity = Repository.Add(entity);
+            TEntity storedEntity;
+            try
+            {
+                storedEntity = Repository.Add(entity);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Created(
                 location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
                 content: storedEntity.DehydrateReferences());
         }
 
         [HttpPut, Route("{id}")]
-        public virtual IHttpActionResult Update(long id, TEntity entity)
+        public virtual IHttpActionResult Update(long id, [CanBeNull] TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (entity == null) return BadRequest("Missing request body.");
             if (id != entity.Id) return BadRequest($"ID in URI ({id}) does not match ID in entity data ({entity.Id}).");
 
             try
@@ -51,10 +63,11 @@ namespace Dehydrator.WebApi
         }
 
         [HttpDelete, Route("{id}")]
-        public virtual IHttpActionResult Delete(long id)
+        public virtual void Delete(long id)
         {
-            if (Repository.Remove(id)) return StatusCode(HttpStatusCode.NoContent);
-            else return NotFound();
+            if (!Repository.Remove(id))
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    $"{typeof(TEntity).Name} {id} not found."));
         }
     }
 }

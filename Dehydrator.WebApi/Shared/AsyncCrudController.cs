@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using JetBrains.Annotations;
@@ -24,20 +25,31 @@ namespace Dehydrator.WebApi
         }
 
         [HttpPost, Route("")]
-        public virtual async Task<IHttpActionResult> Create(TEntity entity)
+        public virtual async Task<IHttpActionResult> Create([CanBeNull] TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (entity == null) return BadRequest("Missing request body.");
 
-            var storedEntity = await Repository.AddAsync(entity);
+            TEntity storedEntity;
+            try
+            {
+                storedEntity = await Repository.AddAsync(entity);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Created(
                 location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
                 content: storedEntity.DehydrateReferences());
         }
 
         [HttpPut, Route("{id}")]
-        public virtual async Task<IHttpActionResult> Update(long id, TEntity entity)
+        public virtual async Task<IHttpActionResult> Update(long id, [CanBeNull] TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (entity == null) return BadRequest("Missing request body.");
             if (id != entity.Id) return BadRequest($"ID in URI ({id}) does not match ID in entity data ({entity.Id}).");
 
             try
@@ -52,10 +64,11 @@ namespace Dehydrator.WebApi
         }
 
         [HttpDelete, Route("{id}")]
-        public virtual async Task<IHttpActionResult> Delete(long id)
+        public virtual async Task Delete(long id)
         {
-            if (await Repository.RemoveAsync(id)) return StatusCode(HttpStatusCode.NoContent);
-            else return NotFound();
+            if (!await Repository.RemoveAsync(id))
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    $"{typeof(TEntity).Name} {id} not found."));
         }
     }
 }
