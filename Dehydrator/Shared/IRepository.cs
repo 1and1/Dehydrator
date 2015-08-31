@@ -34,6 +34,12 @@ namespace Dehydrator
         /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
         bool Remove(long id);
 
+        /// <summary>
+        /// Locks the contents represented by the repository. Any following changes are only commited if <see cref="ITransaction.Commit"/> is called.
+        /// </summary>
+        /// <returns>A representation of the transaction. Dispose to end the transaction and rollback uncomitted changes.</returns>
+        ITransaction BeginTransaction();
+
 #if NET45
         /// <summary>
         /// Returns a specific entity from the backing database.
@@ -61,6 +67,12 @@ namespace Dehydrator
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
         /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
         Task<bool> RemoveAsync(long id);
+
+        /// <summary>
+        /// Locks the contents represented by the repository. Any following changes are only commited if <see cref="ITransaction.Commit"/> is called.
+        /// </summary>
+        /// <returns>A representation of the transaction. Dispose to end the transaction and rollback uncomitted changes.</returns>
+        Task<ITransaction> BeginTransactionAsync();
 #endif
     }
 }

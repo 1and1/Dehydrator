@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DehydrateAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IReadRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITransaction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LookupRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PropertyExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RepositoryExtensions.cs" />

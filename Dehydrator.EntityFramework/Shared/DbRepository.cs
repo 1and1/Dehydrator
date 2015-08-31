@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using JetBrains.Annotations;
 
@@ -73,43 +74,19 @@ namespace Dehydrator.EntityFramework
             return true;
         }
 
-        /// <summary>
-        /// Copies all public properties <paramref name="from"/> one <see cref="IEntity"/> <paramref name="to"/> another. Special handling for <see cref="IEntity"/> collections.
-        /// </summary>
-        private static void TransferState([NotNull] TEntity from, [NotNull] TEntity to)
+        public ITransaction BeginTransaction()
         {
-            var entityType = typeof(TEntity);
-
-            foreach (var prop in entityType.GetWritableProperties())
+            var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
+            try
             {
-                var fromValue = prop.GetValue(from, null);
-                if (prop.IsEntityCollection())
-                {
-                    if (fromValue == null) continue;
-                    var referenceType = prop.GetGenericArg();
-
-                    object targetList = prop.GetValue(to, null);
-                    Type collectionType;
-                    if (targetList == null)
-                    {
-                        collectionType = typeof(List<>).MakeGenericType(referenceType);
-                        targetList = Activator.CreateInstance(collectionType);
-                        prop.SetValue(obj: to, value: targetList, index: null);
-                    }
-                    else
-                    {
-                        collectionType = targetList.GetType();
-                        collectionType.InvokeClear(target: targetList);
-                    }
-
-                    foreach (IEntity reference in (IEnumerable)fromValue)
-                    {
-                        collectionType.InvokeAdd(target: targetList,
-                            value: reference);
-                    }
-                }
-                else prop.SetValue(obj: to, value: fromValue, index: null);
+                _dbContext.Database.ExecuteSqlCommand($"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
             }
+            catch
+            {
+                transaction.Dispose();
+                throw;
+            }
+            return new DbTransaction(transaction);
         }
 
 #if NET45
@@ -149,6 +126,61 @@ namespace Dehydrator.EntityFramework
             await _dbContext.SaveChangesAsync();
             return true;
         }
+
+        public async Task<ITransaction> BeginTransactionAsync()
+        {
+
+            var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                await _dbContext.Database.ExecuteSqlCommandAsync($"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
+            }
+            catch
+            {
+                transaction.Dispose();
+                throw;
+            }
+            return new DbTransaction(transaction);
+        }
 #endif
+
+        /// <summary>
+        /// Copies all public properties <paramref name="from"/> one <see cref="IEntity"/> <paramref name="to"/> another. Special handling for <see cref="IEntity"/> collections.
+        /// </summary>
+        private static void TransferState([NotNull] TEntity from, [NotNull] TEntity to)
+        {
+            var entityType = typeof(TEntity);
+
+            foreach (var prop in entityType.GetWritableProperties())
+            {
+                var fromValue = prop.GetValue(@from, null);
+                if (prop.IsEntityCollection())
+                {
+                    if (fromValue == null) continue;
+                    var referenceType = prop.GetGenericArg();
+
+                    object targetList = prop.GetValue(to, null);
+                    Type collectionType;
+                    if (targetList == null)
+                    {
+                        collectionType = typeof(List<>).MakeGenericType(referenceType);
+                        targetList = Activator.CreateInstance(collectionType);
+                        prop.SetValue(obj: to, value: targetList, index: null);
+                    }
+                    else
+                    {
+                        collectionType = targetList.GetType();
+                        collectionType.InvokeClear(target: targetList);
+                    }
+
+                    foreach (IEntity reference in (IEnumerable)fromValue)
+                    {
+                        collectionType.InvokeAdd(target: targetList,
+                            value: reference);
+                    }
+                }
+                else prop.SetValue(obj: to, value: fromValue, index: null);
+            }
+        }
     }
 }

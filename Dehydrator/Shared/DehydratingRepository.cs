@@ -53,6 +53,11 @@ namespace Dehydrator
             return _inner.Remove(id);
         }
 
+        public ITransaction BeginTransaction()
+        {
+            return _inner.BeginTransaction();
+        }
+
 #if NET45
         public async Task<TEntity> FindAsync(long id)
         {
@@ -75,6 +80,11 @@ namespace Dehydrator
         public Task<bool> RemoveAsync(long id)
         {
             return _inner.RemoveAsync(id);
+        }
+
+        public Task<ITransaction> BeginTransactionAsync()
+        {
+            return _inner.BeginTransactionAsync();
         }
 #endif
     }
