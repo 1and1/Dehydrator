@@ -58,17 +58,16 @@ namespace Dehydrator
             return _inner.BeginTransaction();
         }
 
+        public void SaveChanges()
+        {
+            _inner.SaveChanges();
+        }
+
 #if NET45
         public async Task<TEntity> FindAsync(long id)
         {
             var entity = await _inner.FindAsync(id);
             return entity?.DehydrateReferences();
-        }
-
-        public async Task<TEntity> AddAsync(TEntity entity)
-        {
-            return await _inner.AddAsync(
-                await entity.ResolveReferencesAsync(_repositoryFactory));
         }
 
         public async Task ModifyAsync(TEntity entity)
@@ -85,6 +84,11 @@ namespace Dehydrator
         public Task<ITransaction> BeginTransactionAsync()
         {
             return _inner.BeginTransactionAsync();
+        }
+
+        public Task SaveChangesAsync()
+        {
+            return _inner.SaveChangesAsync();
         }
 #endif
     }

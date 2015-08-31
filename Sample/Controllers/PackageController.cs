@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Dehydrator.Sample.Models;
 using Dehydrator.WebApi;
@@ -13,7 +14,7 @@ namespace Dehydrator.Sample.Controllers
         }
 
         [HttpPost, Route("test-data")]
-        public void TestData()
+        public async Task TestData()
         {
             var awesomeLib = Repository.Add(new Package
             {
@@ -25,6 +26,8 @@ namespace Dehydrator.Sample.Controllers
                 FriendlyName = "AweseomApp",
                 Dependencies = new List<Package> {new Package {Id = awesomeLib.Id}}
             });
+
+            await Repository.SaveChangesAsync();
         }
     }
 }

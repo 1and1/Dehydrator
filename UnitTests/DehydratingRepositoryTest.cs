@@ -133,18 +133,6 @@ namespace Dehydrator
         }
 
         [Test]
-        public async void TestAddAsync()
-        {
-            _refRepositoryMock.Setup(x => x.FindUntypedAsync(_dehydratedRef.Id))
-                .Returns(Task.FromResult((IEntity)_resolvedRef)).Verifiable();
-            _mainRepositoryMock.Setup(x => x.AddAsync(_entityWithResolvedRefs))
-                .Returns(Task.FromResult(_entityWithResolvedRefs)).Verifiable();
-
-            var result = await _repository.AddAsync(_entityWithDehydratedRefs);
-            result.Should().Be(_entityWithResolvedRefs);
-        }
-
-        [Test]
         public void TestModify()
         {
             _refRepositoryMock.Setup(x => x.Find(_dehydratedRef.Id))

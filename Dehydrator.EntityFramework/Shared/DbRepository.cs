@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using JetBrains.Annotations;
 
 #if NET45
@@ -44,9 +46,7 @@ namespace Dehydrator.EntityFramework
 
         public TEntity Add(TEntity entity)
         {
-            var storedEntity = _dbSet.Add(entity);
-            _dbContext.SaveChanges();
-            return storedEntity;
+            return _dbSet.Add(entity);
         }
 
         /// <summary>
@@ -61,7 +61,6 @@ namespace Dehydrator.EntityFramework
             if (existingEntity == null)
                 throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
             TransferState(from: entity, to: existingEntity);
-            _dbContext.SaveChanges();
         }
 
         public bool Remove(long id)
@@ -70,7 +69,6 @@ namespace Dehydrator.EntityFramework
             if (entity == null) return false;
 
             _dbSet.Remove(entity);
-            _dbContext.SaveChanges();
             return true;
         }
 
@@ -89,17 +87,26 @@ namespace Dehydrator.EntityFramework
             return new DbTransaction(transaction);
         }
 
+        public void SaveChanges()
+        {
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
+            }
+        }
+
 #if NET45
         public Task<TEntity> FindAsync(long id)
         {
             return _dbSet.FindAsync(id);
-        }
-
-        public async Task<TEntity> AddAsync(TEntity entity)
-        {
-            var storedEntity = _dbSet.Add(entity);
-            await _dbContext.SaveChangesAsync();
-            return storedEntity;
         }
 
         /// <summary>
@@ -114,7 +121,6 @@ namespace Dehydrator.EntityFramework
             if (existingEntity == null)
                 throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
             TransferState(from: entity, to: existingEntity);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> RemoveAsync(long id)
@@ -123,7 +129,6 @@ namespace Dehydrator.EntityFramework
             if (entity == null) return false;
 
             _dbSet.Remove(entity);
-            await _dbContext.SaveChangesAsync();
             return true;
         }
 
@@ -141,6 +146,22 @@ namespace Dehydrator.EntityFramework
                 throw;
             }
             return new DbTransaction(transaction);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
+            }
         }
 #endif
 

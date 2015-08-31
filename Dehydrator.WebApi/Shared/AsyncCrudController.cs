@@ -33,13 +33,14 @@ namespace Dehydrator.WebApi
             TEntity storedEntity;
             try
             {
-                storedEntity = await Repository.AddAsync(entity);
+                storedEntity = Repository.Add(entity);
             }
             catch (KeyNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
 
+            await SaveChanges();
             return Created(
                 location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
                 content: storedEntity.DehydrateReferences());
@@ -60,6 +61,8 @@ namespace Dehydrator.WebApi
             {
                 return BadRequest(ex.Message);
             }
+
+            await SaveChanges();
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -69,6 +72,24 @@ namespace Dehydrator.WebApi
             if (!await Repository.RemoveAsync(id))
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
                     $"{typeof(TEntity).Name} {id} not found."));
+
+            await SaveChanges();
+        }
+
+        /// <summary>
+        /// Saves any pending changes in the underlying <see cref="Repository"/>.
+        /// </summary>
+        protected async Task SaveChanges()
+        {
+            try
+            {
+                await Repository.SaveChangesAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    ex.Message));
+            }
         }
     }
 }

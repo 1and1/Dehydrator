@@ -39,6 +39,7 @@ namespace Dehydrator.WebApi
                 return BadRequest(ex.Message);
             }
 
+            SaveChanges();
             return Created(
                 location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
                 content: storedEntity.DehydrateReferences());
@@ -59,6 +60,8 @@ namespace Dehydrator.WebApi
             {
                 return BadRequest(ex.Message);
             }
+
+            SaveChanges();
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -68,6 +71,24 @@ namespace Dehydrator.WebApi
             if (!Repository.Remove(id))
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
                     $"{typeof(TEntity).Name} {id} not found."));
+
+            SaveChanges();
+        }
+
+        /// <summary>
+        /// Saves any pending changes in the underlying <see cref="Repository"/>.
+        /// </summary>
+        protected void SaveChanges()
+        {
+            try
+            {
+                Repository.SaveChanges();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    ex.Message));
+            }
         }
     }
 }
