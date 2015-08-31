@@ -23,13 +23,17 @@ namespace Dehydrator
 
         public ICollection<MockEntity1> MultiRecurse { get; set; } = new List<MockEntity1>();
 
+        [Resolve]
+        public MockEntity2 ResolveOnly { get; set; }
+
         #region Equality
         protected bool Equals(MockEntity1 other)
         {
             return base.Equals(other) && string.Equals(FriendlyName, other.FriendlyName) &&
                    Equals(SingleRef, other.SingleRef) && MultiRef.SequenceEqual(other.MultiRef) &&
                    Equals(SingleSelfRef, other.SingleSelfRef) && MultiSelfRef.SequenceEqual(other.MultiSelfRef) &&
-                   Equals(SingleRecurse, other.SingleRecurse) && MultiRecurse.SequenceEqual(other.MultiRecurse);
+                   Equals(SingleRecurse, other.SingleRecurse) && MultiRecurse.SequenceEqual(other.MultiRecurse) &&
+                   Equals(ResolveOnly, other.ResolveOnly);
         }
 
         public override bool Equals(object obj)
@@ -49,6 +53,7 @@ namespace Dehydrator
                 hashCode = (hashCode * 397) ^ (SingleRef?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (SingleSelfRef?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (SingleRecurse?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ResolveOnly?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

@@ -33,9 +33,10 @@ namespace Dehydrator
         /// <summary>
         /// Determines whether a property is marked with <see cref="DehydrateAttribute"/>.
         /// </summary>
-        public static bool IsMarkedToDehydrate([NotNull] this PropertyInfo prop)
+        public static bool HasAttribute<TAttribute>([NotNull] this PropertyInfo prop)
+            where TAttribute : Attribute
         {
-            return prop.GetCustomAttributes(typeof(DehydrateAttribute), inherit: true).Any();
+            return prop.GetCustomAttributes(typeof(TAttribute), inherit: true).Any();
         }
 
         /// <summary>

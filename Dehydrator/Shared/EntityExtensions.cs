@@ -74,7 +74,7 @@ namespace Dehydrator
         [NotNull]
         private static IEntity DehydrateOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType, [NotNull] IEntity resolvedRef)
         {
-            return prop.IsMarkedToDehydrate()
+            return prop.HasAttribute<DehydrateAttribute>()
                 ? resolvedRef.Dehydrate(referenceType)
                 : resolvedRef.DehydrateReferences(referenceType);
         }
@@ -154,7 +154,7 @@ namespace Dehydrator
         private static IEntity ResolveOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
             [NotNull] IEntity dehydratedRef, [NotNull] IRepositoryFactory repositoryFactory)
         {
-            return prop.IsMarkedToDehydrate()
+            return prop.HasAttribute<ResolveAttribute>()
                 ? repositoryFactory.Create(referenceType).Resolve(dehydratedRef)
                 : dehydratedRef.ResolveReferences(referenceType, repositoryFactory);
         }
@@ -227,7 +227,7 @@ namespace Dehydrator
         private static Task<IEntity> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
             [NotNull] IEntity dehydratedRef, [NotNull] IRepositoryFactory repositoryFactory)
         {
-            return prop.IsMarkedToDehydrate()
+            return prop.HasAttribute<ResolveAttribute>()
                 ? repositoryFactory.Create(referenceType).ResolveAsync(dehydratedRef)
                 : dehydratedRef.ResolveReferencesAsync(referenceType, repositoryFactory);
         }

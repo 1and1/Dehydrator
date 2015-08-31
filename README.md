@@ -62,6 +62,8 @@ This removes any potential duplication and ambiguity.
 ### Data model
 Install the `Dehydrator` NuGet package in the project holding your data model. Make all your entity classes either implement `IEntity` or derive from `Entity`. Mark any reference properties you wish to have dehydrated with `[Dehydrate]`. You can now use the `.DehydrateReferences()` extension method to dehydrate references down to only their IDs and  and `.ResolveReferences()` to resolve/restore them again.
 
+If you want to have a property resolved but not dehydrated (e.g., incoming data is dehydrated and needs to be resolved but outgoing data should not be dehydrated) use `[Resolve]` instead. Combining `[Dehydrate]` and `[Resolve]` is not necessary since `[Dehydrate]` implies `[Resolve]`.
+
 Resolving requires an `IRepositoryFactory`, which represents a storage backend such as a database and provides `IRepository<>` instances for specific entity types.
 
 ### Entity Framework

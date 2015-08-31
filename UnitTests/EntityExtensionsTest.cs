@@ -48,7 +48,7 @@ namespace Dehydrator
         }
 
         [Test]
-        public void Dehydrate()
+        public virtual void Dehydrate()
         {
             var result = EntityWithResolvedRefs.DehydrateReferences();
             result.Should().Be(EntityWithDehydratedRefs);
