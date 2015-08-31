@@ -3,7 +3,7 @@
 namespace Dehydrator
 {
     [TestFixture]
-    public class EntityExtensionsMultiSelfRefTest : EntityExtensionsTest<MockEntity1>
+    public class EntityExtensionsMultiRecurseTest : EntityExtensionsTest<MockEntity1>
     {
         [SetUp]
         public void SetUp()
@@ -15,13 +15,13 @@ namespace Dehydrator
             {
                 Id = 1,
                 FriendlyName = "Foo",
-                MultiSelfRef = {DehydratedRef}
+                MultiRecurse = {new MockEntity1 {SingleSelfRef = DehydratedRef}}
             };
             EntityWithResolvedRefs = new MockEntity1
             {
                 Id = 1,
                 FriendlyName = "Foo",
-                MultiSelfRef = {ResolvedRef}
+                MultiRecurse = {new MockEntity1 {SingleSelfRef = ResolvedRef}}
             };
         }
     }

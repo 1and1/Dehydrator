@@ -9,21 +9,19 @@ namespace Dehydrator
         public void SetUp()
         {
             DehydratedRef = new MockEntity2 {Id = 2};
-            ResolvedRef = new MockEntity2 { Id = 2, FriendlyName = "Bar" };
+            ResolvedRef = new MockEntity2 {Id = 2, FriendlyName = "Bar"};
 
             EntityWithDehydratedRefs = new MockEntity1
             {
                 Id = 1,
                 FriendlyName = "Foo",
-                MultiRef = {DehydratedRef},
-                MultiDontDehydrate = {ResolvedRef}
+                MultiRef = {DehydratedRef}
             };
             EntityWithResolvedRefs = new MockEntity1
             {
                 Id = 1,
                 FriendlyName = "Foo",
-                MultiRef = {ResolvedRef},
-                MultiDontDehydrate = {ResolvedRef}
+                MultiRef = {ResolvedRef}
             };
         }
     }

@@ -19,9 +19,9 @@ namespace Dehydrator
         [Dehydrate]
         public virtual ICollection<MockEntity1> MultiSelfRef { get; set; } = new List<MockEntity1>();
 
-        public MockEntity2 SingleDontDehydrate { get; set; }
+        public MockEntity1 SingleRecurse { get; set; }
 
-        public ICollection<MockEntity2> MultiDontDehydrate { get; set; } = new List<MockEntity2>();
+        public ICollection<MockEntity1> MultiRecurse { get; set; } = new List<MockEntity1>();
 
         #region Equality
         protected bool Equals(MockEntity1 other)
@@ -29,7 +29,7 @@ namespace Dehydrator
             return base.Equals(other) && string.Equals(FriendlyName, other.FriendlyName) &&
                    Equals(SingleRef, other.SingleRef) && MultiRef.SequenceEqual(other.MultiRef) &&
                    Equals(SingleSelfRef, other.SingleSelfRef) && MultiSelfRef.SequenceEqual(other.MultiSelfRef) &&
-                   Equals(SingleDontDehydrate, other.SingleDontDehydrate) && MultiDontDehydrate.SequenceEqual(other.MultiDontDehydrate);
+                   Equals(SingleRecurse, other.SingleRecurse) && MultiRecurse.SequenceEqual(other.MultiRecurse);
         }
 
         public override bool Equals(object obj)
@@ -48,7 +48,7 @@ namespace Dehydrator
                 hashCode = (hashCode * 397) ^ (FriendlyName?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (SingleRef?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (SingleSelfRef?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (SingleDontDehydrate?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (SingleRecurse?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }
