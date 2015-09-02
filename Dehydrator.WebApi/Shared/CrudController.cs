@@ -50,7 +50,7 @@ namespace Dehydrator.WebApi
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (entity == null) return BadRequest("Missing request body.");
-            if (id != entity.Id) return BadRequest($"ID in URI ({id}) does not match ID in entity data ({entity.Id}).");
+            CheckIdInEntity(id, entity);
 
             try
             {

@@ -12,7 +12,7 @@ namespace Dehydrator.WebApi
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities accessible via this controller.</typeparam>
     [PublicAPI]
-    public abstract class AsyncReadController<TEntity> : ApiController
+    public abstract class AsyncReadController<TEntity> : EntityController<TEntity>
         where TEntity : class, IEntity, new()
     {
         [NotNull] protected readonly IReadRepository<TEntity> Repository;

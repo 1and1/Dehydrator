@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AsyncCrudController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsyncReadController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CrudController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InheritanceRouteProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReadController.cs" />
   </ItemGroup>
