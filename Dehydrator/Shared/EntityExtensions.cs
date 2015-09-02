@@ -80,10 +80,12 @@ namespace Dehydrator
         }
 
         [NotNull]
-        private static IEntity Dehydrate([NotNull] this IEntity value, [NotNull] Type entityType)
+        private static IEntity Dehydrate([NotNull] this IEntity entity, [NotNull] Type entityType)
         {
+            if (entity.Id == Entity.NoId) return entity;
+
             var dehydratedRef = (IEntity)Activator.CreateInstance(entityType);
-            dehydratedRef.Id = value.Id;
+            dehydratedRef.Id = entity.Id;
             return dehydratedRef;
         }
 

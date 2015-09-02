@@ -19,6 +19,8 @@ namespace Dehydrator
         public static IEntity Resolve([NotNull] this IReadRepository<IEntity> repository,
             [NotNull] IEntity entity)
         {
+            if (entity.Id == Entity.NoId) return entity;
+
             var entityWithResolvedRefs = repository.Find(entity.Id);
             if (entityWithResolvedRefs == null)
                 throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
@@ -36,6 +38,8 @@ namespace Dehydrator
         public static async Task<IEntity> ResolveAsync([NotNull] this IReadRepository<IEntity> repository,
             [NotNull] IEntity entity)
         {
+            if (entity.Id == Entity.NoId) return entity;
+
             var entityWithResolvedRefs = await repository.FindAsync(entity.Id);
             if (entityWithResolvedRefs == null)
                 throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");

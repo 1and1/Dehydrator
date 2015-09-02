@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.ComponentModel;
+using JetBrains.Annotations;
 
 namespace Dehydrator
 {
@@ -8,7 +9,13 @@ namespace Dehydrator
     [PublicAPI]
     public abstract class Entity : IEntity
     {
-        public long Id { get; set; }
+        [DefaultValue(NoId)]
+        public long Id { get; set; } = NoId;
+
+        /// <summary>
+        /// Value for <see cref="IEntity.Id"/> to indicate that no ID has been assigned yet.
+        /// </summary>
+        public const long NoId = 0;
 
         #region Equality
         protected bool Equals(Entity other)

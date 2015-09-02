@@ -64,6 +64,7 @@
     <Compile Include="EntityExtensionsSingleSelfRefTest.cs" />
     <Compile Include="MockEntity1.cs" />
     <Compile Include="MockEntity2.cs" />
+    <Compile Include="NoIdTest.cs" />
     <Compile Include="ResolveOnlyTest.cs" />
   </ItemGroup>
   <ItemGroup>

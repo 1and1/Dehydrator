@@ -15,8 +15,11 @@ namespace Dehydrator
         public void Resolve()
         {
             var repositoryMock = new Mock<IRepository<TRef>>(MockBehavior.Strict);
-            repositoryMock.Setup(x => x.Find(DehydratedRef.Id))
-                .Returns(ResolvedRef).Verifiable();
+            if (DehydratedRef.Id != Entity.NoId)
+            {
+                repositoryMock.Setup(x => x.Find(DehydratedRef.Id))
+                    .Returns(ResolvedRef).Verifiable();
+            }
 
             var factoryMock = new Mock<IRepositoryFactory>(MockBehavior.Loose);
             factoryMock.Setup(x => x.Create<TRef>())
@@ -33,8 +36,11 @@ namespace Dehydrator
         public async void ResolveAsync()
         {
             var repositoryMock = new Mock<IRepository<TRef>>(MockBehavior.Strict);
-            repositoryMock.Setup(x => x.FindUntypedAsync(DehydratedRef.Id))
-                .Returns(Task.FromResult((IEntity)ResolvedRef)).Verifiable();
+            if (DehydratedRef.Id != Entity.NoId)
+            {
+                repositoryMock.Setup(x => x.FindUntypedAsync(DehydratedRef.Id))
+                    .Returns(Task.FromResult((IEntity)ResolvedRef)).Verifiable();
+            }
 
             var factoryMock = new Mock<IRepositoryFactory>(MockBehavior.Loose);
             factoryMock.Setup(x => x.Create<TRef>())
