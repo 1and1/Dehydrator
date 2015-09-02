@@ -13,7 +13,12 @@ namespace Dehydrator
         where TEntity : class, IEntity, new()
     {
         [NotNull] private readonly IRepositoryFactory _repositoryFactory;
-        [NotNull] private readonly IRepository<TEntity> _inner;
+
+        /// <summary>
+        /// The underlying repository this decorater delegates calls to after performing its own processing.
+        /// </summary>
+        [NotNull]
+        protected new readonly IRepository<TEntity> Inner;
 
         /// <summary>
         /// Creates a new reference-dehydrating decorator.
@@ -24,7 +29,7 @@ namespace Dehydrator
             [NotNull] IRepository<TEntity> inner) : base(inner)
         {
             _repositoryFactory = repositoryFactory;
-            _inner = inner;
+            Inner = inner;
         }
 
         /// <summary>
@@ -38,57 +43,57 @@ namespace Dehydrator
 
         public TEntity Add(TEntity entity)
         {
-            return _inner.Add(
+            return Inner.Add(
                 entity.ResolveReferences(_repositoryFactory));
         }
 
         public void Modify(TEntity entity)
         {
-            _inner.Modify(
+            Inner.Modify(
                 entity.ResolveReferences(_repositoryFactory));
         }
 
         public bool Remove(long id)
         {
-            return _inner.Remove(id);
+            return Inner.Remove(id);
         }
 
         public ITransaction BeginTransaction()
         {
-            return _inner.BeginTransaction();
+            return Inner.BeginTransaction();
         }
 
         public void SaveChanges()
         {
-            _inner.SaveChanges();
+            Inner.SaveChanges();
         }
 
 #if NET45
         public async Task<TEntity> FindAsync(long id)
         {
-            var entity = await _inner.FindAsync(id);
+            var entity = await Inner.FindAsync(id);
             return entity?.DehydrateReferences();
         }
 
         public async Task ModifyAsync(TEntity entity)
         {
-            await _inner.ModifyAsync(
+            await Inner.ModifyAsync(
                 await entity.ResolveReferencesAsync(_repositoryFactory));
         }
 
         public Task<bool> RemoveAsync(long id)
         {
-            return _inner.RemoveAsync(id);
+            return Inner.RemoveAsync(id);
         }
 
         public Task<ITransaction> BeginTransactionAsync()
         {
-            return _inner.BeginTransactionAsync();
+            return Inner.BeginTransactionAsync();
         }
 
         public Task SaveChangesAsync()
         {
-            return _inner.SaveChangesAsync();
+            return Inner.SaveChangesAsync();
         }
 #endif
     }

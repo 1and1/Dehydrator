@@ -15,8 +15,11 @@ namespace Dehydrator
     public class DehydratingReadRepository<TEntity> : IReadRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
+        /// <summary>
+        /// The underlying repository this decorater delegates calls to after performing its own processing.
+        /// </summary>
         [NotNull]
-        private readonly IReadRepository<TEntity> _inner;
+        protected readonly IReadRepository<TEntity> Inner;
 
         /// <summary>
         /// Creates a new reference-dehydrating decorator.
@@ -24,17 +27,17 @@ namespace Dehydrator
         /// <param name="inner">The inner repository to use for the actual storage.</param>
         public DehydratingReadRepository([NotNull] IReadRepository<TEntity> inner)
         {
-            _inner = inner;
+            Inner = inner;
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            return _inner.GetAll().Select(x => x.DehydrateReferences());
+            return Inner.GetAll().Select(x => x.DehydrateReferences());
         }
 
         public TResult Query<TResult>(Func<IQueryable<TEntity>, TResult> query)
         {
-            var result = _inner.Query(query);
+            var result = Inner.Query(query);
 
             // Dehydrate if the query result is an entity, otherwise pass through
             return (typeof(TEntity) == typeof(TResult))
@@ -44,7 +47,7 @@ namespace Dehydrator
 
         public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
-            var result = _inner.Query(query);
+            var result = Inner.Query(query);
 
             // Dehydrate if the query result is a collection of entities, otherwise pass through
             return (typeof(TEntity) == typeof(TResult))
@@ -54,18 +57,18 @@ namespace Dehydrator
 
         public TEntity Find(long id)
         {
-            return _inner.Find(id)?.DehydrateReferences();
+            return Inner.Find(id)?.DehydrateReferences();
         }
 
         public bool Exists(long id)
         {
-            return _inner.Exists(id);
+            return Inner.Exists(id);
         }
 
 #if NET45
         public async Task<TResult> Query<TResult>(Func<IQueryable<TEntity>, Task<TResult>> query)
         {
-            var result = await _inner.Query(query);
+            var result = await Inner.Query(query);
 
             // Dehydrate if the query result is an entity, otherwise pass through
             return (typeof(TEntity) == typeof(TResult))
@@ -75,7 +78,7 @@ namespace Dehydrator
 
         public async Task<IEntity> FindUntypedAsync(long id)
         {
-            var entity = await _inner.FindAsync(id);
+            var entity = await Inner.FindAsync(id);
             return entity?.DehydrateReferences();
         }
 #endif
