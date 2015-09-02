@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -60,7 +59,7 @@ namespace Dehydrator.EntityFramework
             var existingEntity = Find(entity.Id);
             if (existingEntity == null)
                 throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
-            TransferState(from: entity, to: existingEntity);
+            entity.TransferState(to: existingEntity);
         }
 
         public bool Remove(long id)
@@ -120,7 +119,7 @@ namespace Dehydrator.EntityFramework
             var existingEntity = await FindAsync(entity.Id);
             if (existingEntity == null)
                 throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
-            TransferState(from: entity, to: existingEntity);
+            entity.TransferState(to: existingEntity);
         }
 
         public async Task<bool> RemoveAsync(long id)
@@ -164,44 +163,5 @@ namespace Dehydrator.EntityFramework
             }
         }
 #endif
-
-        /// <summary>
-        /// Copies all public properties <paramref name="from"/> one <see cref="IEntity"/> <paramref name="to"/> another. Special handling for <see cref="IEntity"/> collections.
-        /// </summary>
-        private static void TransferState([NotNull] TEntity from, [NotNull] TEntity to)
-        {
-            var entityType = typeof(TEntity);
-
-            foreach (var prop in entityType.GetWritableProperties())
-            {
-                var fromValue = prop.GetValue(@from, null);
-                if (prop.IsEntityCollection())
-                {
-                    if (fromValue == null) continue;
-                    var referenceType = prop.GetGenericArg();
-
-                    object targetList = prop.GetValue(to, null);
-                    Type collectionType;
-                    if (targetList == null)
-                    {
-                        collectionType = typeof(List<>).MakeGenericType(referenceType);
-                        targetList = Activator.CreateInstance(collectionType);
-                        prop.SetValue(obj: to, value: targetList, index: null);
-                    }
-                    else
-                    {
-                        collectionType = targetList.GetType();
-                        collectionType.InvokeClear(target: targetList);
-                    }
-
-                    foreach (IEntity reference in (IEnumerable)fromValue)
-                    {
-                        collectionType.InvokeAdd(target: targetList,
-                            value: reference);
-                    }
-                }
-                else prop.SetValue(obj: to, value: fromValue, index: null);
-            }
-        }
     }
 }
