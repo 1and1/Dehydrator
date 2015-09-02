@@ -16,13 +16,12 @@ namespace Dehydrator
         /// <param name="entity">The entity to resolve.</param>
         /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <paramref name="repository"/>.</exception>
         [Pure, NotNull]
-        public static TEntity Resolve<TEntity>([NotNull] this IReadRepository<TEntity> repository,
+        public static IEntity Resolve([NotNull] this IReadRepository<IEntity> repository,
             [NotNull] IEntity entity)
-            where TEntity : class, IEntity
         {
             var entityWithResolvedRefs = repository.Find(entity.Id);
             if (entityWithResolvedRefs == null)
-                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
+                throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
             return entityWithResolvedRefs;
         }
 
@@ -34,13 +33,12 @@ namespace Dehydrator
         /// <param name="entity">The entity to resolve.</param>
         /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <paramref name="repository"/>.</exception>
         [Pure, NotNull]
-        public static async Task<TEntity> ResolveAsync<TEntity>([NotNull] this IReadRepository<TEntity> repository,
+        public static async Task<IEntity> ResolveAsync([NotNull] this IReadRepository<IEntity> repository,
             [NotNull] IEntity entity)
-            where TEntity : class, IEntity
         {
             var entityWithResolvedRefs = await repository.FindAsync(entity.Id);
             if (entityWithResolvedRefs == null)
-                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
+                throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
             return entityWithResolvedRefs;
         }
 
