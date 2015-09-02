@@ -16,17 +16,17 @@ namespace Dehydrator.Sample.Controllers
         [HttpPost, Route("test-data")]
         public async Task TestData()
         {
-            var awesomeLib = Repository.Add(new Package
-            {
-                FriendlyName = "AwesomeLib"
-            });
-
-            var awesomeApp = Repository.Add(new Package
+            Repository.Add(new Package
             {
                 FriendlyName = "AwesomeApp",
-                Dependencies = new List<Package> {new Package {Id = awesomeLib.Id}}
+                Dependencies = new List<Package>
+                {
+                    new Package
+                    {
+                        FriendlyName = "AwesomeLib"
+                    }
+                }
             });
-
             await Repository.SaveChangesAsync();
         }
     }

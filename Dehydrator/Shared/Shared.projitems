@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydrateAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DehydrateReferencesAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITransaction.cs" />
@@ -26,5 +27,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RepositoryFactoryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResolveAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResolveReferencesAttribute.cs" />
   </ItemGroup>
 </Project>

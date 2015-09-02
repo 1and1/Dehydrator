@@ -72,11 +72,11 @@ namespace Dehydrator
         }
 
         [NotNull]
-        private static IEntity DehydrateOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType, [NotNull] IEntity resolvedRef)
+        private static IEntity DehydrateOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType, [NotNull] IEntity entity)
         {
-            return prop.HasAttribute<DehydrateAttribute>()
-                ? resolvedRef.Dehydrate(referenceType)
-                : resolvedRef.DehydrateReferences(referenceType);
+            if (prop.HasAttribute<DehydrateAttribute>()) return entity.Dehydrate(referenceType);
+            else if (prop.HasAttribute<DehydrateReferencesAttribute>()) return entity.DehydrateReferences(referenceType);
+            else return entity;
         }
 
         [NotNull]
@@ -154,11 +154,11 @@ namespace Dehydrator
 
         [NotNull]
         private static IEntity ResolveOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
-            [NotNull] IEntity dehydratedRef, [NotNull] IRepositoryFactory repositoryFactory)
+            [NotNull] IEntity entity, [NotNull] IRepositoryFactory repositoryFactory)
         {
-            return prop.HasAttribute<ResolveAttribute>()
-                ? repositoryFactory.Create(referenceType).Resolve(dehydratedRef)
-                : dehydratedRef.ResolveReferences(referenceType, repositoryFactory);
+            if (prop.HasAttribute<ResolveAttribute>()) return repositoryFactory.Create(referenceType).Resolve(entity);
+            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return entity.ResolveReferences(referenceType, repositoryFactory);
+            return entity;
         }
 
 #if NET45
@@ -226,12 +226,12 @@ namespace Dehydrator
         }
 
         [NotNull]
-        private static Task<IEntity> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
-            [NotNull] IEntity dehydratedRef, [NotNull] IRepositoryFactory repositoryFactory)
+        private static async Task<IEntity> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
+            [NotNull] IEntity entity, [NotNull] IRepositoryFactory repositoryFactory)
         {
-            return prop.HasAttribute<ResolveAttribute>()
-                ? repositoryFactory.Create(referenceType).ResolveAsync(dehydratedRef)
-                : dehydratedRef.ResolveReferencesAsync(referenceType, repositoryFactory);
+            if (prop.HasAttribute<ResolveAttribute>()) return await repositoryFactory.Create(referenceType).ResolveAsync(entity);
+            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return await entity.ResolveReferencesAsync(referenceType, repositoryFactory);
+            return entity;
         }
 #endif
     }

@@ -19,8 +19,10 @@ namespace Dehydrator
         [Dehydrate]
         public virtual ICollection<MockEntity1> MultiSelfRef { get; set; } = new List<MockEntity1>();
 
+        [DehydrateReferences]
         public MockEntity1 SingleRecurse { get; set; }
 
+        [DehydrateReferences]
         public ICollection<MockEntity1> MultiRecurse { get; set; } = new List<MockEntity1>();
 
         [Resolve]
