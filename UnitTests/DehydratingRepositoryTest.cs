@@ -47,15 +47,15 @@ namespace Dehydrator
         [TearDown]
         public void TearDown()
         {
-            _mainRepositoryMock.Verify();
-            _refRepositoryMock.Verify();
+            _mainRepositoryMock.VerifyAll();
+            _refRepositoryMock.VerifyAll();
         }
 
         [Test]
         public void TestGetAll()
         {
             _mainRepositoryMock.Setup(x => x.GetAll())
-                .Returns(new[] {_entityWithResolvedRefs}).Verifiable();
+                .Returns(new[] {_entityWithResolvedRefs});
 
             var result = _repository.GetAll();
             result.Should().BeEquivalentTo(_entityWithDehydratedRefs);
@@ -65,7 +65,7 @@ namespace Dehydrator
         public void TestQuerySingle()
         {
             _mainRepositoryMock.Setup(x => x.Query(It.IsAny<Func<IQueryable<MockEntity1>, MockEntity1>>()))
-                .Returns(_entityWithResolvedRefs).Verifiable();
+                .Returns(_entityWithResolvedRefs);
 
             var result = _repository.Query(queryable => queryable.First());
             result.Should().Be(_entityWithDehydratedRefs);
@@ -75,7 +75,7 @@ namespace Dehydrator
         public void TestQueryMulti()
         {
             _mainRepositoryMock.Setup(x => x.Query(It.IsAny<Func<IQueryable<MockEntity1>, IQueryable<MockEntity1>>>()))
-                .Returns(new[] {_entityWithResolvedRefs}).Verifiable();
+                .Returns(new[] {_entityWithResolvedRefs});
 
             var result = _repository.Query(queryable => queryable.Select(x => x));
             result.Should().BeEquivalentTo(_entityWithDehydratedRefs);
@@ -85,7 +85,7 @@ namespace Dehydrator
         public void TestFind()
         {
             _mainRepositoryMock.Setup(x => x.Find(_entityWithDehydratedRefs.Id))
-                .Returns(_entityWithResolvedRefs).Verifiable();
+                .Returns(_entityWithResolvedRefs);
 
             var result = _repository.Find(_entityWithDehydratedRefs.Id);
             result.Should().Be(_entityWithDehydratedRefs);
@@ -95,7 +95,7 @@ namespace Dehydrator
         public async void TestFindAsync()
         {
             _mainRepositoryMock.Setup(x => x.FindAsync(_entityWithDehydratedRefs.Id))
-                .Returns(Task.FromResult(_entityWithResolvedRefs)).Verifiable();
+                .Returns(Task.FromResult(_entityWithResolvedRefs));
 
             var result = await _repository.FindAsync(_entityWithDehydratedRefs.Id);
             result.Should().Be(_entityWithDehydratedRefs);
@@ -105,7 +105,7 @@ namespace Dehydrator
         public void TestExists()
         {
             _mainRepositoryMock.Setup(x => x.Exists(123))
-                .Returns(true).Verifiable();
+                .Returns(true);
 
             _repository.Exists(123).Should().BeTrue();
         }
@@ -114,7 +114,7 @@ namespace Dehydrator
         public async void TestFindUntypedAsync()
         {
             _mainRepositoryMock.Setup(x => x.FindUntypedAsync(_entityWithDehydratedRefs.Id))
-                .Returns(Task.FromResult((IEntity)_entityWithResolvedRefs)).Verifiable();
+                .Returns(Task.FromResult((IEntity)_entityWithResolvedRefs));
 
             var result = await _repository.FindUntypedAsync(_entityWithDehydratedRefs.Id);
             result.Should().Be(_entityWithDehydratedRefs);
@@ -124,9 +124,9 @@ namespace Dehydrator
         public void TestAdd()
         {
             _refRepositoryMock.Setup(x => x.Find(_dehydratedRef.Id))
-                .Returns(_resolvedRef).Verifiable();
+                .Returns(_resolvedRef);
             _mainRepositoryMock.Setup(x => x.Add(_entityWithResolvedRefs))
-                .Returns(_entityWithResolvedRefs).Verifiable();
+                .Returns(_entityWithResolvedRefs);
 
             var result = _repository.Add(_entityWithDehydratedRefs);
             result.Should().Be(_entityWithResolvedRefs);
@@ -136,9 +136,9 @@ namespace Dehydrator
         public void TestModify()
         {
             _refRepositoryMock.Setup(x => x.Find(_dehydratedRef.Id))
-                .Returns(_resolvedRef).Verifiable();
+                .Returns(_resolvedRef);
             _mainRepositoryMock.Setup(x => x.Modify(_entityWithResolvedRefs))
-                .Verifiable();
+                ;
 
             _repository.Modify(_entityWithDehydratedRefs);
         }
@@ -147,9 +147,9 @@ namespace Dehydrator
         public async void TestModifyAsync()
         {
             _refRepositoryMock.Setup(x => x.FindUntypedAsync(_dehydratedRef.Id))
-                .Returns(Task.FromResult((IEntity)_resolvedRef)).Verifiable();
+                .Returns(Task.FromResult((IEntity)_resolvedRef));
             _mainRepositoryMock.Setup(x => x.ModifyAsync(_entityWithResolvedRefs))
-                .Returns(Task.FromResult(_entityWithResolvedRefs)).Verifiable();
+                .Returns(Task.FromResult(_entityWithResolvedRefs));
 
             await _repository.ModifyAsync(_entityWithDehydratedRefs);
         }
@@ -158,7 +158,7 @@ namespace Dehydrator
         public void TestRemove()
         {
             _mainRepositoryMock.Setup(x => x.Remove(123))
-                .Returns(true).Verifiable();
+                .Returns(true);
 
             _repository.Remove(123).Should().BeTrue();
         }
@@ -167,7 +167,7 @@ namespace Dehydrator
         public async void TestRemoveAsync()
         {
             _mainRepositoryMock.Setup(x => x.RemoveAsync(123))
-                .Returns(Task.FromResult(true)).Verifiable();
+                .Returns(Task.FromResult(true));
 
             (await _repository.RemoveAsync(123)).Should().BeTrue();
         }
