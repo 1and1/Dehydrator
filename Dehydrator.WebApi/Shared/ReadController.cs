@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using JetBrains.Annotations;
 
@@ -30,11 +28,7 @@ namespace Dehydrator.WebApi
         [HttpGet, Route("{id}")]
         public virtual TEntity Read(long id)
         {
-            var entity = Repository.Find(id);
-            if (entity == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    $"{typeof(TEntity).Name} {id} not found."));
-            return entity;
+            return CheckFound(Repository.Find(id), id);
         }
     }
 }

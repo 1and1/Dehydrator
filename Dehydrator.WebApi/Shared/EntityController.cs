@@ -12,10 +12,22 @@ namespace Dehydrator.WebApi
         where TEntity : class, IEntity, new()
     {
         /// <summary>
+        /// Throws an exception if <paramref name="entity"/> is <see langword="null"/>. Returns the <paramref name="entity"/> otherwise.
+        /// </summary>
+        /// <exception cref="HttpResponseException"><paramref name="entity"/> is <see langword="null"/>.</exception>
+        protected TEntity CheckFound(TEntity entity, long id)
+        {
+            if (entity == null)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    $"{typeof(TEntity).Name} {id} not found."));
+            return entity;
+        }
+
+        /// <summary>
         /// Checks whether the <see cref="IEntity.Id"/> matches <paramref name="id"/> and automatically sets <see cref="Entity.Id"/> if it is <see cref="Entity.NoId"/>.
         /// </summary>
         /// <exception cref="HttpResponseException">ID mismatch.</exception>
-        protected void CheckIdInEntity(long id, TEntity entity)
+        protected void CheckIdInEntity(TEntity entity, long id)
         {
             if (entity.Id == Entity.NoId) entity.Id = id;
             else if (id != entity.Id)

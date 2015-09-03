@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using JetBrains.Annotations;
@@ -31,11 +29,7 @@ namespace Dehydrator.WebApi
         [HttpGet, Route("{id}")]
         public virtual async Task<TEntity> Read(long id)
         {
-            var entity = await Repository.FindAsync(id);
-            if (entity == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    $"{typeof(TEntity).Name} {id} not found."));
-            return entity;
+            return CheckFound(await Repository.FindAsync(id), id);
         }
     }
 }
