@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -85,7 +86,7 @@ namespace Dehydrator.WebApi
             {
                 await Repository.SaveChangesAsync();
             }
-            catch (InvalidOperationException ex)
+            catch (DataException ex)
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                     ex.Message));

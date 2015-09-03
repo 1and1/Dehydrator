@@ -5,9 +5,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using JetBrains.Annotations;
-
 #if NET45
 using System.Threading.Tasks;
+
 #endif
 
 namespace Dehydrator.EntityFramework
@@ -76,7 +76,8 @@ namespace Dehydrator.EntityFramework
             var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                _dbContext.Database.ExecuteSqlCommand($"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
+                _dbContext.Database.ExecuteSqlCommand(
+                    $"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
             }
             catch
             {
@@ -88,18 +89,7 @@ namespace Dehydrator.EntityFramework
 
         public void SaveChanges()
         {
-            try
-            {
-                _dbContext.SaveChanges();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                throw new InvalidOperationException(ex.Message, ex);
-            }
-            catch (DbUpdateException ex)
-            {
-                throw new InvalidOperationException(ex.Message, ex);
-            }
+            _dbContext.SaveChanges();
         }
 
 #if NET45
@@ -133,11 +123,12 @@ namespace Dehydrator.EntityFramework
 
         public async Task<ITransaction> BeginTransactionAsync()
         {
-
             var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                await _dbContext.Database.ExecuteSqlCommandAsync($"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
+                await
+                    _dbContext.Database.ExecuteSqlCommandAsync(
+                        $"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
             }
             catch
             {
@@ -149,18 +140,7 @@ namespace Dehydrator.EntityFramework
 
         public async Task SaveChangesAsync()
         {
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                throw new InvalidOperationException(ex.Message, ex);
-            }
-            catch (DbUpdateException ex)
-            {
-                throw new InvalidOperationException(ex.Message, ex);
-            }
+            await _dbContext.SaveChangesAsync();
         }
 #endif
     }

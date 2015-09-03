@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Data;
 using JetBrains.Annotations;
 
 #if NET45
@@ -44,7 +44,7 @@ namespace Dehydrator
         /// <summary>
         /// Persists any changes made to the underlying storage system.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The underlying storage system failed to persist the changes.</exception>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         void SaveChanges();
 
 #if NET45
@@ -78,7 +78,7 @@ namespace Dehydrator
         /// <summary>
         /// Persists any changes made to the underlying storage system.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The underlying storage system failed to persist the changes.</exception>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         Task SaveChangesAsync();
 #endif
     }
