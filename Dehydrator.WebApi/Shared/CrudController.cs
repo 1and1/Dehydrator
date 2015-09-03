@@ -24,6 +24,10 @@ namespace Dehydrator.WebApi
             Repository = repository;
         }
 
+        /// <summary>
+        /// Creates a new <typeparamref name="TEntity"/>.
+        /// </summary>
+        /// <param name="entity">The new <typeparamref name="TEntity"/>.</param>
         [HttpPost, Route("")]
         public virtual IHttpActionResult Create([CanBeNull] TEntity entity)
         {
@@ -46,6 +50,11 @@ namespace Dehydrator.WebApi
                 content: storedEntity.DehydrateReferences());
         }
 
+        /// <summary>
+        /// Updates an existing <typeparamref name="TEntity"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="IEntity.Id"/> of the entity to update.</param>
+        /// <param name="entity">The modified <typeparamref name="TEntity"/>.</param>
         [HttpPut, Route("{id}")]
         public virtual IHttpActionResult Update(long id, [CanBeNull] TEntity entity)
         {
@@ -66,6 +75,10 @@ namespace Dehydrator.WebApi
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        /// <summary>
+        /// Deletes an existing <typeparamref name="TEntity"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="IEntity.Id"/> of the entity to delete.</param>
         [HttpDelete, Route("{id}")]
         public virtual void Delete(long id)
         {
