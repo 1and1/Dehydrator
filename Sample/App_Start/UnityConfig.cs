@@ -9,7 +9,7 @@ namespace Dehydrator.Sample
         public static IUnityContainer InitContainer()
         {
             return new UnityContainer()
-                .RegisterType<DbContext, SampleDbContext>(new PerThreadLifetimeManager())
+                .RegisterType<DbContext, SampleDbContext>()
                 .RegisterDehydratedDbRepository()
                 .UseRepositoryFactory();
         }
@@ -22,8 +22,11 @@ namespace Dehydrator.Sample
 
         private static IUnityContainer UseRepositoryFactory(this IUnityContainer container)
         {
-            return container.RegisterType(typeof(IRepository<>), new InjectionFactory((c, t, s) =>
-                c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])));
+            return container
+                .RegisterType(typeof(IReadRepository<>), new InjectionFactory((c, t, s) =>
+                    c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])))
+                .RegisterType(typeof(IRepository<>), new InjectionFactory((c, t, s) =>
+                    c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])));
         }
     }
 }

@@ -94,7 +94,7 @@ If you wish to use the [Unity Application Block](https://unity.codeplex.com/) fo
 public static IUnityContainer InitContainer()
 {
   return new UnityContainer()
-    .RegisterType<DbContext, YourOwnDbContext>(new PerThreadLifetimeManager()))
+    .RegisterType<DbContext, YourOwnDbContext>()
     .RegisterDehydratedDbRepository()
     .UseRepositoryFactory();
 }
@@ -107,7 +107,10 @@ private static IUnityContainer RegisterDehydratedDbRepository(this IUnityContain
 
 private static IUnityContainer UseRepositoryFactory(this IUnityContainer container)
 {
-  return container.RegisterType(typeof(IRepository<>), new InjectionFactory((c, t, s) =>
-    c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])));
+  return container
+    .RegisterType(typeof(IReadRepository<>), new InjectionFactory((c, t, s) =>
+      c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])))
+    .RegisterType(typeof(IRepository<>), new InjectionFactory((c, t, s) =>
+      c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])));
 }
 ```
