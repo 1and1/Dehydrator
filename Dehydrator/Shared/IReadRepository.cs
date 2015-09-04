@@ -32,6 +32,11 @@ namespace Dehydrator
         IEnumerable<TResult> Query<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
+        /// Performs a LINQ query on the backing database.
+        /// </summary>
+        IEnumerable<TResult> Query<TResult>([NotNull] Func<IQueryable<TEntity>, IOrderedQueryable<TResult>> query);
+
+        /// <summary>
         /// Checks whether an entity with a given <see cref="IEntity.Id"/> exists in the database.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to check.</param>

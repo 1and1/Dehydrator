@@ -55,6 +55,16 @@ namespace Dehydrator
                 : result;
         }
 
+        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IOrderedQueryable<TResult>> query)
+        {
+            var result = Inner.Query(query);
+
+            // Dehydrate if the query result is a collection of entities, otherwise pass through
+            return (typeof(TEntity) == typeof(TResult))
+                ? result.Cast<TEntity>().Select(x => x.DehydrateReferences()).Cast<TResult>()
+                : result;
+        }
+
         public TEntity Find(long id)
         {
             return Inner.Find(id)?.DehydrateReferences();

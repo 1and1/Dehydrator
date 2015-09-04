@@ -43,6 +43,11 @@ namespace Dehydrator.EntityFramework
             return query(_dbSet);
         }
 
+        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IOrderedQueryable<TResult>> query)
+        {
+            return query(_dbSet);
+        }
+
         public bool Exists(long id)
         {
             return _dbSet.Any(e => e.Id == id);
