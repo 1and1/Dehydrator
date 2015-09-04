@@ -95,7 +95,7 @@ namespace Dehydrator
         public async void TestFindAsync()
         {
             _mainRepositoryMock.Setup(x => x.FindAsync(_entityWithDehydratedRefs.Id))
-                .Returns(Task.FromResult(_entityWithResolvedRefs));
+                .ReturnsAsync(_entityWithResolvedRefs);
 
             var result = await _repository.FindAsync(_entityWithDehydratedRefs.Id);
             result.Should().Be(_entityWithDehydratedRefs);
@@ -114,7 +114,7 @@ namespace Dehydrator
         public async void TestFindUntypedAsync()
         {
             _mainRepositoryMock.Setup(x => x.FindUntypedAsync(_entityWithDehydratedRefs.Id))
-                .Returns(Task.FromResult((IEntity)_entityWithResolvedRefs));
+                .ReturnsAsync(_entityWithResolvedRefs);
 
             var result = await _repository.FindUntypedAsync(_entityWithDehydratedRefs.Id);
             result.Should().Be(_entityWithDehydratedRefs);
@@ -147,9 +147,9 @@ namespace Dehydrator
         public async void TestModifyAsync()
         {
             _refRepositoryMock.Setup(x => x.FindUntypedAsync(_dehydratedRef.Id))
-                .Returns(Task.FromResult((IEntity)_resolvedRef));
+                .ReturnsAsync(_resolvedRef);
             _mainRepositoryMock.Setup(x => x.ModifyAsync(_entityWithResolvedRefs))
-                .Returns(Task.FromResult(_entityWithResolvedRefs));
+                .Returns(Task.CompletedTask);
 
             await _repository.ModifyAsync(_entityWithDehydratedRefs);
         }
@@ -167,7 +167,7 @@ namespace Dehydrator
         public async void TestRemoveAsync()
         {
             _mainRepositoryMock.Setup(x => x.RemoveAsync(123))
-                .Returns(Task.FromResult(true));
+                .ReturnsAsync(true);
 
             (await _repository.RemoveAsync(123)).Should().BeTrue();
         }

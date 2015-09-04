@@ -39,7 +39,7 @@ namespace Dehydrator
             if (DehydratedRef.Id != Entity.NoId)
             {
                 repositoryMock.Setup(x => x.FindUntypedAsync(DehydratedRef.Id))
-                    .Returns(Task.FromResult((IEntity)ResolvedRef));
+                    .ReturnsAsync(ResolvedRef);
             }
 
             var factoryMock = new Mock<IRepositoryFactory>(MockBehavior.Loose);
