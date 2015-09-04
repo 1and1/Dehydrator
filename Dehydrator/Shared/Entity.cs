@@ -17,6 +17,11 @@ namespace Dehydrator
         /// </summary>
         public const long NoId = 0;
 
+        public override string ToString()
+        {
+            return $"{GetType().Name} {Id}";
+        }
+
         #region Equality
         protected bool Equals(Entity other)
         {
