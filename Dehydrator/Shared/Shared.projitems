@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DehydrateReferencesAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingReadRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IReadRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITransaction.cs" />
