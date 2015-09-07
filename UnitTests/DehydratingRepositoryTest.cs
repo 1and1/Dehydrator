@@ -92,7 +92,7 @@ namespace Dehydrator
         }
 
         [Test]
-        public async void TestFindAsync()
+        public async Task TestFindAsync()
         {
             _mainRepositoryMock.Setup(x => x.FindAsync(_entityWithDehydratedRefs.Id))
                 .ReturnsAsync(_entityWithResolvedRefs);
@@ -111,7 +111,7 @@ namespace Dehydrator
         }
 
         [Test]
-        public async void TestFindUntypedAsync()
+        public async Task TestFindUntypedAsync()
         {
             _mainRepositoryMock.Setup(x => x.FindUntypedAsync(_entityWithDehydratedRefs.Id))
                 .ReturnsAsync(_entityWithResolvedRefs);
@@ -144,7 +144,7 @@ namespace Dehydrator
         }
 
         [Test]
-        public async void TestModifyAsync()
+        public async Task TestModifyAsync()
         {
             _refRepositoryMock.Setup(x => x.FindUntypedAsync(_dehydratedRef.Id))
                 .ReturnsAsync(_resolvedRef);
@@ -164,7 +164,7 @@ namespace Dehydrator
         }
 
         [Test]
-        public async void TestRemoveAsync()
+        public async Task TestRemoveAsync()
         {
             _mainRepositoryMock.Setup(x => x.RemoveAsync(123))
                 .ReturnsAsync(true);

@@ -32,7 +32,7 @@ namespace Dehydrator.WebApi
         }
 
         [Test]
-        public async void TestRead()
+        public async Task TestRead()
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
             _repositoryMock.Setup(x => x.FindUntypedAsync(entity.Id))
@@ -56,7 +56,7 @@ namespace Dehydrator.WebApi
         }
 
         [Test]
-        public async void TestCreate()
+        public async Task TestCreate()
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
             _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);

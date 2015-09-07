@@ -33,7 +33,7 @@ namespace Dehydrator
         }
 
         [Test]
-        public async void ResolveAsync()
+        public async Task ResolveAsync()
         {
             var repositoryMock = new Mock<IRepository<TRef>>(MockBehavior.Strict);
             if (DehydratedRef.Id != Entity.NoId)

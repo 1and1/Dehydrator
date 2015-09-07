@@ -26,6 +26,7 @@ namespace Dehydrator
             };
         }
 
+        [Test]
         public override void Dehydrate()
         {
             var result = EntityWithResolvedRefs.DehydrateReferences();
