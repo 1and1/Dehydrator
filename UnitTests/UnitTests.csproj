@@ -69,7 +69,7 @@
   <ItemGroup>
     <Compile Include="EntityExtensionsSingleRecurseTest.cs" />
     <Compile Include="EntityExtensionsMultiRecurseTest.cs" />
-    <Compile Include="DehydratingRepositoryTest.cs" />
+    <Compile Include="DehydratingCrudRepositoryTest.cs" />
     <Compile Include="EntityExtensionsTest.cs" />
     <Compile Include="EntityExtensionsMultiRefTest.cs" />
     <Compile Include="EntityExtensionsMultiSelfRefTest.cs" />

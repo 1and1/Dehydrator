@@ -7,38 +7,28 @@ using System.Threading.Tasks;
 namespace Dehydrator
 {
     /// <summary>
-    /// Decorator for <see cref="IRepository{TEntity}"/> instances that transparently dehydrates references on entities it returns and resolves them on entities that are put it.
+    /// Decorator for <see cref="ICrudRepository{TEntity}"/> instances that transparently dehydrates references on entities it returns and resolves them on entities that are put it.
     /// </summary>
-    public class DehydratingRepository<TEntity> : DehydratingReadRepository<TEntity>, IRepository<TEntity>
+    public class DehydratingCrudRepository<TEntity> : DehydratingReadRepository<TEntity>, ICrudRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
-        [NotNull] private readonly IRepositoryFactory _repositoryFactory;
-
         /// <summary>
         /// The underlying repository this decorater delegates calls to after performing its own processing.
         /// </summary>
-        [NotNull]
-        protected new readonly IRepository<TEntity> Inner;
+        [NotNull] protected new readonly ICrudRepository<TEntity> Inner;
+
+        [NotNull] private readonly ICrudRepositoryFactory _repositoryFactory;
 
         /// <summary>
         /// Creates a new reference-dehydrating decorator.
         /// </summary>
-        /// <param name="repositoryFactory">Used to aquire additional repositories for resolving references.</param>
         /// <param name="inner">The inner repository to use for the actual storage.</param>
-        public DehydratingRepository([NotNull] IRepositoryFactory repositoryFactory,
-            [NotNull] IRepository<TEntity> inner) : base(inner)
+        /// <param name="repositoryFactory">Used to aquire additional repositories for resolving references.</param>
+        public DehydratingCrudRepository([NotNull] ICrudRepository<TEntity> inner,
+            [NotNull] ICrudRepositoryFactory repositoryFactory) : base(inner)
         {
             _repositoryFactory = repositoryFactory;
             Inner = inner;
-        }
-
-        /// <summary>
-        /// Creates a new reference-dehydrating decorator.
-        /// </summary>
-        /// <param name="repositoryFactory">Used to aquire the repository for <typeparamref name="TEntity"/> and repositories for resolving references.</param>
-        public DehydratingRepository([NotNull] IRepositoryFactory repositoryFactory)
-            : this(repositoryFactory, repositoryFactory.Create<TEntity>())
-        {
         }
 
         public TEntity Add(TEntity entity)

@@ -8,11 +8,11 @@ using NUnit.Framework;
 namespace Dehydrator
 {
     [TestFixture]
-    public class DehydratingRepositoryTest
+    public class DehydratingCrudRepositoryTest
     {
-        private Mock<IRepository<MockEntity1>> _mainRepositoryMock;
-        private Mock<IRepository<MockEntity2>> _refRepositoryMock;
-        private DehydratingRepository<MockEntity1> _repository;
+        private Mock<ICrudRepository<MockEntity1>> _mainRepositoryMock;
+        private Mock<ICrudRepository<MockEntity2>> _refRepositoryMock;
+        private DehydratingCrudRepository<MockEntity1> _repository;
 
         private MockEntity1 _entityWithDehydratedRefs, _entityWithResolvedRefs;
         private MockEntity2 _resolvedRef, _dehydratedRef;
@@ -20,12 +20,10 @@ namespace Dehydrator
         [SetUp]
         public void SetUp()
         {
-            var factory = new LookupRepositoryFactory
-            {
-                (_mainRepositoryMock = new Mock<IRepository<MockEntity1>>()).Object,
-                (_refRepositoryMock = new Mock<IRepository<MockEntity2>>()).Object
-            };
-            _repository = new DehydratingRepository<MockEntity1>(factory);
+            _mainRepositoryMock = new Mock<ICrudRepository<MockEntity1>>();
+            _refRepositoryMock = new Mock<ICrudRepository<MockEntity2>>();
+            var factory = new LookupCrudRepositoryFactory {_refRepositoryMock.Object};
+            _repository = new DehydratingCrudRepository<MockEntity1>(_mainRepositoryMock.Object, factory);
 
             _dehydratedRef = new MockEntity2 {Id = 2};
             _entityWithDehydratedRefs = new MockEntity1

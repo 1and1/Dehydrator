@@ -10,13 +10,13 @@ namespace Dehydrator.WebApi
     [TestFixture]
     public class AsyncCrudControllerTest
     {
-        private Mock<IRepository<MockEntity1>> _repositoryMock;
+        private Mock<ICrudRepository<MockEntity1>> _repositoryMock;
         private AsyncMockController _controller;
 
         [SetUp]
         public void SetUp()
         {
-            _repositoryMock = new Mock<IRepository<MockEntity1>>(MockBehavior.Strict);
+            _repositoryMock = new Mock<ICrudRepository<MockEntity1>>(MockBehavior.Strict);
 
             _controller = new AsyncMockController(_repositoryMock.Object)
             {

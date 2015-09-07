@@ -2,7 +2,7 @@
 {
     public class MockController : CrudController<MockEntity1>
     {
-        public MockController(IRepository<MockEntity1> repository) : base(repository)
+        public MockController(ICrudRepository<MockEntity1> repository) : base(repository)
         {
         }
     }

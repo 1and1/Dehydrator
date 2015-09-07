@@ -3,7 +3,7 @@ using System;
 namespace Dehydrator
 {
     /// <summary>
-    /// Represents a transaction started by a specific <see cref="IRepository{TEntity}"/>.
+    /// Represents a transaction started by a specific <see cref="ICrudRepository{TEntity}"/>.
     /// </summary>
     public interface ITransaction : IDisposable
     {

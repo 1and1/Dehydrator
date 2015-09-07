@@ -9,7 +9,7 @@ namespace Dehydrator.Sample.Controllers
     [RoutePrefix("api/packages")]
     public class PackageController : AsyncCrudController<Package>
     {
-        public PackageController(IRepository<Package> repository) : base(repository)
+        public PackageController(ICrudRepository<Package> repository) : base(repository)
         {
         }
 

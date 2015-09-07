@@ -18,8 +18,7 @@ namespace Dehydrator
         /// <summary>
         /// The underlying repository this decorater delegates calls to after performing its own processing.
         /// </summary>
-        [NotNull]
-        protected readonly IReadRepository<TEntity> Inner;
+        [NotNull] protected readonly IReadRepository<TEntity> Inner;
 
         /// <summary>
         /// Creates a new reference-dehydrating decorator.

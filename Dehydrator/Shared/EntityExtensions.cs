@@ -154,7 +154,7 @@ namespace Dehydrator
         /// <seealso cref="RepositoryExtensions.Resolve"/>
         [Pure, NotNull]
         public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity,
-            [NotNull] IRepositoryFactory repositoryFactory)
+            [NotNull] IReadRepositoryFactory repositoryFactory)
             where TEntity : class, IEntity, new()
         {
             return (TEntity)ResolveReferences(entity, typeof(TEntity), repositoryFactory);
@@ -168,7 +168,7 @@ namespace Dehydrator
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         [Pure, NotNull]
         public static IEntity ResolveReferences([NotNull] this IEntity entity, [NotNull] Type entityType,
-            [NotNull] IRepositoryFactory repositoryFactory)
+            [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             var newEntity = (IEntity)Activator.CreateInstance(entityType);
             foreach (var prop in entityType.GetWritableProperties())
@@ -210,7 +210,7 @@ namespace Dehydrator
 
         [NotNull]
         private static IEntity ResolveOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
-            [NotNull] IEntity entity, [NotNull] IRepositoryFactory repositoryFactory)
+            [NotNull] IEntity entity, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             if (prop.HasAttribute<ResolveAttribute>()) return repositoryFactory.Create(referenceType).Resolve(entity);
             else if (prop.HasAttribute<ResolveReferencesAttribute>()) return entity.ResolveReferences(referenceType, repositoryFactory);
@@ -227,7 +227,7 @@ namespace Dehydrator
         /// <seealso cref="RepositoryExtensions.Resolve"/>
         [Pure, NotNull]
         public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity,
-            [NotNull] IRepositoryFactory repositoryFactory)
+            [NotNull] IReadRepositoryFactory repositoryFactory)
             where TEntity : class, IEntity, new()
         {
             return (TEntity)await ResolveReferencesAsync(entity, typeof(TEntity), repositoryFactory);
@@ -241,7 +241,7 @@ namespace Dehydrator
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         [Pure, NotNull]
         public static async Task<IEntity> ResolveReferencesAsync([NotNull] this IEntity entity, [NotNull] Type entityType,
-            [NotNull] IRepositoryFactory repositoryFactory)
+            [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             var newEntity = (IEntity)Activator.CreateInstance(entityType);
             foreach (var prop in entityType.GetWritableProperties())
@@ -283,7 +283,7 @@ namespace Dehydrator
 
         [NotNull]
         private static async Task<IEntity> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
-            [NotNull] IEntity entity, [NotNull] IRepositoryFactory repositoryFactory)
+            [NotNull] IEntity entity, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             if (prop.HasAttribute<ResolveAttribute>()) return await repositoryFactory.Create(referenceType).ResolveAsync(entity);
             else if (prop.HasAttribute<ResolveReferencesAttribute>()) return await entity.ResolveReferencesAsync(referenceType, repositoryFactory);

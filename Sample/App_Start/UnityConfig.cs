@@ -16,7 +16,7 @@ namespace Dehydrator.Sample
 
         private static IUnityContainer RegisterDehydratedDbRepository(this IUnityContainer container)
         {
-            return container.RegisterType<IRepositoryFactory>(new InjectionFactory(c =>
+            return container.RegisterType<ICrudRepositoryFactory>(new InjectionFactory(c =>
                 new DehydratingRepositoryFactory(new DbRepositoryFactory(c.Resolve<DbContext>()))));
         }
 
@@ -24,9 +24,9 @@ namespace Dehydrator.Sample
         {
             return container
                 .RegisterType(typeof(IReadRepository<>), new InjectionFactory((c, t, s) =>
-                    c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])))
-                .RegisterType(typeof(IRepository<>), new InjectionFactory((c, t, s) =>
-                    c.Resolve<IRepositoryFactory>().Create(t.GetGenericArguments()[0])));
+                    c.Resolve<ICrudRepositoryFactory>().Create(t.GetGenericArguments()[0])))
+                .RegisterType(typeof(ICrudRepository<>), new InjectionFactory((c, t, s) =>
+                    c.Resolve<ICrudRepositoryFactory>().Create(t.GetGenericArguments()[0])));
         }
     }
 }

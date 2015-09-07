@@ -2,7 +2,7 @@
 {
     public class AsyncMockController : AsyncCrudController<MockEntity1>
     {
-        public AsyncMockController(IRepository<MockEntity1> repository) : base(repository)
+        public AsyncMockController(ICrudRepository<MockEntity1> repository) : base(repository)
         {
         }
     }

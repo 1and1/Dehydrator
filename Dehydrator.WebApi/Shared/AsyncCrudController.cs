@@ -10,16 +10,16 @@ using JetBrains.Annotations;
 namespace Dehydrator.WebApi
 {
     /// <summary>
-    /// A generic base for REST controllers that provide CRUD access to a set of entities exposed via an <see cref="IRepository{TEntity}"/>. Uses asynchronous processing.
+    /// A generic base for REST controllers that provide CRUD access to a set of entities exposed via an <see cref="ICrudRepository{TEntity}"/>. Uses asynchronous processing.
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities accessible via this controller.</typeparam>
     [PublicAPI]
     public abstract class AsyncCrudController<TEntity> : AsyncReadController<TEntity>
         where TEntity : class, IEntity, new()
     {
-        [NotNull] protected new readonly IRepository<TEntity> Repository;
+        [NotNull] protected new readonly ICrudRepository<TEntity> Repository;
 
-        protected AsyncCrudController([NotNull] IRepository<TEntity> repository)
+        protected AsyncCrudController([NotNull] ICrudRepository<TEntity> repository)
             : base(repository)
         {
             Repository = repository;

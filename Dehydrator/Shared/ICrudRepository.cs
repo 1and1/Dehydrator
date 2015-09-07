@@ -11,7 +11,7 @@ namespace Dehydrator
     /// <summary>
     /// Provides CRUD access to a set of <see cref="IEntity"/>s. Usually backed by a database.
     /// </summary>
-    public interface IRepository<TEntity> : IReadRepository<TEntity>
+    public interface ICrudRepository<TEntity> : IReadRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
         /// <summary>

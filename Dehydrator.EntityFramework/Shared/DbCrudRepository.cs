@@ -5,9 +5,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using JetBrains.Annotations;
+
 #if NET45
 using System.Threading.Tasks;
-
 #endif
 
 namespace Dehydrator.EntityFramework
@@ -16,7 +16,7 @@ namespace Dehydrator.EntityFramework
     /// Provides CRUD access to a set of <see cref="IEntity"/>s that is backed by a database accessed via Microsoft's Entity Framework.
     /// </summary>
     /// <typeparam name="TEntity">The specific type of entities managed by this repository.</typeparam>
-    public class DbRepository<TEntity> : DbReadRepository<TEntity>, IRepository<TEntity>
+    public class DbCrudRepository<TEntity> : DbReadRepository<TEntity>, ICrudRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
         [NotNull] private readonly DbContext _dbContext;
@@ -25,22 +25,13 @@ namespace Dehydrator.EntityFramework
         /// <summary>
         /// Creates a new database-backed repository.
         /// </summary>
-        /// <param name="dbContext">The database context used to access the database.</param>
         /// <param name="dbSet">The database set used to store the entities.</param>
-        public DbRepository(DbContext dbContext, DbSet<TEntity> dbSet)
+        /// <param name="dbContext">The database context used to access the database.</param>
+        public DbCrudRepository(DbSet<TEntity> dbSet, DbContext dbContext)
             : base(dbSet)
         {
             _dbContext = dbContext;
             _dbSet = dbSet;
-        }
-
-        /// <summary>
-        /// Creates a new database-backed repository.
-        /// </summary>
-        /// <param name="dbContext">The database context used to access the database.</param>
-        public DbRepository(DbContext dbContext)
-            : this(dbContext, dbContext.Set<TEntity>())
-        {
         }
 
         public TEntity Add(TEntity entity)

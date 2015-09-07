@@ -14,14 +14,14 @@ namespace Dehydrator
         [Test]
         public void Resolve()
         {
-            var repositoryMock = new Mock<IRepository<TRef>>(MockBehavior.Strict);
+            var repositoryMock = new Mock<ICrudRepository<TRef>>(MockBehavior.Strict);
             if (DehydratedRef.Id != Entity.NoId)
             {
                 repositoryMock.Setup(x => x.Find(DehydratedRef.Id))
                     .Returns(ResolvedRef);
             }
 
-            var factoryMock = new Mock<IRepositoryFactory>(MockBehavior.Loose);
+            var factoryMock = new Mock<IReadRepositoryFactory>(MockBehavior.Loose);
             factoryMock.Setup(x => x.Create<TRef>())
                 .Returns(repositoryMock.Object);
 
@@ -35,14 +35,14 @@ namespace Dehydrator
         [Test]
         public async Task ResolveAsync()
         {
-            var repositoryMock = new Mock<IRepository<TRef>>(MockBehavior.Strict);
+            var repositoryMock = new Mock<ICrudRepository<TRef>>(MockBehavior.Strict);
             if (DehydratedRef.Id != Entity.NoId)
             {
                 repositoryMock.Setup(x => x.FindUntypedAsync(DehydratedRef.Id))
                     .ReturnsAsync(ResolvedRef);
             }
 
-            var factoryMock = new Mock<IRepositoryFactory>(MockBehavior.Loose);
+            var factoryMock = new Mock<IReadRepositoryFactory>(MockBehavior.Loose);
             factoryMock.Setup(x => x.Create<TRef>())
                 .Returns(repositoryMock.Object);
 
