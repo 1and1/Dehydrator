@@ -1,4 +1,7 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using FluentAssertions;
@@ -62,6 +65,47 @@ namespace Dehydrator.WebApi
             _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);
             _repositoryMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
             await _controller.Create(entity);
+        }
+
+        [Test]
+        public async Task TestCreateResolveFailed()
+        {
+            var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
+            _repositoryMock.Setup(x => x.Add(entity)).Throws<KeyNotFoundException>();
+            (await _controller.Create(entity)).ShouldBe(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void TestCreateInvalidData()
+        {
+            var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
+            _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);
+            _repositoryMock.Setup(x => x.SaveChangesAsync()).Throws<DataException>();
+            Assert.Throws<HttpResponseException>(async () => await _controller.Create(entity));
+        }
+
+        [Test]
+        public async Task TestUpdate()
+        {
+            var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
+            _repositoryMock.Setup(x => x.ModifyAsync(entity)).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
+            await _controller.Update(1, entity);
+        }
+
+        [Test]
+        public async Task TestDelete()
+        {
+            _repositoryMock.Setup(x => x.RemoveAsync(1)).ReturnsAsync(true);
+            _repositoryMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
+            await _controller.Delete(1);
+        }
+
+        [Test]
+        public void TestDeleteMissing()
+        {
+            _repositoryMock.Setup(x => x.RemoveAsync(1)).ReturnsAsync(false);
+            Assert.Throws<HttpResponseException>(async () => await _controller.Delete(1));
         }
     }
 }

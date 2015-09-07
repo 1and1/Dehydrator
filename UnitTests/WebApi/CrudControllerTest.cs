@@ -1,5 +1,9 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 using FluentAssertions;
 using Moq;
@@ -61,7 +65,50 @@ namespace Dehydrator.WebApi
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
             _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);
             _repositoryMock.Setup(x => x.SaveChanges());
-            _controller.Create(entity);
+            _controller.Create(entity).ShouldBe(HttpStatusCode.Created);
+        }
+
+        [Test]
+        public void TestCreateResolveFailed()
+        {
+            var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
+            _repositoryMock.Setup(x => x.Add(entity)).Throws<KeyNotFoundException>();
+            _controller.Create(entity).ShouldBe(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void TestCreateInvalidData()
+        {
+            var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
+            _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);
+            _repositoryMock.Setup(x => x.SaveChanges()).Throws<DataException>();
+            _controller.Invoking(x => x.Create(entity))
+                .ShouldThrow<HttpResponseException>().Where(x => x.Response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void TestUpdate()
+        {
+            var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
+            _repositoryMock.Setup(x => x.Modify(entity));
+            _repositoryMock.Setup(x => x.SaveChanges());
+            _controller.Update(1, entity);
+        }
+
+        [Test]
+        public void TestDelete()
+        {
+            _repositoryMock.Setup(x => x.Remove(1)).Returns(true);
+            _repositoryMock.Setup(x => x.SaveChanges());
+            _controller.Delete(1);
+        }
+
+        [Test]
+        public void TestDeleteMissing()
+        {
+            _repositoryMock.Setup(x => x.Remove(1)).Returns(false);
+            _controller.Invoking(x => x.Delete(1))
+                .ShouldThrow<HttpResponseException>().Where(x => x.Response.StatusCode == HttpStatusCode.NotFound);
         }
     }
 }
