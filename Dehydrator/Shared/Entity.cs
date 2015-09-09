@@ -11,7 +11,7 @@ namespace Dehydrator
     public abstract class Entity : IEntity
     {
         [DefaultValue(NoId)]
-        public long Id { get; set; } = NoId;
+        public virtual long Id { get; set; } = NoId;
 
         /// <summary>
         /// Value for <see cref="IEntity.Id"/> to indicate that no ID has been assigned yet.
