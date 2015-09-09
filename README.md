@@ -8,6 +8,7 @@ NuGet packages:
 * [Dehydrator](https://www.nuget.org/packages/Dehydrator/)
 * [Dehydrator.EntityFramework](https://www.nuget.org/packages/Dehydrator.EntityFramework/)
 * [Dehydrator.WebApi](https://www.nuget.org/packages/Dehydrator.WebApi/)
+* [Dehydrator.Unity](https://www.nuget.org/packages/Dehydrator.Unity/)
 
 While Dehydrator is designed primarily for use with Entity Framework and WebAPI you can also use the core package (`Dehydrator`) with any other ORM and REST framework. You'll just need to implement the parts from the other packages yourself, which should be pretty straightforward.
 
@@ -89,28 +90,22 @@ config.MapHttpAttributeRoutes(new InheritanceRouteProvider());
 You can also build your own controllers using `IRepository<>`s directly without using the `Dehydrator.WebApi` package.
 
 ### Unity
-If you wish to use the [Unity Application Block](https://unity.codeplex.com/) for dependency injection in your WebAPI application consider using the following code as a template for registering the appropriate Dehydrator types:
+If you wish to use the [Unity Application Block](https://unity.codeplex.com/) for dependency injection in your Entity Framework application install the `Dehydrator.Unity` NuGet package. This adds extension methods to the `IUnityContainer` type for configuring Unity to automatically instantiate dehydrating database-backed repositories.
+
+If all your `DbSet`s are located in a single `DbContext`:
 ```cs
-public static IUnityContainer InitContainer()
-{
-  return new UnityContainer()
-    .RegisterType<DbContext, YourOwnDbContext>()
-    .RegisterDehydratedDbRepository()
-    .UseRepositoryFactory();
-}
+var container = new UnityContainer();
+container.RegisterDatabase<MyDbContext>()
+  .RegisterRepositories();
+```
 
-private static IUnityContainer RegisterDehydratedDbRepository(this IUnityContainer container)
-{
-  return container.RegisterType<ICrudRepositoryFactory>(new InjectionFactory(c =>
-    new DehydratingRepositoryFactory(new DbRepositoryFactory(c.Resolve<DbContext>()))));
-}
-
-private static IUnityContainer UseRepositoryFactory(this IUnityContainer container)
-{
-  return container
-    .RegisterType(typeof(IReadRepository<>), new InjectionFactory((c, t, s) =>
-      c.Resolve<ICrudRepositoryFactory>().Create(t.GetGenericArguments()[0])))
-    .RegisterType(typeof(ICrudRepository<>), new InjectionFactory((c, t, s) =>
-      c.Resolve<ICrudRepositoryFactory>().Create(t.GetGenericArguments()[0])));
-}
+If your `DbSet`s are distributed across multiple `DbContext`s:
+```cs
+var container = new UnityContainer();
+container.RegisterDatabase<PackageDbContext>()
+  .RegisterRepository(x => x.Packages)
+  .RegisterRepository(x => x.PackagesConfig);
+container.RegisterDatabase<LoginDbContext>()
+  .RegisterRepository(x => x.Users)
+  .RegisterRepository(x => x.Groups);
 ```

@@ -7,6 +7,7 @@ if not defined VS140COMNTOOLS goto err_no_vs
 call "%VS140COMNTOOLS%vsvars32.bat"
 
 ::Compile Visual Studio solution
+nuget restore Dehydrator.sln
 msbuild Dehydrator.sln /nologo /t:Rebuild /p:Configuration=Release
 if errorlevel 1 pause
 
@@ -17,6 +18,8 @@ if errorlevel 1 pause
 nuget pack Dehydrator.EntityFramework\Dehydrator.EntityFramework.nuspec -Symbols -OutputDirectory build\NuGet -Version %version%
 if errorlevel 1 pause
 nuget pack Dehydrator.WebApi\Dehydrator.WebApi.nuspec -Symbols -OutputDirectory build\NuGet -Version %version%
+if errorlevel 1 pause
+nuget pack Dehydrator.Unity\Dehydrator.Unity.nuspec -Symbols -OutputDirectory build\NuGet -Version %version%
 if errorlevel 1 pause
 
 goto end

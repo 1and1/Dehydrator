@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using Dehydrator.EntityFramework;
+﻿using Dehydrator.Unity;
 using Microsoft.Practices.Unity;
 
 namespace Dehydrator.Sample
@@ -8,25 +7,16 @@ namespace Dehydrator.Sample
     {
         public static IUnityContainer InitContainer()
         {
-            return new UnityContainer()
-                .RegisterType<DbContext, SampleDbContext>()
-                .RegisterDehydratedDbRepository()
-                .UseRepositoryFactory();
-        }
+            var container = new UnityContainer();
 
-        private static IUnityContainer RegisterDehydratedDbRepository(this IUnityContainer container)
-        {
-            return container.RegisterType<ICrudRepositoryFactory>(new InjectionFactory(c =>
-                new DehydratingCrudRepositoryFactory(new DbCrudRepositoryFactory(c.Resolve<DbContext>()))));
-        }
+            container.RegisterDatabase<SampleDbContext>()
+                .RegisterRepositories();
 
-        private static IUnityContainer UseRepositoryFactory(this IUnityContainer container)
-        {
-            return container
-                .RegisterType(typeof(IReadRepository<>), new InjectionFactory((c, t, s) =>
-                    c.Resolve<ICrudRepositoryFactory>().Create(t.GetGenericArguments()[0])))
-                .RegisterType(typeof(ICrudRepository<>), new InjectionFactory((c, t, s) =>
-                    c.Resolve<ICrudRepositoryFactory>().Create(t.GetGenericArguments()[0])));
+            //container.RegisterDatabase<SampleDbContext>()
+            //    .RegisterRepository(x => x.Packages)
+            //    .RegisterRepository(x => x.PackagesConfig);
+
+            return container;
         }
     }
 }

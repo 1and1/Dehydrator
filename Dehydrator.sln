@@ -29,16 +29,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dehydrator.WebApi", "Dehydr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{3C85DF45-2AE0-4EBD-96E1-6148C1E1DDD9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dehydrator.Unity", "Dehydrator.Unity", "{2FF36774-649B-4390-899E-A91405441851}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Dehydrator.Unity\Shared\Shared.shproj", "{9D1097DA-EBB8-46D9-9FB0-488E10073DF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.Unity.Net45", "Dehydrator.Unity\Net45\Dehydrator.Unity.Net45.csproj", "{65D48E97-7CE9-4747-ABF3-9660E90605FD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Dehydrator.WebApi\Shared\Shared.projitems*{368aba94-aa57-482e-b696-1c104eb57bd6}*SharedItemsImports = 4
 		Dehydrator.EntityFramework\Shared\Shared.projitems*{63a4c204-eca0-446e-b461-064413200072}*SharedItemsImports = 4
+		Dehydrator.Unity\Shared\Shared.projitems*{65d48e97-7ce9-4747-abf3-9660e90605fd}*SharedItemsImports = 4
 		Dehydrator.EntityFramework\Shared\Shared.projitems*{94c89c45-4bb7-4a7f-98d2-4b24bcd0548b}*SharedItemsImports = 4
 		Dehydrator\Shared\Shared.projitems*{d7419180-f830-4e67-aa49-b40a0738c442}*SharedItemsImports = 13
 		Dehydrator\Shared\Shared.projitems*{fe22975b-b3a0-4855-beeb-ef8b58c3df21}*SharedItemsImports = 4
 		Dehydrator.EntityFramework\Shared\Shared.projitems*{ce292e85-f3de-4e7f-b941-8f8940d2f4f7}*SharedItemsImports = 13
 		Dehydrator\Shared\Shared.projitems*{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}*SharedItemsImports = 4
 		Dehydrator.WebApi\Shared\Shared.projitems*{21193dbc-438e-4d31-8c86-471a63dc833b}*SharedItemsImports = 13
+		Dehydrator.Unity\Shared\Shared.projitems*{9d1097da-ebb8-46d9-9fb0-488e10073df1}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +81,10 @@ Global
 		{3C85DF45-2AE0-4EBD-96E1-6148C1E1DDD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C85DF45-2AE0-4EBD-96E1-6148C1E1DDD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C85DF45-2AE0-4EBD-96E1-6148C1E1DDD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65D48E97-7CE9-4747-ABF3-9660E90605FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D48E97-7CE9-4747-ABF3-9660E90605FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65D48E97-7CE9-4747-ABF3-9660E90605FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D48E97-7CE9-4747-ABF3-9660E90605FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,5 +98,7 @@ Global
 		{CE292E85-F3DE-4E7F-B941-8F8940D2F4F7} = {08561628-F20D-4ABA-9B1A-B69212929606}
 		{94C89C45-4BB7-4A7F-98D2-4B24BCD0548B} = {08561628-F20D-4ABA-9B1A-B69212929606}
 		{63A4C204-ECA0-446E-B461-064413200072} = {08561628-F20D-4ABA-9B1A-B69212929606}
+		{9D1097DA-EBB8-46D9-9FB0-488E10073DF1} = {2FF36774-649B-4390-899E-A91405441851}
+		{65D48E97-7CE9-4747-ABF3-9660E90605FD} = {2FF36774-649B-4390-899E-A91405441851}
 	EndGlobalSection
 EndGlobal
