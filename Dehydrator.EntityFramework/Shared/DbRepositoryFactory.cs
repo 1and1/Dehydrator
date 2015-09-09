@@ -21,7 +21,7 @@ namespace Dehydrator.EntityFramework
         public new ICrudRepository<TEntity> Create<TEntity>()
             where TEntity : class, IEntity, new()
         {
-            return new DbCrudRepository<TEntity>(DbContext.Set<TEntity>(), DbContext);
+            return new DbCrudRepository<TEntity>(DbContext);
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
 using JetBrains.Annotations;
 
 #if NET45
@@ -32,6 +29,15 @@ namespace Dehydrator.EntityFramework
         {
             _dbContext = dbContext;
             _dbSet = dbSet;
+        }
+
+        /// <summary>
+        /// Creates a new database-backed repository.
+        /// </summary>
+        /// <param name="dbContext">The database context used to access the database.</param>
+        public DbCrudRepository(DbContext dbContext)
+            : this(dbContext.Set<TEntity>(), dbContext)
+        {
         }
 
         public TEntity Add(TEntity entity)

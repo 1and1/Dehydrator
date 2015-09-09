@@ -31,6 +31,15 @@ namespace Dehydrator
             Inner = inner;
         }
 
+        /// <summary>
+        /// Creates a new reference-dehydrating decorator.
+        /// </summary>
+        /// <param name="repositoryFactory">Used to aquire the <typeparamref name="TEntity"/> and additional repositories for resolving references.</param>
+        public DehydratingCrudRepository(ICrudRepositoryFactory repositoryFactory)
+            : this(repositoryFactory.Create<TEntity>(), repositoryFactory)
+        {
+        }
+
         public TEntity Add(TEntity entity)
         {
             return Inner.Add(
