@@ -28,7 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ICrudRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICrudRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingCrudRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DehydratingRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DehydratingCrudRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RepositoryFactoryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResolveAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResolveReferencesAttribute.cs" />

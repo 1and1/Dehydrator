@@ -7,13 +7,13 @@ namespace Dehydrator.EntityFramework
     /// Provides <see cref="ICrudRepository{T}"/>s that are backed by a database accessed via Microsoft's Entity Framework.
     /// </summary>
     [PublicAPI]
-    public class DbRepositoryFactory : DbReadRepositoryFactory, ICrudRepositoryFactory
+    public class DbCrudRepositoryFactory : DbReadRepositoryFactory, ICrudRepositoryFactory
     {
         /// <summary>
         /// Creates a new database-backed entity repository factory.
         /// </summary>
         /// <param name="dbContext">The database context used to access the database.</param>
-        public DbRepositoryFactory([NotNull] DbContext dbContext)
+        public DbCrudRepositoryFactory([NotNull] DbContext dbContext)
             : base(dbContext)
         {
         }

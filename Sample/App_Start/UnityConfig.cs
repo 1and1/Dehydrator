@@ -17,7 +17,7 @@ namespace Dehydrator.Sample
         private static IUnityContainer RegisterDehydratedDbRepository(this IUnityContainer container)
         {
             return container.RegisterType<ICrudRepositoryFactory>(new InjectionFactory(c =>
-                new DehydratingRepositoryFactory(new DbRepositoryFactory(c.Resolve<DbContext>()))));
+                new DehydratingCrudRepositoryFactory(new DbCrudRepositoryFactory(c.Resolve<DbContext>()))));
         }
 
         private static IUnityContainer UseRepositoryFactory(this IUnityContainer container)

@@ -14,7 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DbReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DbReadRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DbCrudRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DbRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbCrudRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DbTransaction.cs" />
   </ItemGroup>
 </Project>
