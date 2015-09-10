@@ -29,11 +29,6 @@ namespace Dehydrator
         public static bool UnsequencedEquals<T>([NotNull, InstantHandle] this ICollection<T> first,
             [NotNull, InstantHandle] ICollection<T> second, [CanBeNull] IEqualityComparer<T> comparer = null)
         {
-            #region Sanity checks
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            #endregion
-
             if (first.Count != second.Count) return false;
             if (comparer == null) comparer = EqualityComparer<T>.Default;
 
@@ -51,10 +46,6 @@ namespace Dehydrator
         public static int GetUnsequencedHashCode<T>([NotNull, InstantHandle] this IEnumerable<T> collection,
             [CanBeNull, InstantHandle] IEqualityComparer<T> comparer = null)
         {
-            #region Sanity checks
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            #endregion
-
             if (comparer == null) comparer = EqualityComparer<T>.Default;
 
             unchecked
@@ -64,6 +55,104 @@ namespace Dehydrator
                 foreach (T unknown in collection.WhereNotNull())
                     result = result ^ comparer.GetHashCode(unknown);
                 return result;
+            }
+        }
+
+        /// <summary>
+        /// Determines the element in a list that maximizes a specified expression.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <typeparam name="TValue">The type of the <paramref name="expression"/>.</typeparam>
+        /// <param name="enumeration">The elements to check.</param>
+        /// <param name="expression">The expression to maximize.</param>
+        /// <returns>The element that maximizes the expression; the default value of <typeparamref name="T"/> if <paramref name="enumeration"/> contains no elements.</returns>
+        [CanBeNull, Pure, LinqTunnel]
+        public static T MaxBy<T, TValue>([NotNull, ItemNotNull] this IEnumerable<T> enumeration,
+            [NotNull, InstantHandle] Func<T, TValue> expression)
+        {
+            return enumeration.MaxBy(expression, Comparer<TValue>.Default);
+        }
+
+        /// <summary>
+        /// Determines the element in a list that maximizes a specified expression.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <typeparam name="TValue">The type of the <paramref name="expression"/>.</typeparam>
+        /// <param name="enumeration">The elements to check.</param>
+        /// <param name="expression">The expression to maximize.</param>
+        /// <param name="comparer">A comprarer used to compare values of <paramref name="expression"/>.</param>
+        /// <returns>The element that maximizes the expression; the default value of <typeparamref name="T"/> if <paramref name="enumeration"/> contains no elements.</returns>
+        [CanBeNull, Pure, LinqTunnel]
+        public static T MaxBy<T, TValue>([NotNull, ItemNotNull] this IEnumerable<T> enumeration,
+            [NotNull, InstantHandle] Func<T, TValue> expression, [NotNull] IComparer<TValue> comparer)
+        {
+            using (var enumerator = enumeration.GetEnumerator())
+            {
+                if (!enumerator.MoveNext()) return default(T);
+                T maxElement = enumerator.Current;
+                TValue maxValue = expression(maxElement);
+
+                while (enumerator.MoveNext())
+                {
+                    var candidate = enumerator.Current;
+                    var candidateValue = expression(candidate);
+                    if (comparer.Compare(candidateValue, maxValue) > 0)
+                    {
+                        maxElement = candidate;
+                        maxValue = candidateValue;
+                    }
+                }
+
+                return maxElement;
+            }
+        }
+
+        /// <summary>
+        /// Determines the element in a list that minimizes a specified expression.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <typeparam name="TValue">The type of the <paramref name="expression"/>.</typeparam>
+        /// <param name="enumeration">The elements to check.</param>
+        /// <param name="expression">The expression to minimize.</param>
+        /// <returns>The element that minimizes the expression; the default value of <typeparamref name="T"/> if <paramref name="enumeration"/> contains no elements.</returns>
+        [CanBeNull, Pure, LinqTunnel]
+        public static T MinBy<T, TValue>([NotNull, ItemNotNull] this IEnumerable<T> enumeration,
+            [NotNull, InstantHandle] Func<T, TValue> expression)
+        {
+            return enumeration.MinBy(expression, Comparer<TValue>.Default);
+        }
+
+        /// <summary>
+        /// Determines the element in a list that minimizes a specified expression.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <typeparam name="TValue">The type of the <paramref name="expression"/>.</typeparam>
+        /// <param name="enumeration">The elements to check.</param>
+        /// <param name="expression">The expression to minimize.</param>
+        /// <param name="comparer">A comprarer used to compare values of <paramref name="expression"/>.</param>
+        /// <returns>The element that minimizes the expression; the default value of <typeparamref name="T"/> if <paramref name="enumeration"/> contains no elements.</returns>
+        [CanBeNull, Pure, LinqTunnel]
+        public static T MinBy<T, TValue>([NotNull, ItemNotNull] this IEnumerable<T> enumeration,
+            [NotNull, InstantHandle] Func<T, TValue> expression, [NotNull] IComparer<TValue> comparer)
+        {
+            using (var enumerator = enumeration.GetEnumerator())
+            {
+                if (!enumerator.MoveNext()) return default(T);
+                T minElement = enumerator.Current;
+                TValue minValue = expression(minElement);
+
+                while (enumerator.MoveNext())
+                {
+                    var candidate = enumerator.Current;
+                    var candidateValue = expression(candidate);
+                    if (comparer.Compare(candidateValue, minValue) < 0)
+                    {
+                        minElement = candidate;
+                        minValue = candidateValue;
+                    }
+                }
+
+                return minElement;
             }
         }
 

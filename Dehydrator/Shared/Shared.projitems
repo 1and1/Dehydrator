@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydrateAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydrateReferencesAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingReadRepository.cs" />
