@@ -17,7 +17,7 @@ namespace Dehydrator
         /// </summary>
         [NotNull] protected new readonly ICrudRepository<TEntity> Inner;
 
-        [NotNull] private readonly ICrudRepositoryFactory _repositoryFactory;
+        [NotNull] private readonly IReadRepositoryFactory _repositoryFactory;
 
         /// <summary>
         /// Creates a new reference-dehydrating decorator.
@@ -25,19 +25,10 @@ namespace Dehydrator
         /// <param name="inner">The inner repository to use for the actual storage.</param>
         /// <param name="repositoryFactory">Used to aquire additional repositories for resolving references.</param>
         public DehydratingCrudRepository([NotNull] ICrudRepository<TEntity> inner,
-            [NotNull] ICrudRepositoryFactory repositoryFactory) : base(inner)
+            [NotNull] IReadRepositoryFactory repositoryFactory) : base(inner)
         {
             _repositoryFactory = repositoryFactory;
             Inner = inner;
-        }
-
-        /// <summary>
-        /// Creates a new reference-dehydrating decorator.
-        /// </summary>
-        /// <param name="repositoryFactory">Used to aquire the <typeparamref name="TEntity"/> and additional repositories for resolving references.</param>
-        public DehydratingCrudRepository(ICrudRepositoryFactory repositoryFactory)
-            : this(repositoryFactory.Create<TEntity>(), repositoryFactory)
-        {
         }
 
         public TEntity Add(TEntity entity)

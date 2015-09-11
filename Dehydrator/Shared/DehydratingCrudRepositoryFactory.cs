@@ -23,7 +23,7 @@ namespace Dehydrator
         public new ICrudRepository<TEntity> Create<TEntity>()
             where TEntity : class, IEntity, new()
         {
-            return new DehydratingCrudRepository<TEntity>(_inner);
+            return new DehydratingCrudRepository<TEntity>(_inner.Create<TEntity>(), _inner);
         }
     }
 }

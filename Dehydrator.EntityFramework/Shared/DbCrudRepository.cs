@@ -31,15 +31,6 @@ namespace Dehydrator.EntityFramework
             _dbSet = dbSet;
         }
 
-        /// <summary>
-        /// Creates a new database-backed repository.
-        /// </summary>
-        /// <param name="dbContext">The database context used to access the database.</param>
-        public DbCrudRepository(DbContext dbContext)
-            : this(dbContext.Set<TEntity>(), dbContext)
-        {
-        }
-
         public TEntity Add(TEntity entity)
         {
             return _dbSet.Add(entity);
