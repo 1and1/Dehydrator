@@ -5,10 +5,8 @@ namespace Dehydrator.Sample.Models
     /// <summary>
     /// A software package like an application or a library.
     /// </summary>
-    public class Package : Entity
+    public class Package : NamedEntity
     {
-        public string Name { get; set; }
-
         /// <summary>
         /// An old package this one replaces.
         /// </summary>

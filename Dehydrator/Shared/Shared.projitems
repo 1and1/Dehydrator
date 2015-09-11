@@ -17,11 +17,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)DehydratingReadRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExceptionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INamedEntity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IReadRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IReadRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITransaction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LookupReadRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LookupCrudRepositoryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NamedEntity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PropertyExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RepositoryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />

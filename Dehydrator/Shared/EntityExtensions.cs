@@ -142,6 +142,11 @@ namespace Dehydrator
 
             var dehydratedRef = (IEntity)Activator.CreateInstance(entityType);
             dehydratedRef.Id = entity.Id;
+
+            var namedEntity = entity as INamedEntity;
+            if (namedEntity != null)
+                ((INamedEntity)dehydratedRef).Name = namedEntity.Name;
+
             return dehydratedRef;
         }
 
