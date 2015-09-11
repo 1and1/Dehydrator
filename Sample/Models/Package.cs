@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
 namespace Dehydrator.Sample.Models
 {
@@ -21,13 +20,13 @@ namespace Dehydrator.Sample.Models
         /// <summary>
         /// All dependencies this package depends on.
         /// </summary>
-        [JsonIgnore]
+        [Dehydrate]
         public virtual ICollection<Package> Dependencies { get; set; }
 
         /// <summary>
         /// All packages that list this packages in <seealso cref="Dependencies"/>.
         /// </summary>
-        [JsonIgnore]
+        [Dehydrate]
         public virtual ICollection<Package> DependencyOf { get; set; }
 
         /// <summary>

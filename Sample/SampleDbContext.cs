@@ -17,7 +17,7 @@ namespace Dehydrator.Sample
                 {
                     x.MapLeftKey("Dependant");
                     x.MapRightKey("Dependency");
-                    x.ToTable("DependencyRelations");
+                    x.ToTable("PackageDependencies");
                 });
         }
 
