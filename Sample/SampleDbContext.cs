@@ -11,6 +11,9 @@ namespace Dehydrator.Sample
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Package>()
+                .Property(x => x.Name).IsRequired();
+
+            modelBuilder.Entity<Package>()
                 .HasMany(x => x.Dependencies)
                 .WithMany(x => x.DependencyOf)
                 .Map(x =>

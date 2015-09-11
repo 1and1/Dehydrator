@@ -18,12 +18,12 @@ namespace Dehydrator.Sample.Controllers
         {
             Repository.Add(new Package
             {
-                FriendlyName = "AwesomeApp",
+                Name = "AwesomeApp",
                 Dependencies = new List<Package>
                 {
                     new Package
                     {
-                        FriendlyName = "AwesomeLib"
+                        Name = "AwesomeLib"
                     }
                 }
             });

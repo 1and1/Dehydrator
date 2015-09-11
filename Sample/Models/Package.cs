@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dehydrator.Sample.Models
 {
@@ -8,8 +7,7 @@ namespace Dehydrator.Sample.Models
     /// </summary>
     public class Package : Entity
     {
-        [Required]
-        public string FriendlyName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// An old package this one replaces.
