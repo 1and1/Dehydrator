@@ -9,10 +9,10 @@ namespace Dehydrator.Sample
         {
             var container = new UnityContainer();
 
-            container.RegisterDatabase<SampleDbContext>()
+            container.RegisterDatabase<SampleDbContext>(dehydrate: true)
                 .RegisterRepositories();
 
-            //container.RegisterDatabase<SampleDbContext>()
+            //container.RegisterDatabase<SampleDbContext>(dehydrate: true)
             //    .RegisterRepository(x => x.Packages)
             //    .RegisterRepository(x => x.PackagesConfig);
 

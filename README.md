@@ -95,17 +95,17 @@ If you wish to use the [Unity Application Block](https://unity.codeplex.com/) fo
 If all your `DbSet`s are located in a single `DbContext`:
 ```cs
 var container = new UnityContainer();
-container.RegisterDatabase<MyDbContext>()
+container.RegisterDatabase<MyDbContext>(dehydrate: true)
   .RegisterRepositories();
 ```
 
 If your `DbSet`s are distributed across multiple `DbContext`s:
 ```cs
 var container = new UnityContainer();
-container.RegisterDatabase<PackageDbContext>()
+container.RegisterDatabase<PackageDbContext>(dehydrate: true)
   .RegisterRepository(x => x.Packages)
   .RegisterRepository(x => x.PackagesConfig);
-container.RegisterDatabase<LoginDbContext>()
+container.RegisterDatabase<LoginDbContext>(dehydrate: true)
   .RegisterRepository(x => x.Users)
   .RegisterRepository(x => x.Groups);
 ```
