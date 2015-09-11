@@ -86,13 +86,14 @@ namespace Dehydrator.WebApi
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
                     $"{typeof(TEntity).Name} {id} not found."));
 
-            SaveChanges();
+            SaveChanges(codeIfError: HttpStatusCode.Forbidden);
         }
 
         /// <summary>
         /// Saves any pending changes in the underlying <see cref="Repository"/>.
         /// </summary>
-        protected void SaveChanges()
+        /// <param name="codeIfError">The <see cref="HttpStatusCode"/> to return in case of an error.</param>
+        protected void SaveChanges(HttpStatusCode codeIfError = HttpStatusCode.BadRequest)
         {
             try
             {
@@ -100,8 +101,7 @@ namespace Dehydrator.WebApi
             }
             catch (DataException ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    ex.Message));
+                throw new HttpResponseException(Request.CreateErrorResponse(codeIfError, ex.GetInnerMost().Message));
             }
         }
     }
