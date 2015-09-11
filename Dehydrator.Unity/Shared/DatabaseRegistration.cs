@@ -53,28 +53,37 @@ namespace Dehydrator.Unity
         /// Registers a database-backed <see cref="IReadRepositoryFactory"/> and <see cref="ICrudRepositoryFactory"/> (if not read-only) for a specific <see cref="DbSet{TEntity}"/>.
         /// </summary>
         /// <typeparam name="TEntity">The specific <see cref="IEntity"/> type of the <see cref="DbSet{TEntity}"/>.</typeparam>
-        /// <param name="setSelector">Used to select a <see cref="DbSet{TEntity}"/> contained in a <see cref="DbContext"/>.</param>
+        /// <param name="setSelector">Used to infer the <typeparamref name="TEntity"/> type from a <see cref="DbSet{TEntity}"/> contained in the <see cref="DbContext"/>.</param>
         /// <returns>A fluent API object to continue the configuration.</returns>
         public DatabaseRegistration<TDbContext> RegisterRepository<TEntity>(
             Func<TDbContext, DbSet<TEntity>> setSelector)
             where TEntity : class, IEntity, new()
         {
+            return RegisterRepository<TEntity>();
+        }
+
+        /// <summary>
+        /// Registers a database-backed <see cref="IReadRepositoryFactory"/> and <see cref="ICrudRepositoryFactory"/> (if not read-only) for a specific <see cref="DbSet{TEntity}"/>.
+        /// </summary>
+        /// <typeparam name="TEntity">The specific <see cref="IEntity"/> type of the <see cref="DbSet{TEntity}"/>.</typeparam>
+        /// <returns>A fluent API object to continue the configuration.</returns>
+        public DatabaseRegistration<TDbContext> RegisterRepository<TEntity>()
+            where TEntity : class, IEntity, new()
+        {
             _container.RegisterType<IReadRepository<TEntity>>(new InjectionFactory((c, t, s) =>
             {
-                var dbContext = c.Resolve<TDbContext>();
-                var dbRepo = new DbReadRepository<TEntity>(setSelector(dbContext));
-                return _dehydrate ? new DehydratingReadRepository<TEntity>(dbRepo) : (IReadRepository<TEntity>)dbRepo;
+                var factory = c.Resolve<IReadRepositoryFactory>(
+                    name: $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}");
+                return factory.Create<TEntity>();
             }));
 
             if (!_readOnly)
             {
                 _container.RegisterType<ICrudRepository<TEntity>>(new InjectionFactory((c, t, s) =>
                 {
-                    var dbContext = c.Resolve<TDbContext>();
-                    var dbRepo = new DbCrudRepository<TEntity>(setSelector(dbContext), dbContext);
                     var factory = c.Resolve<ICrudRepositoryFactory>(
                         name: $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}");
-                    return _dehydrate ? new DehydratingCrudRepository<TEntity>(dbRepo, factory) : (ICrudRepository<TEntity>)dbRepo;
+                    return factory.Create<TEntity>();
                 }));
             }
 
