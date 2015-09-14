@@ -29,7 +29,7 @@ namespace Dehydrator.Unity
         /// </summary>
         public void RegisterRepositories()
         {
-            _container.RegisterType(typeof(IReadRepository<>), new InjectionFactory((c, t, s) =>
+            _container.RegisterType(typeof(IReadRepository<>), new PerResolveLifetimeManager(), new InjectionFactory((c, t, s) =>
             {
                 var factory = c.Resolve<IReadRepositoryFactory>(
                     name: $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}");
@@ -39,7 +39,7 @@ namespace Dehydrator.Unity
 
             if (!_readOnly)
             {
-                _container.RegisterType(typeof(ICrudRepository<>), new InjectionFactory((c, t, s) =>
+                _container.RegisterType(typeof(ICrudRepository<>), new PerResolveLifetimeManager(), new InjectionFactory((c, t, s) =>
                 {
                     var factory = c.Resolve<ICrudRepositoryFactory>(
                         name: $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}");
@@ -70,7 +70,7 @@ namespace Dehydrator.Unity
         public DatabaseRegistration<TDbContext> RegisterRepository<TEntity>()
             where TEntity : class, IEntity, new()
         {
-            _container.RegisterType<IReadRepository<TEntity>>(new InjectionFactory((c, t, s) =>
+            _container.RegisterType<IReadRepository<TEntity>>(new PerResolveLifetimeManager(), new InjectionFactory((c, t, s) =>
             {
                 var factory = c.Resolve<IReadRepositoryFactory>(
                     name: $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}");
@@ -79,7 +79,7 @@ namespace Dehydrator.Unity
 
             if (!_readOnly)
             {
-                _container.RegisterType<ICrudRepository<TEntity>>(new InjectionFactory((c, t, s) =>
+                _container.RegisterType<ICrudRepository<TEntity>>(new PerResolveLifetimeManager(), new InjectionFactory((c, t, s) =>
                 {
                     var factory = c.Resolve<ICrudRepositoryFactory>(
                         name: $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}");

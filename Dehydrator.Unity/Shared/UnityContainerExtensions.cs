@@ -21,7 +21,7 @@ namespace Dehydrator.Unity
             container.RegisterType<TDbContext>();
 
             container.RegisterType<IReadRepositoryFactory>(
-                $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}",
+                $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}", new PerResolveLifetimeManager(),
                 new InjectionFactory(c =>
                 {
                     var dbFactory = new DbReadRepositoryFactory(c.Resolve<TDbContext>());
@@ -31,7 +31,7 @@ namespace Dehydrator.Unity
             if (!readOnly)
             {
                 container.RegisterType<ICrudRepositoryFactory>(
-                    $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}",
+                    $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}", new PerResolveLifetimeManager(),
                     new InjectionFactory(c =>
                     {
                         var dbFactory = new DbCrudRepositoryFactory(c.Resolve<TDbContext>());
