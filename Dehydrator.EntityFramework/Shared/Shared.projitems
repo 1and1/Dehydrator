@@ -16,5 +16,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DbCrudRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DbCrudRepositoryFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DbTransaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FakeTransaction.cs" />
   </ItemGroup>
 </Project>

@@ -39,6 +39,7 @@ namespace Dehydrator
         /// Locks the contents represented by the repository. Any following changes are only commited if <see cref="ITransaction.Commit"/> is called.
         /// </summary>
         /// <returns>A representation of the transaction. Dispose to end the transaction and rollback uncomitted changes.</returns>
+        [NotNull]
         ITransaction BeginTransaction();
 
         /// <summary>

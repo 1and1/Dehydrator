@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using JetBrains.Annotations;
 
 namespace Dehydrator.EntityFramework
@@ -9,11 +10,13 @@ namespace Dehydrator.EntityFramework
     public sealed class DbTransaction : ITransaction
     {
         [NotNull] private readonly DbContextTransaction _transaction;
+        [NotNull] private readonly Action _disposeCallback;
         private bool _commmited;
 
-        public DbTransaction([NotNull] DbContextTransaction transaction)
+        public DbTransaction([NotNull] DbContextTransaction transaction, [NotNull] Action disposeCallback)
         {
             _transaction = transaction;
+            _disposeCallback = disposeCallback;
         }
 
         public void Commit()
@@ -29,6 +32,7 @@ namespace Dehydrator.EntityFramework
         {
             if (!_commmited) _transaction.Rollback();
             _transaction.Dispose();
+            _disposeCallback();
         }
     }
 }

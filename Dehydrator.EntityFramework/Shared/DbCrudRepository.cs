@@ -19,6 +19,8 @@ namespace Dehydrator.EntityFramework
         [NotNull] private readonly DbContext _dbContext;
         [NotNull] private readonly DbSet<TEntity> _dbSet;
 
+        private bool _transactionActive;
+
         /// <summary>
         /// Creates a new database-backed repository.
         /// </summary>
@@ -61,6 +63,8 @@ namespace Dehydrator.EntityFramework
 
         public ITransaction BeginTransaction()
         {
+            if (_transactionActive) return new FakeTransaction();
+
             var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
@@ -72,7 +76,9 @@ namespace Dehydrator.EntityFramework
                 transaction.Dispose();
                 throw;
             }
-            return new DbTransaction(transaction);
+
+            _transactionActive = true;
+            return new DbTransaction(transaction, disposeCallback: () => _transactionActive = false);
         }
 
         public void SaveChanges()
@@ -111,6 +117,8 @@ namespace Dehydrator.EntityFramework
 
         public async Task<ITransaction> BeginTransactionAsync()
         {
+            if (_transactionActive) return new FakeTransaction();
+
             var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
@@ -123,7 +131,9 @@ namespace Dehydrator.EntityFramework
                 transaction.Dispose();
                 throw;
             }
-            return new DbTransaction(transaction);
+
+            _transactionActive = true;
+            return new DbTransaction(transaction, disposeCallback: () => _transactionActive = false);
         }
 
         public async Task SaveChangesAsync()
