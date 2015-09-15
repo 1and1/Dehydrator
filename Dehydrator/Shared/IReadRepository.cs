@@ -52,9 +52,15 @@ namespace Dehydrator
 
 #if NET45
         /// <summary>
-        /// Performs a LINQ query on the backing database.
+        /// Performs a LINQ query on the backing database and returns the first result.
         /// </summary>
-        Task<TResult> Query<TResult>([NotNull] Func<IQueryable<TEntity>, Task<TResult>> query);
+        /// <exception cref="InvalidOperationException">The <paramref name="query"/> returned no results.</exception>
+        Task<TResult> QueryFirstAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
+
+        /// <summary>
+        /// Performs a LINQ query on the backing database and returns the first result or the default value of <typeparamref name="TResult"/>.
+        /// </summary>
+        Task<TResult> QueryFirstOrDefaultAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
         /// Returns a specific entity from the backing database.

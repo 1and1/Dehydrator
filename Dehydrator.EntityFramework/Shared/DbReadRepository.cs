@@ -59,9 +59,14 @@ namespace Dehydrator.EntityFramework
         }
 
 #if NET45
-        public Task<TResult> Query<TResult>(Func<IQueryable<TEntity>, Task<TResult>> query)
+        public Task<TResult> QueryFirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
-            return query(_dbSet);
+            return query(_dbSet).FirstAsync();
+        }
+
+        public Task<TResult> QueryFirstOrDefaultAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        {
+            return query(_dbSet).FirstOrDefaultAsync();
         }
 
         public async Task<IEntity> FindUntypedAsync(long id)

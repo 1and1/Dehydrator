@@ -75,9 +75,19 @@ namespace Dehydrator
         }
 
 #if NET45
-        public async Task<TResult> Query<TResult>(Func<IQueryable<TEntity>, Task<TResult>> query)
+        public async Task<TResult> QueryFirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
-            var result = await Inner.Query(query);
+            var result = await Inner.QueryFirstAsync(query);
+
+            // Dehydrate if the query result is an entity, otherwise pass through
+            return (typeof(TEntity) == typeof(TResult))
+                ? (TResult)(object)((TEntity)(object)result)?.DehydrateReferences()
+                : result;
+        }
+
+        public async Task<TResult> QueryFirstOrDefaultAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        {
+            var result = await Inner.QueryFirstOrDefaultAsync(query);
 
             // Dehydrate if the query result is an entity, otherwise pass through
             return (typeof(TEntity) == typeof(TResult))
