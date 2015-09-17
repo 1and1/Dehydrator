@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>Dehydrator.Unity</id>
+		<id>Dehydrator.EntityFramework.Unity</id>
 		<version>$version$</version>
 		<authors>1&amp;1 Internet SE</authors>
 		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
@@ -14,9 +14,9 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="..\build\Release\net45\Dehydrator.Unity.dll" target="lib\net45" />
-		<file src="..\build\Release\net45\Dehydrator.Unity.pdb" target="lib\net45" />
-		<file src="..\build\Release\net45\Dehydrator.Unity.xml" target="lib\net45" />
+		<file src="..\build\Release\net45\Dehydrator.EntityFramework.Unity.dll" target="lib\net45" />
+		<file src="..\build\Release\net45\Dehydrator.EntityFramework.Unity.pdb" target="lib\net45" />
+		<file src="..\build\Release\net45\Dehydrator.EntityFramework.Unity.xml" target="lib\net45" />
 		<file src="Shared\**\*.cs" target="src" />
 	</files>
 </package>

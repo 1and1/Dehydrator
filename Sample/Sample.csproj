@@ -132,7 +132,7 @@
       <Project>{63a4c204-eca0-446e-b461-064413200072}</Project>
       <Name>Dehydrator.EntityFramework.Net45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dehydrator.Unity\Net45\Dehydrator.Unity.Net45.csproj">
+    <ProjectReference Include="..\Dehydrator.EntityFramework.Unity\Net45\Dehydrator.EntityFramework.Unity.Net45.csproj">
       <Project>{65d48e97-7ce9-4747-abf3-9660e90605fd}</Project>
       <Name>Dehydrator.Unity.Net45</Name>
     </ProjectReference>

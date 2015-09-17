@@ -1,8 +1,7 @@
 ﻿using System.Data.Entity;
-using Dehydrator.EntityFramework;
 using Microsoft.Practices.Unity;
 
-namespace Dehydrator.Unity
+namespace Dehydrator.EntityFramework.Unity
 {
     public static class UnityContainerExtensions
     {

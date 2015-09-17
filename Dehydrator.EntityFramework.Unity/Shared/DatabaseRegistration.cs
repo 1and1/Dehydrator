@@ -1,10 +1,9 @@
 using System;
 using System.Data.Entity;
-using Dehydrator.EntityFramework;
 using JetBrains.Annotations;
 using Microsoft.Practices.Unity;
 
-namespace Dehydrator.Unity
+namespace Dehydrator.EntityFramework.Unity
 {
     /// <summary>
     /// A fluent API object returned by <see cref="UnityContainerExtensions.RegisterDatabase{TDbContext}"/> to continue the configuration.

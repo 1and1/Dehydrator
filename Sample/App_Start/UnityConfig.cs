@@ -1,4 +1,4 @@
-﻿using Dehydrator.Unity;
+﻿using Dehydrator.EntityFramework.Unity;
 using Microsoft.Practices.Unity;
 
 namespace Dehydrator.Sample

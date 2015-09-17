@@ -7,17 +7,17 @@ By stripping navigational references in your entities down to only their IDs the
 NuGet packages:
 * [Dehydrator](https://www.nuget.org/packages/Dehydrator/)
 * [Dehydrator.EntityFramework](https://www.nuget.org/packages/Dehydrator.EntityFramework/)
+* [Dehydrator.EntityFramework.Unity](https://www.nuget.org/packages/Dehydrator.EntityFramework.Unity/)
 * [Dehydrator.WebApi](https://www.nuget.org/packages/Dehydrator.WebApi/)
-* [Dehydrator.Unity](https://www.nuget.org/packages/Dehydrator.Unity/)
 
 While Dehydrator is designed primarily for use with Entity Framework and WebAPI you can also use the core package (`Dehydrator`) with any other ORM and REST framework. You'll just need to implement the parts from the other packages yourself, which should be pretty straightforward.
 
 
 ## Usecase sample
 
-We'll use this simple POCO (Plain old CLR object) class modeling software packages and their dependencies as an example:
+We'll use this simple POCO (Plain old CLR object) class modelling software packages and their dependencies as an example:
 ```cs
-public class Package : IEntity
+class Package : IEntity
 {
   public long Id { get; set; }
   public string Name { get; set; }
@@ -67,6 +67,7 @@ If you want to have a property resolved but not dehydrated (e.g., incoming data 
 
 Resolving requires an `IRepositoryFactory`, which represents a storage backend such as a database and provides `IRepository<>` instances for specific entity types.
 
+
 ### Entity Framework
 Install the `Dehydrator.EntityFramework` NuGet package in the project you use for database access via Entity Framework. This provides `DbRepositoryFactory`, an `IRepositoryFactory` implementation based on Entity Framework's `DbSet`.
 
@@ -74,23 +75,9 @@ Use the `DehydratingRepositoryFactory` decorator to wrap your `IRepositoryFactor
 
 Make sure to make any reference/navigational properties `virtual` to enable Entity Framework's lazy loading feature.
 
-### WebAPI
-To avoid unnecessary noise in dehydrated JSON output you should add the following line to your `WebApiConfig.Register()` method:
-```cs
-config.Formatters.JsonFormatter.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
-```
-
-Install the `Dehydrator.WebApi` NuGet package in your WebAPI project. You can then derive your controller classes from `CrudController` or `AsyncCrudController` which take an `IRepository<>` as a constructor argument. Use instances created by `DehydratingRepositoryFactory`. The best way to acheive this is dependency injection. See below for Unity.
-
-If you choose to use the `CrudController` or `AsyncCrudController` base classes you must add the following line to your `WebApiConfig.Register()` method:
-```cs
-config.MapHttpAttributeRoutes(new InheritanceRouteProvider());
-```
-
-You can also build your own controllers using `IRepository<>`s directly without using the `Dehydrator.WebApi` package.
 
 ### Unity
-If you wish to use the [Unity Application Block](https://unity.codeplex.com/) for dependency injection in your Entity Framework application install the `Dehydrator.Unity` NuGet package. This adds extension methods to the `IUnityContainer` type for configuring Unity to automatically instantiate dehydrating database-backed repositories.
+If you wish to use the [Unity Application Block](https://unity.codeplex.com/) for dependency injection in your Entity Framework application install the `Dehydrator.EntityFramework.Unity` NuGet package. This adds extension methods to the `IUnityContainer` type for configuring Unity to automatically instantiate dehydrating database-backed repositories.
 
 If all your `DbSet`s are located in a single `DbContext`:
 ```cs
@@ -109,6 +96,22 @@ container.RegisterDatabase<LoginDbContext>(dehydrate: true)
   .RegisterRepository(x => x.Users)
   .RegisterRepository(x => x.Groups);
 ```
+
+
+### WebAPI
+To avoid unnecessary noise in dehydrated JSON output you should add the following line to your `WebApiConfig.Register()` method:
+```cs
+config.Formatters.JsonFormatter.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
+```
+
+Install the `Dehydrator.WebApi` NuGet package in your WebAPI project. You can then derive your controller classes from `CrudController` or `AsyncCrudController` which take an `IRepository<>` as a constructor argument. Use instances created by `DehydratingRepositoryFactory`. The easiest way to achieve this is dependency injection, e.g., using Unity as described above.
+
+If you choose to use the `CrudController` or `AsyncCrudController` base classes you must add the following line to your `WebApiConfig.Register()` method:
+```cs
+config.MapHttpAttributeRoutes(new InheritanceRouteProvider());
+```
+
+You can also build your own controllers using `IRepository<>`s directly without using the `Dehydrator.WebApi` package.
 
 
 ## Sample project
