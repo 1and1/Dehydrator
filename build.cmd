@@ -12,14 +12,14 @@ msbuild Dehydrator.sln /nologo /t:Rebuild /p:Configuration=Release
 if errorlevel 1 pause
 
 ::Create NuGet packages
-mkdir build\NuGet
-nuget pack Dehydrator\Dehydrator.nuspec -Symbols -OutputDirectory build\NuGet -Version %version%
+mkdir build\Packages
+nuget pack Dehydrator\Dehydrator.nuspec -Symbols -OutputDirectory build\Packages -Version %version%
 if errorlevel 1 pause
-nuget pack Dehydrator.EntityFramework\Dehydrator.EntityFramework.nuspec -Symbols -OutputDirectory build\NuGet -Version %version%
+nuget pack Dehydrator.EntityFramework\Dehydrator.EntityFramework.nuspec -Symbols -OutputDirectory build\Packages -Version %version%
 if errorlevel 1 pause
-nuget pack Dehydrator.EntityFramework.Unity\Dehydrator.EntityFramework.Unity.nuspec -Symbols -OutputDirectory build\NuGet -Version %version%
+nuget pack Dehydrator.EntityFramework.Unity\Dehydrator.EntityFramework.Unity.nuspec -Symbols -OutputDirectory build\Packages -Version %version%
 if errorlevel 1 pause
-nuget pack Dehydrator.WebApi\Dehydrator.WebApi.nuspec -Symbols -OutputDirectory build\NuGet -Version %version%
+nuget pack Dehydrator.WebApi\Dehydrator.WebApi.nuspec -Symbols -OutputDirectory build\Packages -Version %version%
 if errorlevel 1 pause
 
 goto end
