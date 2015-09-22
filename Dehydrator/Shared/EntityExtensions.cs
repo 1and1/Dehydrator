@@ -135,6 +135,17 @@ namespace Dehydrator
             else return entity;
         }
 
+        /// <summary>
+        /// Dehydrates the <paramref name="entity"/> to contain nothing but its <see cref="IEntity.Id"/>s (and <see cref="INamedEntity.Name"/> if present).
+        /// Returns the result as a new object keeping the original unchanged.
+        /// </summary>
+        [NotNull]
+        public static TEntity Dehydrate<TEntity>([NotNull] this TEntity entity)
+            where TEntity : class, IEntity, new()
+        {
+            return (TEntity)entity.Dehydrate(typeof(TEntity));
+        }
+
         [NotNull]
         private static IEntity Dehydrate([NotNull] this IEntity entity, [NotNull] Type entityType)
         {
