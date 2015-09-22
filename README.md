@@ -99,9 +99,10 @@ container.RegisterDatabase<LoginDbContext>(dehydrate: true)
 
 
 ### WebAPI
-To avoid unnecessary noise in dehydrated JSON output you should add the following line to your `WebApiConfig.Register()` method:
+For proper JSON-serialization of dehydrated content you should add the following lines to your `WebApiConfig.Register()` method:
 ```cs
 config.Formatters.JsonFormatter.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
+config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
 ```
 
 Install the `Dehydrator.WebApi` NuGet package in your WebAPI project. You can then derive your controller classes from `CrudController` or `AsyncCrudController` which take an `IRepository<>` as a constructor argument. Use instances created by `DehydratingRepositoryFactory`. The easiest way to achieve this is dependency injection, e.g., using Unity as described above.
