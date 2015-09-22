@@ -31,7 +31,7 @@ namespace Dehydrator
 
         public IEnumerable<TEntity> GetAll()
         {
-            return Inner.GetAll().Select(x => x.DehydrateReferences());
+            return Inner.GetAll().Select(x => x.Dehydrate());
         }
 
         public TResult Query<TResult>(Func<IQueryable<TEntity>, TResult> query)
