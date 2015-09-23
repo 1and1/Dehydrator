@@ -45,7 +45,6 @@ namespace Dehydrator
         /// Compares two <see cref="IEntity"/> collections for element-wise equality. Treats <see langword="null"/> values as empty collections.
         /// </summary>
         protected bool Equals<T>([CanBeNull] ICollection<T> first, [CanBeNull] ICollection<T> second)
-            where T : IEntity
         {
             return (first ?? new List<T>()).UnsequencedEquals(second ?? new List<T>());
         }
