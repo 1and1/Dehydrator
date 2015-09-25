@@ -3,7 +3,8 @@
 	<metadata>
 		<id>Dehydrator.WebApi</id>
 		<version>$version$</version>
-		<authors>1&amp;1 Internet SE</authors>
+		<authors>Bastian Eicher</authors>
+		<copyright>1&amp;1 Internet SE</copyright>
 		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
 		<description>This package provides base classes and sample configuration for building WebAPI controllers that use a dehydrated data model.
 Install this package in your controller if you use WebAPI.</description>
