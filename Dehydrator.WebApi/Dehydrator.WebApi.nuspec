@@ -9,15 +9,5 @@
 		<description>This package provides base classes and sample configuration for building WebAPI controllers that use a dehydrated data model.
 Install this package in your controller if you use WebAPI.</description>
 		<summary>Base classes for creating WebAPI controllers using Dehydrator</summary>
-		<dependencies>
-			<dependency id="Dehydrator" version="$version$" />
-			<dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
-		</dependencies>
 	</metadata>
-	<files>
-		<file src="..\build\Release\net45\Dehydrator.WebApi.dll" target="lib\net45" />
-		<file src="..\build\Release\net45\Dehydrator.WebApi.pdb" target="lib\net45" />
-		<file src="..\build\Release\net45\Dehydrator.WebApi.xml" target="lib\net45" />
-		<file src="Shared\**\*.cs" target="src" />
-	</files>
 </package>

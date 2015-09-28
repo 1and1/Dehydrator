@@ -90,13 +90,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dehydrator.WebApi\Net45\Dehydrator.WebApi.Net45.csproj">
+    <ProjectReference Include="..\Dehydrator.WebApi\Dehydrator.WebApi.csproj">
       <Project>{368ABA94-AA57-482E-B696-1C104EB57BD6}</Project>
-      <Name>Dehydrator.WebApi.Net45</Name>
+      <Name>Dehydrator.WebApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dehydrator\Net45\Dehydrator.Net45.csproj">
+    <ProjectReference Include="..\Dehydrator\Dehydrator.csproj">
       <Project>{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}</Project>
-      <Name>Dehydrator.Net45</Name>
+      <Name>Dehydrator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

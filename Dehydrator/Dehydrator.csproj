@@ -16,34 +16,34 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\Debug\net45\</OutputPath>
+    <OutputPath>..\build\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\build\Debug\net45\Dehydrator.xml</DocumentationFile>
+    <DocumentationFile>..\build\Debug\Dehydrator.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\build\Release\net45\</OutputPath>
+    <OutputPath>..\build\Release\</OutputPath>
     <DefineConstants>TRACE;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\build\Release\net45\Dehydrator.xml</DocumentationFile>
+    <DocumentationFile>..\build\Release\Dehydrator.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\sgKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Annotations, Version=9.2.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -52,10 +52,36 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfo.Global.cs" />
+    <Compile Include="..\AssemblyInfo.Global.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="DehydrateAttribute.cs" />
+    <Compile Include="DehydrateReferencesAttribute.cs" />
+    <Compile Include="DehydratingCrudRepository.cs" />
+    <Compile Include="DehydratingCrudRepositoryFactory.cs" />
+    <Compile Include="DehydratingReadRepository.cs" />
+    <Compile Include="DehydratingReadRepositoryFactory.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="ICrudRepository.cs" />
+    <Compile Include="ICrudRepositoryFactory.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="INamedEntity.cs" />
+    <Compile Include="IReadRepository.cs" />
+    <Compile Include="IReadRepositoryFactory.cs" />
+    <Compile Include="ITransaction.cs" />
+    <Compile Include="LookupCrudRepositoryFactory.cs" />
+    <Compile Include="LookupReadRepositoryFactory.cs" />
+    <Compile Include="NamedEntity.cs" />
+    <Compile Include="PropertyExtensions.cs" />
+    <Compile Include="RepositoryExtensions.cs" />
+    <Compile Include="RepositoryFactoryExtensions.cs" />
+    <Compile Include="ResolveAttribute.cs" />
+    <Compile Include="ResolveReferencesAttribute.cs" />
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

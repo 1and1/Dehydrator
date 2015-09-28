@@ -8,16 +8,5 @@
 		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
 		<description>This package provides extension methods for registering Dehydrator.EntityFramework repositories and factories in the Unity Application Block.</description>
 		<summary>Extension methods for registering Dehydrator.EntityFramework in Unity</summary>
-		<dependencies>
-			<dependency id="Dehydrator" version="$version$" />
-			<dependency id="Dehydrator.EntityFramework" version="$version$" />
-			<dependency id="Unity" version="3.5.1404.0" />
-		</dependencies>
 	</metadata>
-	<files>
-		<file src="..\build\Release\net45\Dehydrator.EntityFramework.Unity.dll" target="lib\net45" />
-		<file src="..\build\Release\net45\Dehydrator.EntityFramework.Unity.pdb" target="lib\net45" />
-		<file src="..\build\Release\net45\Dehydrator.EntityFramework.Unity.xml" target="lib\net45" />
-		<file src="Shared\**\*.cs" target="src" />
-	</files>
 </package>

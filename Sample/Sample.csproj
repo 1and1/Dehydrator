@@ -128,21 +128,21 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dehydrator.EntityFramework\Net45\Dehydrator.EntityFramework.Net45.csproj">
+    <ProjectReference Include="..\Dehydrator.EntityFramework\Dehydrator.EntityFramework.csproj">
       <Project>{63a4c204-eca0-446e-b461-064413200072}</Project>
-      <Name>Dehydrator.EntityFramework.Net45</Name>
+      <Name>Dehydrator.EntityFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dehydrator.EntityFramework.Unity\Net45\Dehydrator.EntityFramework.Unity.Net45.csproj">
+    <ProjectReference Include="..\Dehydrator.EntityFramework.Unity\Dehydrator.EntityFramework.Unity.csproj">
       <Project>{65d48e97-7ce9-4747-abf3-9660e90605fd}</Project>
-      <Name>Dehydrator.Unity.Net45</Name>
+      <Name>Dehydrator.EntityFramework.Unity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dehydrator.WebApi\Net45\Dehydrator.WebApi.Net45.csproj">
+    <ProjectReference Include="..\Dehydrator.WebApi\Dehydrator.WebApi.csproj">
       <Project>{368aba94-aa57-482e-b696-1c104eb57bd6}</Project>
-      <Name>Dehydrator.WebApi.Net45</Name>
+      <Name>Dehydrator.WebApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dehydrator\Net45\Dehydrator.Net45.csproj">
+    <ProjectReference Include="..\Dehydrator\Dehydrator.csproj">
       <Project>{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}</Project>
-      <Name>Dehydrator.Net45</Name>
+      <Name>Dehydrator</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
