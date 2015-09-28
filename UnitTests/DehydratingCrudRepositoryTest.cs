@@ -16,6 +16,7 @@ namespace Dehydrator
 
         private MockEntity1 _entityWithDehydratedRefs, _entityWithResolvedRefs;
         private MockEntity2 _resolvedRef, _dehydratedRef;
+        private MockEntity1 _dehydratedEntity;
 
         [SetUp]
         public void SetUp()
@@ -40,6 +41,8 @@ namespace Dehydrator
                 FriendlyName = "Foo",
                 MultiRef = {_resolvedRef}
             };
+
+            _dehydratedEntity = new MockEntity1 {Id = 1};
         }
 
         [TearDown]
@@ -55,8 +58,8 @@ namespace Dehydrator
             _mainRepositoryMock.Setup(x => x.GetAll())
                 .Returns(new[] {_entityWithResolvedRefs});
 
-            var result = _repository.GetAll();
-            result.Should().BeEquivalentTo(_entityWithDehydratedRefs);
+            var result = _repository.GetAll().ToList();
+            result.Should().BeEquivalentTo(_dehydratedEntity);
         }
 
         [Test]
