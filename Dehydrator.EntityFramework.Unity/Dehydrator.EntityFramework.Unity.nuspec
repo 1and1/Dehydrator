@@ -5,8 +5,9 @@
 		<version>$version$</version>
 		<authors>Bastian Eicher</authors>
 		<copyright>1&amp;1 Internet SE</copyright>
-		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
+		<projectUrl>https://github.com/1and1/Dehydrator</projectUrl>
 		<description>This package provides extension methods for registering Dehydrator.EntityFramework repositories and factories in the Unity Application Block.</description>
 		<summary>Extension methods for registering Dehydrator.EntityFramework in Unity</summary>
+		<tags>Dehydrate Entity JSON REST WebAPI ORM EntityFramework</tags>
 	</metadata>
 </package>

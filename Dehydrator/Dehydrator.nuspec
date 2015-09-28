@@ -5,10 +5,11 @@
 		<version>$version$</version>
 		<authors>Bastian Eicher</authors>
 		<copyright>1&amp;1 Internet SE</copyright>
-		<projectUrl>https://github.com/1and1-webhosting-infrastructure/Dehydrator</projectUrl>
+		<projectUrl>https://github.com/1and1/Dehydrator</projectUrl>
 		<description>Dehydrator helps you combine ORMs like Entity Framework with REST service frameworks like WebAPI.
 By stripping navigational references in your entities down to only their IDs their serialized representation no longer contains redundant or cyclic data. When new or modified deserialized data needs to be persisted Dehydrator takes care of resolving the reference IDs again.
 Install this package in your data model. Install Dehydrator.EntityFramework and EntityFramework.WebApi in your controller if you use Entity Framework and WebAPI.</description>
 		<summary>Dehydrates references in Entity objects down to nothing but their ID for better serializability</summary>
+		<tags>Dehydrate Entity JSON REST WebAPI ORM EntityFramework</tags>
 	</metadata>
 </package>
