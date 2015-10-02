@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Dehydrator.EntityFramework.DbCrudRepository&lt;TEntity&gt;" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAIBIAABAAAAAEAAQAgAJAAQCACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DbCrudRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dehydrator.EntityFramework.DbCrudRepositoryFactory" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>DbCrudRepositoryFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dehydrator.EntityFramework.DbReadRepository&lt;TEntity&gt;" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAQIAEgAAgAAAAEAgAA=</HashCode>
+      <FileName>DbReadRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dehydrator.EntityFramework.DbReadRepositoryFactory" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>DbReadRepositoryFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dehydrator.EntityFramework.DbTransaction" Collapsed="true">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAQAAAACAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DbTransaction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dehydrator.EntityFramework.FakeTransaction" Collapsed="true">
+    <Position X="2.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FakeTransaction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Dehydrator.ICrudRepository&lt;TEntity&gt;" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Dehydrator.ICrudRepositoryFactory" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Dehydrator.IReadRepository&lt;TEntity&gt;" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Dehydrator.IReadRepositoryFactory" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Dehydrator.ITransaction" Collapsed="true">
+    <Position X="0.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

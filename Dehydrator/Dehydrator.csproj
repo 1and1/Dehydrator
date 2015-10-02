@@ -80,6 +80,7 @@
     <Compile Include="RepositoryFactoryExtensions.cs" />
     <Compile Include="ResolveAttribute.cs" />
     <Compile Include="ResolveReferencesAttribute.cs" />
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

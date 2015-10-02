@@ -71,6 +71,7 @@
     <Compile Include="DbTransaction.cs" />
     <Compile Include="FakeTransaction.cs" />
     <None Include="App.config" />
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
