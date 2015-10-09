@@ -101,6 +101,7 @@ container.RegisterDatabase<LoginDbContext>(dehydrate: true)
 ### WebAPI
 For proper JSON-serialization of dehydrated content you should add the following lines to your `WebApiConfig.Register()` method:
 ```cs
+config.Services.Clear(typeof(ModelValidatorProvider));
 config.Formatters.JsonFormatter.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
 config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
 ```
