@@ -18,23 +18,15 @@ namespace Dehydrator
         /// <summary>
         /// Returns all entities of a certain type from the backing database.
         /// </summary>
+        /// <remarks><see cref="EntityExtensions.Dehydrate{TEntity}"/> may be called on results.</remarks>
         [NotNull]
         IEnumerable<TEntity> GetAll();
 
         /// <summary>
-        /// Performs a LINQ query on the backing database.
+        /// Returns all entities of a certain type that match a LINQ query.
         /// </summary>
-        TResult Query<TResult>([NotNull] Func<IQueryable<TEntity>, TResult> query);
-
-        /// <summary>
-        /// Performs a LINQ query on the backing database.
-        /// </summary>
-        IEnumerable<TResult> Query<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
-
-        /// <summary>
-        /// Performs a LINQ query on the backing database.
-        /// </summary>
-        IEnumerable<TResult> Query<TResult>([NotNull] Func<IQueryable<TEntity>, IOrderedQueryable<TResult>> query);
+        /// <remarks><see cref="EntityExtensions.Dehydrate{TEntity}"/> may be called on results.</remarks>
+        IEnumerable<TResult> GetAll<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
         /// Checks whether an entity with a given <see cref="IEntity.Id"/> exists in the database.
@@ -47,19 +39,28 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
+        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
         [CanBeNull]
         TEntity Find(long id);
 
 #if NET45
         /// <summary>
+        /// Performs a LINQ query on the backing database.
+        /// </summary>
+        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
+        Task<IReadOnlyCollection<TResult>> QueryAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
+
+        /// <summary>
         /// Performs a LINQ query on the backing database and returns the first result.
         /// </summary>
         /// <exception cref="InvalidOperationException">The <paramref name="query"/> returned no results.</exception>
+        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
         Task<TResult> QueryFirstAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
         /// Performs a LINQ query on the backing database and returns the first result or the default value of <typeparamref name="TResult"/>.
         /// </summary>
+        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
         Task<TResult> QueryFirstOrDefaultAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
@@ -68,6 +69,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
+        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
         Task<IEntity> FindUntypedAsync(long id);
 #endif
     }

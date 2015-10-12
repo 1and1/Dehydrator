@@ -63,23 +63,13 @@ namespace Dehydrator
         }
 
         [Test]
-        public void TestQuerySingle()
+        public void TestGetAllQuery()
         {
-            _mainRepositoryMock.Setup(x => x.Query(It.IsAny<Func<IQueryable<MockEntity1>, MockEntity1>>()))
-                .Returns(_entityWithResolvedRefs);
-
-            var result = _repository.Query(queryable => queryable.First());
-            result.Should().Be(_entityWithDehydratedRefs);
-        }
-
-        [Test]
-        public void TestQueryMulti()
-        {
-            _mainRepositoryMock.Setup(x => x.Query(It.IsAny<Func<IQueryable<MockEntity1>, IQueryable<MockEntity1>>>()))
+            _mainRepositoryMock.Setup(x => x.GetAll(It.IsAny<Func<IQueryable<MockEntity1>, IQueryable<MockEntity1>>>()))
                 .Returns(new[] {_entityWithResolvedRefs});
 
-            var result = _repository.Query(queryable => queryable.Select(x => x));
-            result.Should().BeEquivalentTo(_entityWithDehydratedRefs);
+            var result = _repository.GetAll(queryable => queryable.Select(x => x));
+            result.Should().BeEquivalentTo(_dehydratedEntity);
         }
 
         [Test]

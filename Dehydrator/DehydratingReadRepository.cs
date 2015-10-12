@@ -34,33 +34,13 @@ namespace Dehydrator
             return Inner.GetAll().Select(x => x.Dehydrate());
         }
 
-        public TResult Query<TResult>(Func<IQueryable<TEntity>, TResult> query)
+        public IEnumerable<TResult> GetAll<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
-            var result = Inner.Query(query);
-
-            // Dehydrate if the query result is an entity, otherwise pass through
-            return (typeof(TEntity) == typeof(TResult))
-                ? (TResult)(object)((TEntity)(object)result)?.DehydrateReferences()
-                : result;
-        }
-
-        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            var result = Inner.Query(query);
+            var result = Inner.GetAll(query);
 
             // Dehydrate if the query result is a collection of entities, otherwise pass through
             return (typeof(TEntity) == typeof(TResult))
-                ? result.Cast<TEntity>().Select(x => x.DehydrateReferences()).Cast<TResult>()
-                : result;
-        }
-
-        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IOrderedQueryable<TResult>> query)
-        {
-            var result = Inner.Query(query);
-
-            // Dehydrate if the query result is a collection of entities, otherwise pass through
-            return (typeof(TEntity) == typeof(TResult))
-                ? result.Cast<TEntity>().Select(x => x.DehydrateReferences()).Cast<TResult>()
+                ? result.Cast<TEntity>().Select(x => x.Dehydrate()).Cast<TResult>()
                 : result;
         }
 
@@ -75,6 +55,16 @@ namespace Dehydrator
         }
 
 #if NET45
+        public async Task<IReadOnlyCollection<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        {
+            var result = await Inner.QueryAsync(query);
+
+            // Dehydrate if the query result is a collection of entities, otherwise pass through
+            return (typeof(TEntity) == typeof(TResult))
+                ? result.Cast<TEntity>().Select(x => x.DehydrateReferences()).Cast<TResult>().ToList()
+                : result;
+        }
+
         public async Task<TResult> QueryFirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
             var result = await Inner.QueryFirstAsync(query);

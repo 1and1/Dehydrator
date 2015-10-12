@@ -33,17 +33,7 @@ namespace Dehydrator.EntityFramework
             return _dbSet;
         }
 
-        public TResult Query<TResult>(Func<IQueryable<TEntity>, TResult> query)
-        {
-            return query(_dbSet);
-        }
-
-        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            return query(_dbSet);
-        }
-
-        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IOrderedQueryable<TResult>> query)
+        public IEnumerable<TResult> GetAll<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
             return query(_dbSet);
         }
@@ -59,6 +49,11 @@ namespace Dehydrator.EntityFramework
         }
 
 #if NET45
+        public async Task<IReadOnlyCollection<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        {
+            return await query(_dbSet).ToListAsync();
+        }
+
         public Task<TResult> QueryFirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
             return query(_dbSet).FirstAsync();
