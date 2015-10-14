@@ -55,13 +55,13 @@ namespace Dehydrator
         /// </summary>
         /// <exception cref="InvalidOperationException">The <paramref name="query"/> returned no results.</exception>
         /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
-        Task<TResult> QueryFirstAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
+        Task<TResult> FirstAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
         /// Performs a LINQ query on the backing database and returns the first result or the default value of <typeparamref name="TResult"/>.
         /// </summary>
         /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
-        Task<TResult> QueryFirstOrDefaultAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
+        Task<TResult> FirstOrDefaultAsync<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
         /// Returns a specific entity from the backing database.

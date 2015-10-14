@@ -54,12 +54,12 @@ namespace Dehydrator.EntityFramework
             return await query(_dbSet).ToListAsync();
         }
 
-        public Task<TResult> QueryFirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        public Task<TResult> FirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
             return query(_dbSet).FirstAsync();
         }
 
-        public Task<TResult> QueryFirstOrDefaultAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        public Task<TResult> FirstOrDefaultAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
             return query(_dbSet).FirstOrDefaultAsync();
         }
