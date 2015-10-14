@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -25,8 +26,9 @@ namespace Dehydrator
             factoryMock.Setup(x => x.Create<TRef>())
                 .Returns(repositoryMock.Object);
 
-            var result = EntityWithDehydratedRefs.ResolveReferences(factoryMock.Object);
-            result.Should().Be(EntityWithResolvedRefs);
+            var result = new MockContainer(EntityWithDehydratedRefs).ResolveReferences(factoryMock.Object);
+            result.Entities.First()
+                .Should().Be(EntityWithResolvedRefs);
 
             factoryMock.VerifyAll();
             repositoryMock.VerifyAll();
@@ -46,8 +48,9 @@ namespace Dehydrator
             factoryMock.Setup(x => x.Create<TRef>())
                 .Returns(repositoryMock.Object);
 
-            var result = await EntityWithDehydratedRefs.ResolveReferencesAsync(factoryMock.Object);
-            result.Should().Be(EntityWithResolvedRefs);
+            var result = await new MockContainer(EntityWithDehydratedRefs).ResolveReferencesAsync(factoryMock.Object);
+            result.Entities.First()
+                .Should().Be(EntityWithResolvedRefs);
 
             factoryMock.VerifyAll();
             repositoryMock.VerifyAll();
@@ -56,8 +59,9 @@ namespace Dehydrator
         [Test]
         public virtual void Dehydrate()
         {
-            var result = EntityWithResolvedRefs.DehydrateReferences();
-            result.Should().Be(EntityWithDehydratedRefs);
+            var result = new MockContainer(EntityWithResolvedRefs).DehydrateReferences();
+            result.Entities.First()
+                .Should().Be(EntityWithDehydratedRefs);
         }
     }
 }

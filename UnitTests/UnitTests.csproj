@@ -76,6 +76,7 @@
     <Compile Include="EntityExtensionsMultiSelfRefTest.cs" />
     <Compile Include="EntityExtensionsSingleRefTest.cs" />
     <Compile Include="EntityExtensionsSingleSelfRefTest.cs" />
+    <Compile Include="MockContainer.cs" />
     <Compile Include="MockEntity1.cs" />
     <Compile Include="MockEntity2.cs" />
     <Compile Include="NoIdTest.cs" />

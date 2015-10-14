@@ -40,21 +40,13 @@ namespace Dehydrator
         }
 
         /// <summary>
-        /// Determines whether a property holds an <see cref="IEntity"/>.
+        /// Determines whether a property holds an <see cref="ICollection{T}"/>.
         /// </summary>
-        public static bool IsEntity([NotNull] this PropertyInfo prop)
+        public static bool IsCollection([NotNull] this PropertyInfo prop)
         {
-            return typeof(IEntity).IsAssignableFrom(prop.PropertyType);
-        }
-
-        /// <summary>
-        /// Determines whether a property holds a collection of <see cref="IEntity"/>s.
-        /// </summary>
-        public static bool IsEntityCollection([NotNull] this PropertyInfo prop)
-        {
-            return prop.PropertyType.IsGenericType &&
-                   prop.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>) &&
-                   typeof(IEntity).IsAssignableFrom(prop.PropertyType.GetGenericArguments().First());
+            return
+                (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>)) ||
+                prop.PropertyType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
         }
 
         /// <summary>

@@ -43,7 +43,7 @@ namespace Dehydrator
                 if (prop.Name == nameof(IEntity.Id)) continue;
 
                 var fromValue = prop.GetValue(@from, null);
-                if (prop.IsEntityCollection())
+                if (prop.IsCollection())
                 {
                     if (fromValue == null) continue;
                     var referenceType = prop.GetGenericArg();
@@ -62,7 +62,7 @@ namespace Dehydrator
                         collectionType.InvokeClear(target: targetList);
                     }
 
-                    foreach (IEntity reference in (IEnumerable)fromValue)
+                    foreach (object reference in (IEnumerable)fromValue)
                     {
                         collectionType.InvokeAdd(target: targetList,
                             value: reference);
@@ -75,46 +75,37 @@ namespace Dehydrator
         /// <summary>
         /// Dehydrates all references marked with <see cref="DehydrateAttribute"/> to contain nothing but their <see cref="IEntity.Id"/>s. Returns the result as a new object keeping the original unchanged.
         /// </summary>
-        /// <param name="entity">The entity to dehydrate.</param>
-        /// <typeparam name="TEntity">The specific type of the entity.</typeparam>
+        /// <param name="obj">The entity to dehydrate.</param>
+        /// <typeparam name="T">The specific type of the <paramref name="obj"/>.</typeparam>
         [Pure, NotNull]
-        public static TEntity DehydrateReferences<TEntity>([NotNull] this TEntity entity)
-            where TEntity : class, IEntity, new()
+        public static T DehydrateReferences<T>([NotNull] this T obj)
         {
-            return (TEntity)DehydrateReferences(entity, typeof(TEntity));
+            return (T)DehydrateReferences(obj, typeof(T));
         }
 
         /// <summary>
         /// Dehydrates all references marked with <see cref="DehydrateAttribute"/> to contain nothing but their <see cref="IEntity.Id"/>s. Returns the result as a new object keeping the original unchanged.
         /// </summary>
-        /// <param name="entity">The entity to dehydrate.</param>
-        /// <param name="entityType">The specific type of the entity.</param>
+        /// <param name="obj">The object containing references to dehydrate.</param>
+        /// <param name="type">The specific type of the <paramref name="obj"/>.</param>
         [Pure, NotNull]
-        public static IEntity DehydrateReferences([NotNull] this IEntity entity, [NotNull] Type entityType)
+        public static object DehydrateReferences([NotNull] this object obj, [NotNull] Type type)
         {
-            var newEntity = (IEntity)Activator.CreateInstance(entityType);
-            foreach (var prop in entityType.GetWritableProperties())
+            var newObj = Activator.CreateInstance(type);
+            foreach (var prop in type.GetWritableProperties())
             {
-                var propertyValue = prop.GetValue(entity, null);
+                var propertyValue = prop.GetValue(obj, null);
                 if (propertyValue == null) continue;
 
-                if (prop.IsEntity())
-                {
-                    var referenceType = prop.PropertyType;
-                    var resolvedRef = (IEntity)propertyValue;
-                    prop.SetValue(obj: newEntity,
-                        value: prop.DehydrateOrRecurse(referenceType, resolvedRef),
-                        index: null);
-                }
-                else if (prop.IsEntityCollection())
+                if (prop.IsCollection())
                 {
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var dehydratedRefs = Activator.CreateInstance(collectionType);
-                    prop.SetValue(obj: newEntity, value: dehydratedRefs, index: null);
+                    prop.SetValue(obj: newObj, value: dehydratedRefs, index: null);
 
-                    foreach (IEntity resolvedRef in (IEnumerable)propertyValue)
+                    foreach (object resolvedRef in (IEnumerable)propertyValue)
                     {
                         if (resolvedRef == null) continue;
                         collectionType.InvokeAdd(
@@ -122,17 +113,24 @@ namespace Dehydrator
                             value: prop.DehydrateOrRecurse(referenceType, resolvedRef));
                     }
                 }
-                else prop.SetValue(obj: newEntity, value: propertyValue, index: null);
+                else
+                {
+                    var referenceType = prop.PropertyType;
+                    var resolvedRef = propertyValue;
+                    prop.SetValue(obj: newObj,
+                        value: prop.DehydrateOrRecurse(referenceType, resolvedRef),
+                        index: null);
+                }
             }
-            return newEntity;
+            return newObj;
         }
 
         [NotNull]
-        private static IEntity DehydrateOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType, [NotNull] IEntity entity)
+        private static object DehydrateOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType, [NotNull] object obj)
         {
-            if (prop.HasAttribute<DehydrateAttribute>()) return entity.Dehydrate(referenceType);
-            else if (prop.HasAttribute<DehydrateReferencesAttribute>()) return entity.DehydrateReferences(referenceType);
-            else return entity;
+            if (prop.HasAttribute<DehydrateAttribute>()) return Dehydrate((IEntity)obj, referenceType);
+            else if (prop.HasAttribute<DehydrateReferencesAttribute>()) return obj.DehydrateReferences(referenceType);
+            else return obj;
         }
 
         /// <summary>
@@ -164,53 +162,42 @@ namespace Dehydrator
         /// <summary>
         /// Resolves references that were dehydrated by <see cref="DehydrateReferences{TEntity}"/> to the original full entities. Returns the result as a new object keeping the original unchanged.
         /// </summary>
-        /// <param name="entity">The entity to resolve.</param>
+        /// <param name="obj">The object containing the references to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
-        /// <typeparam name="TEntity">The specific type of the entity.</typeparam>
+        /// <typeparam name="T">The specific type of the <paramref name="obj"/>.</typeparam>
         /// <seealso cref="RepositoryExtensions.Resolve"/>
         [Pure, NotNull]
-        public static TEntity ResolveReferences<TEntity>([NotNull] this TEntity entity,
+        public static T ResolveReferences<T>([NotNull] this T obj,
             [NotNull] IReadRepositoryFactory repositoryFactory)
-            where TEntity : class, IEntity, new()
         {
-            return (TEntity)ResolveReferences(entity, typeof(TEntity), repositoryFactory);
+            return (T)ResolveReferences(obj, typeof(T), repositoryFactory);
         }
 
         /// <summary>
         /// Resolves references that were dehydrated by <see cref="DehydrateReferences{TEntity}"/> to the original full entities. Returns the result as a new object keeping the original unchanged.
         /// </summary>
-        /// <param name="entity">The entity to resolve.</param>
-        /// <param name="entityType">The specific type of the entity.</param>
+        /// <param name="obj">The object containing the references to resolve.</param>
+        /// <param name="type">The specific type of the <paramref name="obj"/>.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         [Pure, NotNull]
-        public static IEntity ResolveReferences([NotNull] this IEntity entity, [NotNull] Type entityType,
+        public static object ResolveReferences([NotNull] this object obj, [NotNull] Type type,
             [NotNull] IReadRepositoryFactory repositoryFactory)
         {
-            var newEntity = (IEntity)Activator.CreateInstance(entityType);
-            foreach (var prop in entityType.GetWritableProperties())
+            var newObj = Activator.CreateInstance(type);
+            foreach (var prop in type.GetWritableProperties())
             {
-                var propertyValue = prop.GetValue(entity, null);
+                var propertyValue = prop.GetValue(obj, null);
                 if (propertyValue == null) continue;
 
-                if (prop.IsEntity())
-                {
-                    var referenceType = prop.PropertyType;
-                    var dehydratedRef = (IEntity)propertyValue;
-
-                    prop.SetValue(
-                        obj: newEntity,
-                        value: prop.ResolveOrRecurse(referenceType, dehydratedRef, repositoryFactory),
-                        index: null);
-                }
-                else if (prop.IsEntityCollection())
+                if (prop.IsCollection())
                 {
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var resolvedRefs = Activator.CreateInstance(collectionType);
-                    prop.SetValue(newEntity, resolvedRefs, null);
+                    prop.SetValue(newObj, resolvedRefs, null);
 
-                    foreach (IEntity dehydratedRef in (IEnumerable)propertyValue)
+                    foreach (object dehydratedRef in (IEnumerable)propertyValue)
                     {
                         if (dehydratedRef == null) continue;
 
@@ -219,71 +206,69 @@ namespace Dehydrator
                             value: prop.ResolveOrRecurse(referenceType, dehydratedRef, repositoryFactory));
                     }
                 }
-                else prop.SetValue(obj: newEntity, value: propertyValue, index: null);
+                else
+                {
+                    var referenceType = prop.PropertyType;
+                    var dehydratedRef = propertyValue;
+
+                    prop.SetValue(
+                        obj: newObj,
+                        value: prop.ResolveOrRecurse(referenceType, dehydratedRef, repositoryFactory),
+                        index: null);
+                }
             }
-            return newEntity;
+            return newObj;
         }
 
         [NotNull]
-        private static IEntity ResolveOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
-            [NotNull] IEntity entity, [NotNull] IReadRepositoryFactory repositoryFactory)
+        private static object ResolveOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
+            [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
-            if (prop.HasAttribute<ResolveAttribute>()) return repositoryFactory.Create(referenceType).Resolve(entity);
-            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return entity.ResolveReferences(referenceType, repositoryFactory);
-            return entity;
+            if (prop.HasAttribute<ResolveAttribute>()) return repositoryFactory.Create(referenceType).Resolve((IEntity)obj);
+            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return obj.ResolveReferences(referenceType, repositoryFactory);
+            return obj;
         }
 
 #if NET45
         /// <summary>
         /// Resolves references that were dehydrated by <see cref="DehydrateReferences{TEntity}"/> to the original full entities. Returns the result as a new object keeping the original unchanged.
         /// </summary>
-        /// <param name="entity">The entity to resolve.</param>
+        /// <param name="obj">The object containing the references to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
-        /// <typeparam name="TEntity">The specific type of the entity.</typeparam>
+        /// <typeparam name="T">The specific type of the <paramref name="obj"/>.</typeparam>
         /// <seealso cref="RepositoryExtensions.Resolve"/>
         [Pure, NotNull]
-        public static async Task<TEntity> ResolveReferencesAsync<TEntity>([NotNull] this TEntity entity,
+        public static async Task<T> ResolveReferencesAsync<T>([NotNull] this T obj,
             [NotNull] IReadRepositoryFactory repositoryFactory)
-            where TEntity : class, IEntity, new()
         {
-            return (TEntity)await ResolveReferencesAsync(entity, typeof(TEntity), repositoryFactory);
+            return (T)await ResolveReferencesAsync(obj, typeof(T), repositoryFactory);
         }
 
         /// <summary>
         /// Resolves references that were dehydrated by <see cref="DehydrateReferences{TEntity}"/> to the original full entities. Returns the result as a new object keeping the original unchanged.
         /// </summary>
-        /// <param name="entity">The entity to resolve.</param>
-        /// <param name="entityType">The specific type of the entity.</param>
+        /// <param name="obj">The object containing the references to resolve.</param>
+        /// <param name="type">The specific type of the <paramref name="obj"/>.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         [Pure, NotNull]
-        public static async Task<IEntity> ResolveReferencesAsync([NotNull] this IEntity entity, [NotNull] Type entityType,
+        public static async Task<object> ResolveReferencesAsync([NotNull] this object obj, [NotNull] Type type,
             [NotNull] IReadRepositoryFactory repositoryFactory)
         {
-            var newEntity = (IEntity)Activator.CreateInstance(entityType);
-            foreach (var prop in entityType.GetWritableProperties())
+            var newObj = Activator.CreateInstance(type);
+            foreach (var prop in type.GetWritableProperties())
             {
-                var propertyValue = prop.GetValue(entity, null);
+                var propertyValue = prop.GetValue(obj, null);
                 if (propertyValue == null) continue;
 
-                if (prop.IsEntity())
-                {
-                    var referenceType = prop.PropertyType;
-                    var dehydratedRef = (IEntity)propertyValue;
-
-                    prop.SetValue(
-                        obj: newEntity,
-                        value: await prop.ResolveOrRecurseAsync(referenceType, dehydratedRef, repositoryFactory),
-                        index: null);
-                }
-                else if (prop.IsEntityCollection())
+                if (prop.IsCollection())
                 {
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
                     var resolvedRefs = Activator.CreateInstance(collectionType);
-                    prop.SetValue(newEntity, resolvedRefs, null);
+                    prop.SetValue(newObj, resolvedRefs, null);
 
-                    foreach (IEntity dehydratedRef in (IEnumerable)propertyValue)
+                    foreach (object dehydratedRef in (IEnumerable)propertyValue)
                     {
                         if (dehydratedRef == null) continue;
 
@@ -292,18 +277,27 @@ namespace Dehydrator
                             value: await prop.ResolveOrRecurseAsync(referenceType, dehydratedRef, repositoryFactory));
                     }
                 }
-                else prop.SetValue(obj: newEntity, value: propertyValue, index: null);
+                else
+                {
+                    var referenceType = prop.PropertyType;
+                    var dehydratedRef = propertyValue;
+
+                    prop.SetValue(
+                        obj: newObj,
+                        value: await prop.ResolveOrRecurseAsync(referenceType, dehydratedRef, repositoryFactory),
+                        index: null);
+                }
             }
-            return newEntity;
+            return newObj;
         }
 
         [NotNull]
-        private static async Task<IEntity> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
-            [NotNull] IEntity entity, [NotNull] IReadRepositoryFactory repositoryFactory)
+        private static async Task<object> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
+            [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
-            if (prop.HasAttribute<ResolveAttribute>()) return await repositoryFactory.Create(referenceType).ResolveAsync(entity);
-            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return await entity.ResolveReferencesAsync(referenceType, repositoryFactory);
-            return entity;
+            if (prop.HasAttribute<ResolveAttribute>()) return await repositoryFactory.Create(referenceType).ResolveAsync((IEntity)obj);
+            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return await obj.ResolveReferencesAsync(referenceType, repositoryFactory);
+            return obj;
         }
 #endif
     }
