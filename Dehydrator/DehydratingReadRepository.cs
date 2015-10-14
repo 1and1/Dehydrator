@@ -60,7 +60,7 @@ namespace Dehydrator
             var result = await Inner.QueryAsync(query);
 
             // Dehydrate if the query result is a collection of entities, otherwise pass through
-            return (typeof(TEntity) == typeof(TResult))
+            return IsEntity(typeof(TResult))
                 ? result.Cast<TEntity>().Select(x => x.DehydrateReferences()).Cast<TResult>().ToList()
                 : result;
         }
@@ -70,7 +70,7 @@ namespace Dehydrator
             var result = await Inner.FirstAsync(query);
 
             // Dehydrate if the query result is an entity, otherwise pass through
-            return (typeof(TEntity) == typeof(TResult))
+            return IsEntity(typeof(TResult))
                 ? (TResult)(object)((TEntity)(object)result)?.DehydrateReferences()
                 : result;
         }
@@ -80,9 +80,14 @@ namespace Dehydrator
             var result = await Inner.FirstOrDefaultAsync(query);
 
             // Dehydrate if the query result is an entity, otherwise pass through
-            return (typeof(TEntity) == typeof(TResult))
+            return IsEntity(typeof(TResult))
                 ? (TResult)(object)((TEntity)(object)result)?.DehydrateReferences()
                 : result;
+        }
+
+        private static bool IsEntity(Type type)
+        {
+            return type == typeof(IEntity) || type.GetInterfaces().Contains(typeof(IEntity));
         }
 
         public async Task<IEntity> FindUntypedAsync(long id)
