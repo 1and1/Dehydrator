@@ -13,8 +13,8 @@ namespace Dehydrator
         public override string ToString()
         {
             return string.IsNullOrEmpty(Name)
-                ? $"{GetType().Name} {Id}"
-                : $"{GetType().Name} {Name} ({Id})";
+                ? base.ToString()
+                : Name + " (" + Id + ")";
         }
     }
 }

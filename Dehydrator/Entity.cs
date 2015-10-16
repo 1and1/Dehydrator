@@ -19,7 +19,7 @@ namespace Dehydrator
 
         public override string ToString()
         {
-            return $"{GetType().Name} {Id}";
+            return GetType().Name + " " + Id;
         }
 
         #region Equality
