@@ -23,13 +23,5 @@ namespace Dehydrator
             }
             return removedAny;
         }
-
-        /// <summary>
-        /// Finds the index of a specific <paramref name="element"/> in a <paramref name="collection"/>.
-        /// </summary>
-        public static int FindIndex<T>([NotNull, InstantHandle] this List<T> collection, [CanBeNull] T element)
-        {
-            return collection.FindIndex(x => Equals(x, element));
-        }
     }
 }
