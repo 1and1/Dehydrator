@@ -31,7 +31,7 @@ namespace Dehydrator
         }
 
         /// <summary>
-        /// Determines whether a property is marked with <see cref="DehydrateAttribute"/>.
+        /// Determines whether a property is marked with <typeparamref name="TAttribute"/>.
         /// </summary>
         public static bool HasAttribute<TAttribute>([NotNull] this PropertyInfo prop)
             where TAttribute : Attribute
