@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
 
 namespace Dehydrator
@@ -9,7 +10,7 @@ namespace Dehydrator
     /// </summary>
     public abstract class Entity : IEntity
     {
-        [DefaultValue(NoId)]
+        [Key, DefaultValue(NoId)]
         public virtual long Id { get; set; } = NoId;
 
         /// <summary>

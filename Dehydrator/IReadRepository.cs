@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -20,12 +21,14 @@ namespace Dehydrator
         /// </summary>
         /// <remarks><see cref="EntityExtensions.Dehydrate{TEntity}"/> may be called on results.</remarks>
         [NotNull]
+        [DataObjectMethod(DataObjectMethodType.Select)]
         IEnumerable<TEntity> GetAll();
 
         /// <summary>
         /// Returns all entities of a certain type that match a LINQ query.
         /// </summary>
         /// <remarks><see cref="EntityExtensions.Dehydrate{TEntity}"/> may be called on results.</remarks>
+        [NotNull]
         IEnumerable<TResult> GetAll<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
 
         /// <summary>
