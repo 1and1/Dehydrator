@@ -58,11 +58,7 @@ namespace Dehydrator
         public async Task<IReadOnlyCollection<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
         {
             var result = await Inner.QueryAsync(query);
-
-            // Dehydrate if the query result is a collection of entities, otherwise pass through
-            return IsEntity(typeof(TResult))
-                ? result.Cast<TEntity>().Select(x => x.DehydrateReferences()).Cast<TResult>().ToList()
-                : result;
+            return result.Select(x => x.DehydrateReferences()).ToList();
         }
 
         public async Task<TResult> FirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)

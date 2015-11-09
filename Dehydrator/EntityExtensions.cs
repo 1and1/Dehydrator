@@ -89,7 +89,7 @@ namespace Dehydrator
         /// <param name="obj">The object containing references to dehydrate.</param>
         /// <param name="type">The specific type of the <paramref name="obj"/>.</param>
         [Pure, NotNull]
-        public static object DehydrateReferences([NotNull] this object obj, [NotNull] Type type)
+        private static object DehydrateReferences([NotNull] this object obj, [NotNull] Type type)
         {
             var newObj = Activator.CreateInstance(type);
             foreach (var prop in type.GetWritableProperties())
@@ -180,7 +180,7 @@ namespace Dehydrator
         /// <param name="type">The specific type of the <paramref name="obj"/>.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         [Pure, NotNull]
-        public static object ResolveReferences([NotNull] this object obj, [NotNull] Type type,
+        private static object ResolveReferences([NotNull] this object obj, [NotNull] Type type,
             [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             var newObj = Activator.CreateInstance(type);
@@ -251,7 +251,7 @@ namespace Dehydrator
         /// <param name="type">The specific type of the <paramref name="obj"/>.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         [Pure, NotNull]
-        public static async Task<object> ResolveReferencesAsync([NotNull] this object obj, [NotNull] Type type,
+        private static async Task<object> ResolveReferencesAsync([NotNull] this object obj, [NotNull] Type type,
             [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             var newObj = Activator.CreateInstance(type);

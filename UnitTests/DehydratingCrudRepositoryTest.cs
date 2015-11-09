@@ -128,8 +128,7 @@ namespace Dehydrator
         {
             _refRepositoryMock.Setup(x => x.Find(_dehydratedRef.Id))
                 .Returns(_resolvedRef);
-            _mainRepositoryMock.Setup(x => x.Modify(_entityWithResolvedRefs))
-                ;
+            _mainRepositoryMock.Setup(x => x.Modify(_entityWithResolvedRefs));
 
             _repository.Modify(_entityWithDehydratedRefs);
         }
