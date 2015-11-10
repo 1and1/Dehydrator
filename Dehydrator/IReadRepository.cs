@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using JetBrains.Annotations;
 
 #if NET45
@@ -25,11 +26,11 @@ namespace Dehydrator
         IEnumerable<TEntity> GetAll();
 
         /// <summary>
-        /// Returns all entities of a certain type that match a LINQ query.
+        /// Returns all entities of a certain type that match a predicate.
         /// </summary>
         /// <remarks><see cref="EntityExtensions.Dehydrate{TEntity}"/> may be called on results.</remarks>
         [NotNull]
-        IEnumerable<TResult> GetAll<TResult>([NotNull] Func<IQueryable<TEntity>, IQueryable<TResult>> query);
+        IEnumerable<TEntity> GetAll([NotNull] Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Checks whether an entity with a given <see cref="IEntity.Id"/> exists in the database.

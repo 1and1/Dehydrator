@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -63,12 +62,12 @@ namespace Dehydrator
         }
 
         [Test]
-        public void TestGetAllQuery()
+        public void TestGetAllPredicate()
         {
-            _mainRepositoryMock.Setup(x => x.GetAll(It.IsAny<Func<IQueryable<MockEntity1>, IQueryable<MockEntity1>>>()))
+            _mainRepositoryMock.Setup(x => x.GetAll(_ => true))
                 .Returns(new[] {_entityWithResolvedRefs});
 
-            var result = _repository.GetAll(queryable => queryable.Select(x => x));
+            var result = _repository.GetAll(_ => true);
             result.Should().BeEquivalentTo(_dehydratedEntity);
         }
 

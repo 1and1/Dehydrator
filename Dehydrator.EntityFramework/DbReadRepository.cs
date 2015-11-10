@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using JetBrains.Annotations;
 
 #if NET45
@@ -33,9 +34,9 @@ namespace Dehydrator.EntityFramework
             return _dbSet;
         }
 
-        public IEnumerable<TResult> GetAll<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
-            return query(_dbSet);
+            return _dbSet.Where(predicate);
         }
 
         public bool Exists(long id)

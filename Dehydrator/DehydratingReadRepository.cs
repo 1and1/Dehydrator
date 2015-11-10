@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using JetBrains.Annotations;
 
 #if NET45
@@ -34,14 +35,9 @@ namespace Dehydrator
             return Inner.GetAll().Select(x => x.Dehydrate());
         }
 
-        public IEnumerable<TResult> GetAll<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
-            var result = Inner.GetAll(query);
-
-            // Dehydrate if the query result is a collection of entities, otherwise pass through
-            return (typeof(TEntity) == typeof(TResult))
-                ? result.Cast<TEntity>().Select(x => x.Dehydrate()).Cast<TResult>()
-                : result;
+            return Inner.GetAll(predicate).Select(x => x.Dehydrate());
         }
 
         public TEntity Find(long id)
