@@ -10,29 +10,26 @@ namespace Dehydrator
             typeof(IReadRepositoryFactory).GetMethod(nameof(IReadRepositoryFactory.Create));
 
         /// <summary>
-        /// Returns a read-only repository for a specific type of <see cref="IEntity"/>.
+        /// Returns a read-only repository for a specific <paramref name="entityType"/>.
         /// </summary>
         [NotNull]
-        public static IReadRepository<IEntity> Create([NotNull] this IReadRepositoryFactory repositoryFactory,
+        public static object Create([NotNull] this IReadRepositoryFactory repositoryFactory,
             [NotNull] Type entityType)
         {
-            return
-                (IReadRepository<IEntity>)CreateReadMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
+            return CreateReadMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
         }
 
         private static readonly MethodInfo CreateCrudMethod =
             typeof(ICrudRepositoryFactory).GetMethod(nameof(ICrudRepositoryFactory.Create));
 
         /// <summary>
-        /// Returns a CRUD repository for a specific type of <see cref="IEntity"/>.
+        /// Returns a CRUD repository for a specific <paramref name="entityType"/>.
         /// </summary>
-        /// <remarks>A full implementation of <see cref="ICrudRepository{TEntity}"/>. The return type <see cref="IReadRepository{TEntity}"/> is only used for covariance. You can downcast to get write access.</remarks>
         [NotNull]
-        public static IReadRepository<IEntity> Create([NotNull] this ICrudRepositoryFactory repositoryFactory,
+        public static object Create([NotNull] this ICrudRepositoryFactory repositoryFactory,
             [NotNull] Type entityType)
         {
-            return
-                (IReadRepository<IEntity>)CreateCrudMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
+            return CreateCrudMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Dehydrator.EntityFramework
             return query(_dbSet).FirstOrDefaultAsync();
         }
 
-        public async Task<IEntity> FindUntypedAsync(long id)
+        public async Task<TEntity> FindAsync(long id)
         {
             return await _dbSet.FindAsync(id);
         }

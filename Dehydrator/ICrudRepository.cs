@@ -54,13 +54,6 @@ namespace Dehydrator
 
 #if NET45
         /// <summary>
-        /// Returns a specific entity from the backing database.
-        /// </summary>
-        /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
-        /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
-        Task<TEntity> FindAsync(long id);
-
-        /// <summary>
         /// Modifies an existing entity in the database. Call <see cref="SaveChangesAsync"/> when done.
         /// </summary>
         /// <param name="entity">The modified entity.</param>

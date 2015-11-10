@@ -86,7 +86,7 @@ namespace Dehydrator
             return type == typeof(IEntity) || type.GetInterfaces().Contains(typeof(IEntity));
         }
 
-        public async Task<IEntity> FindUntypedAsync(long id)
+        public async Task<TEntity> FindAsync(long id)
         {
             var entity = await Inner.FindAsync(id);
             return entity?.DehydrateReferences();

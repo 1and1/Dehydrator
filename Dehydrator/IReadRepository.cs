@@ -13,7 +13,7 @@ namespace Dehydrator
     /// <summary>
     /// Provides read-only access to a set of <see cref="IEntity"/>s. Usually backed by a database.
     /// </summary>
-    public interface IReadRepository<out TEntity>
+    public interface IReadRepository<TEntity>
         where TEntity : class, IEntity
     {
         /// <summary>
@@ -68,12 +68,11 @@ namespace Dehydrator
 
         /// <summary>
         /// Returns a specific entity from the backing database.
-        /// This method is untyped due to limitations of .NET's covariance support. Use <seealso cref="RepositoryExtensions.FindAsync{TEntity}"/> as a wrapper.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
         /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
-        Task<IEntity> FindUntypedAsync(long id);
+        Task<TEntity> FindAsync(long id);
 #endif
     }
 }

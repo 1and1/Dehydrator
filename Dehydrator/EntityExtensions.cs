@@ -126,7 +126,8 @@ namespace Dehydrator
         }
 
         [NotNull]
-        private static object DehydrateOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType, [NotNull] object obj)
+        private static object DehydrateOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
+            [NotNull] object obj)
         {
             if (prop.HasAttribute<DehydrateAttribute>()) return Dehydrate((IEntity)obj, referenceType);
             else if (prop.HasAttribute<DehydrateReferencesAttribute>()) return obj.DehydrateReferences(referenceType);
@@ -165,7 +166,6 @@ namespace Dehydrator
         /// <param name="obj">The object containing the references to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         /// <typeparam name="T">The specific type of the <paramref name="obj"/>.</typeparam>
-        /// <seealso cref="RepositoryExtensions.Resolve"/>
         [Pure, NotNull]
         public static T ResolveReferences<T>([NotNull] this T obj,
             [NotNull] IReadRepositoryFactory repositoryFactory)
@@ -224,9 +224,46 @@ namespace Dehydrator
         private static object ResolveOrRecurse([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
             [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
-            if (prop.HasAttribute<ResolveAttribute>()) return repositoryFactory.Create(referenceType).Resolve((IEntity)obj);
-            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return obj.ResolveReferences(referenceType, repositoryFactory);
+            if (prop.HasAttribute<ResolveAttribute>())
+                return ((IEntity)obj).ResolveUntyped(referenceType, repositoryFactory);
+            else if (prop.HasAttribute<ResolveReferencesAttribute>())
+                return obj.ResolveReferences(referenceType, repositoryFactory);
             return obj;
+        }
+
+        /// <summary>
+        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
+        /// </summary>
+        /// <param name="entity">The entity to resolve.</param>
+        /// <param name="repository">The repository to retrieve entities from.</param>
+        /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <paramref name="repository"/>.</exception>
+        [Pure, NotNull]
+        public static TEntity Resolve<TEntity>([NotNull] this TEntity entity,
+            [NotNull] IReadRepository<TEntity> repository)
+            where TEntity : class, IEntity
+        {
+            if (entity.Id == Entity.NoId) return entity;
+
+            var entityWithResolvedRefs = repository.Find(entity.Id);
+            if (entityWithResolvedRefs == null)
+                throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
+            return entityWithResolvedRefs;
+        }
+
+        private static readonly MethodInfo ResolveMethod = typeof(EntityExtensions).GetMethod(nameof(Resolve));
+
+        /// <summary>
+        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
+        /// </summary>
+        /// <param name="entity">The entity to resolve.</param>
+        /// <param name="entityType">The type of the <paramref name="entity"/>.</param>
+        /// <param name="repositoryFactory">The factory to create a suitable <see cref="IReadRepository{TEntity}"/> for lookup.</param>
+        /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <see cref="IReadRepository{TEntity}"/>.</exception>
+        private static IEntity ResolveUntyped([NotNull] this IEntity entity, [NotNull] Type entityType,
+            [NotNull] IReadRepositoryFactory repositoryFactory)
+        {
+            object repository = repositoryFactory.Create(entityType);
+            return (IEntity)ResolveMethod.MakeGenericMethod(entityType).Invoke(repository, new[] {entity, repository});
         }
 
 #if NET45
@@ -236,7 +273,6 @@ namespace Dehydrator
         /// <param name="obj">The object containing the references to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         /// <typeparam name="T">The specific type of the <paramref name="obj"/>.</typeparam>
-        /// <seealso cref="RepositoryExtensions.Resolve"/>
         [Pure, NotNull]
         public static async Task<T> ResolveReferencesAsync<T>([NotNull] this T obj,
             [NotNull] IReadRepositoryFactory repositoryFactory)
@@ -292,12 +328,50 @@ namespace Dehydrator
         }
 
         [NotNull]
-        private static async Task<object> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop, [NotNull] Type referenceType,
-            [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
+        private static async Task<object> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop,
+            [NotNull] Type referenceType, [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
-            if (prop.HasAttribute<ResolveAttribute>()) return await repositoryFactory.Create(referenceType).ResolveAsync((IEntity)obj);
-            else if (prop.HasAttribute<ResolveReferencesAttribute>()) return await obj.ResolveReferencesAsync(referenceType, repositoryFactory);
+            if (prop.HasAttribute<ResolveAttribute>())
+                return await ((IEntity)obj).ResolveUntypedAsync(referenceType, repositoryFactory);
+            else if (prop.HasAttribute<ResolveReferencesAttribute>())
+                return await obj.ResolveReferencesAsync(referenceType, repositoryFactory);
             return obj;
+        }
+
+        /// <summary>
+        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
+        /// </summary>
+        /// <param name="entity">The entity to resolve.</param>
+        /// <param name="repository">The repository to retrieve entities from.</param>
+        /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <paramref name="repository"/>.</exception>
+        [Pure, NotNull]
+        public static async Task<TEntity> ResolveAsync<TEntity>([NotNull] this TEntity entity,
+            [NotNull] IReadRepository<TEntity> repository)
+            where TEntity : class, IEntity
+        {
+            if (entity.Id == Entity.NoId) return entity;
+
+            var entityWithResolvedRefs = await repository.FindAsync(entity.Id);
+            if (entityWithResolvedRefs == null)
+                throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
+            return entityWithResolvedRefs;
+        }
+
+        private static readonly MethodInfo ResolveAsyncMethod = typeof(EntityExtensions).GetMethod(nameof(ResolveAsync));
+
+        /// <summary>
+        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
+        /// </summary>
+        /// <param name="entity">The entity to resolve.</param>
+        /// <param name="entityType">The type of the <paramref name="entity"/>.</param>
+        /// <param name="repositoryFactory">The factory to create a suitable <see cref="IReadRepository{TEntity}"/> for lookup.</param>
+        /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <see cref="IReadRepository{TEntity}"/>.</exception>
+        private static async Task<IEntity> ResolveUntypedAsync([NotNull] this IEntity entity, [NotNull] Type entityType,
+            [NotNull] IReadRepositoryFactory repositoryFactory)
+        {
+            object repository = repositoryFactory.Create(entityType);
+            return await
+                (dynamic)ResolveAsyncMethod.MakeGenericMethod(entityType).Invoke(repository, new[] {entity, repository});
         }
 #endif
     }

@@ -38,15 +38,16 @@ namespace Dehydrator.WebApi
         public async Task TestRead()
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
-            _repositoryMock.Setup(x => x.FindUntypedAsync(entity.Id))
-                .Returns(Task.FromResult<IEntity>(entity));
+            _repositoryMock.Setup(x => x.FindAsync(entity.Id))
+                .Returns(Task.FromResult(entity));
             (await _controller.Read(entity.Id)).Should().Be(entity);
         }
 
         [Test]
         public void TestReadNotFound()
         {
-            _repositoryMock.Setup(x => x.FindUntypedAsync(1)).Returns(Task.FromResult<IEntity>(null));
+            _repositoryMock.Setup(x => x.FindAsync(1))
+                .Returns(Task.FromResult<MockEntity1>(null));
             Assert.Throws<HttpResponseException>(async () => await _controller.Read(1));
         }
 

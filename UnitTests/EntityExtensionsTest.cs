@@ -40,7 +40,7 @@ namespace Dehydrator
             var repositoryMock = new Mock<ICrudRepository<TRef>>(MockBehavior.Strict);
             if (DehydratedRef.Id != Entity.NoId)
             {
-                repositoryMock.Setup(x => x.FindUntypedAsync(DehydratedRef.Id))
+                repositoryMock.Setup(x => x.FindAsync(DehydratedRef.Id))
                     .ReturnsAsync(ResolvedRef);
             }
 

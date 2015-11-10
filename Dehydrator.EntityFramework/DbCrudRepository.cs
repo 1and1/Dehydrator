@@ -87,11 +87,6 @@ namespace Dehydrator.EntityFramework
         }
 
 #if NET45
-        public Task<TEntity> FindAsync(long id)
-        {
-            return _dbSet.FindAsync(id);
-        }
-
         /// <summary>
         /// Modifies an existing entity in the database.
         /// </summary>

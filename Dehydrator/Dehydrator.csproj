@@ -46,6 +46,7 @@
       <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -76,7 +77,6 @@
     <Compile Include="LookupReadRepositoryFactory.cs" />
     <Compile Include="NamedEntity.cs" />
     <Compile Include="PropertyExtensions.cs" />
-    <Compile Include="RepositoryExtensions.cs" />
     <Compile Include="RepositoryFactoryExtensions.cs" />
     <Compile Include="ResolveAttribute.cs" />
     <Compile Include="ResolveReferencesAttribute.cs" />

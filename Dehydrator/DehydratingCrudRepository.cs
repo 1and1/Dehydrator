@@ -59,12 +59,6 @@ namespace Dehydrator
         }
 
 #if NET45
-        public async Task<TEntity> FindAsync(long id)
-        {
-            var entity = await Inner.FindAsync(id);
-            return entity?.DehydrateReferences();
-        }
-
         public async Task ModifyAsync(TEntity entity)
         {
             await Inner.ModifyAsync(
