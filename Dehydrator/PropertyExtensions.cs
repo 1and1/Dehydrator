@@ -12,6 +12,14 @@ namespace Dehydrator
     public static class PropertyExtensions
     {
         /// <summary>
+        /// Determines whether the given <paramref name="type"/> is a reference type and has a default (parameterless) constructor.
+        /// </summary>
+        public static bool IsPoco([NotNull] this Type type)
+        {
+            return !type.IsInterface && !type.IsValueType && (type.GetConstructor(new Type[] {}) != null);
+        }
+
+        /// <summary>
         /// Returns all properties with public setters and getters defined on a type.
         /// </summary>
         [NotNull]
@@ -50,7 +58,7 @@ namespace Dehydrator
         }
 
         /// <summary>
-        /// Invokes the "Add" method on a target of some form of collection
+        /// Invokes the "Add" method on a target of some form of collection.
         /// </summary>
         public static void InvokeAdd([NotNull] this Type collectionType, [NotNull] object target, object value)
         {
@@ -60,7 +68,7 @@ namespace Dehydrator
         }
 
         /// <summary>
-        /// Invokes the "Clear" method on a target of some form of collection
+        /// Invokes the "Clear" method on a target of some form of collection.
         /// </summary>
         public static void InvokeClear([NotNull] this Type collectionType, [NotNull] object target)
         {

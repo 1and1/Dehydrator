@@ -91,6 +91,8 @@ namespace Dehydrator
         [Pure, NotNull]
         private static object DehydrateReferences([NotNull] this object obj, [NotNull] Type type)
         {
+            if (!type.IsPoco()) return obj;
+
             var newObj = Activator.CreateInstance(type);
             foreach (var prop in type.GetWritableProperties())
             {
@@ -183,6 +185,8 @@ namespace Dehydrator
         private static object ResolveReferences([NotNull] this object obj, [NotNull] Type type,
             [NotNull] IReadRepositoryFactory repositoryFactory)
         {
+            if (!type.IsPoco()) return obj;
+
             var newObj = Activator.CreateInstance(type);
             foreach (var prop in type.GetWritableProperties())
             {
@@ -290,6 +294,8 @@ namespace Dehydrator
         private static async Task<object> ResolveReferencesAsync([NotNull] this object obj, [NotNull] Type type,
             [NotNull] IReadRepositoryFactory repositoryFactory)
         {
+            if (!type.IsPoco()) return obj;
+
             var newObj = Activator.CreateInstance(type);
             foreach (var prop in type.GetWritableProperties())
             {
