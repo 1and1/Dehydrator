@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\sgKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.3.5.0\lib\net45\FluentAssertions.dll</HintPath>
@@ -91,6 +97,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dehydrator.EntityFramework.Unity\Dehydrator.EntityFramework.Unity.csproj">
+      <Project>{65d48e97-7ce9-4747-abf3-9660e90605fd}</Project>
+      <Name>Dehydrator.EntityFramework.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dehydrator.EntityFramework\Dehydrator.EntityFramework.csproj">
+      <Project>{63a4c204-eca0-446e-b461-064413200072}</Project>
+      <Name>Dehydrator.EntityFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dehydrator.WebApi\Dehydrator.WebApi.csproj">
       <Project>{368ABA94-AA57-482E-B696-1C104EB57BD6}</Project>
       <Name>Dehydrator.WebApi</Name>
