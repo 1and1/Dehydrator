@@ -16,7 +16,7 @@ namespace Dehydrator
         /// </summary>
         public static async Task<List<T>> ToListAsync<T>([NotNull] this IQueryable<T> queryable, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var asyncQueryable = queryable as IAsyncQueryable<T>;
+            var asyncQueryable = queryable as IAsyncCollectable<T>;
             if (asyncQueryable == null) return queryable.ToList();
             else return await asyncQueryable.ToListAsync(cancellationToken);
         }
@@ -26,7 +26,7 @@ namespace Dehydrator
         /// </summary>
         public static async Task<T> FirstAsync<T>([NotNull] this IQueryable<T> queryable, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var asyncQueryable = queryable as IAsyncQueryable<T>;
+            var asyncQueryable = queryable as IAsyncCollectable<T>;
             if (asyncQueryable == null) return queryable.First();
             else return await asyncQueryable.FirstAsync(cancellationToken);
         }
@@ -36,7 +36,7 @@ namespace Dehydrator
         /// </summary>
         public static async Task<T> FirstOrDefaultAsync<T>([NotNull] this IQueryable<T> queryable, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var asyncQueryable = queryable as IAsyncQueryable<T>;
+            var asyncQueryable = queryable as IAsyncCollectable<T>;
             if (asyncQueryable == null) return queryable.FirstOrDefault();
             else return await asyncQueryable.FirstOrDefaultAsync(cancellationToken);
         }

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Dehydrator
 {
     /// <summary>
-    /// An <see cref="IQueryable{T}"/> that provides asynchronous collector functionality. Usually accessed via <see cref="QueryableExtensions"/>.
+    /// An <see cref="IEnumerable{T}"/> object (usually <see cref="IQueryable{T}"/>) that provides asynchronous collectors. Usually accessed via <see cref="QueryableExtensions"/>.
     /// </summary>
-    public interface IAsyncQueryable<T> : IQueryable<T>
+    public interface IAsyncCollectable<T> : IEnumerable<T>
     {
 #if NET45
         /// <summary>

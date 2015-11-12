@@ -15,8 +15,12 @@ namespace Dehydrator
     /// <summary>
     /// Wraps an <see cref="IQueryable"/> and runs <see cref="DehydrationUtils.DehydrateReferences{T}"/> on the results.
     /// </summary>
+    /// <remarks>
+    /// This implements <see cref="IOrderedQueryable"/> and not just <see cref="IQueryable"/> because some methods like <see cref="Queryable.OrderBy{TSource,TKey}(IQueryable{TSource},Expression{Func{TSource,TKey}})"/> perform downcasts.
+    /// It does not imply that all instances of this class are actually ordered. Rely on the type of the reference not the type of the object to determine that.
+    /// </remarks>
     /// <seealso cref="DehydratingQueryProvider"/>
-    internal class DehydratingQueryable : IQueryable
+    internal class DehydratingQueryable : IOrderedQueryable
     {
         private readonly IQueryable _inner;
 
@@ -39,10 +43,14 @@ namespace Dehydrator
     }
 
     /// <summary>
-    /// Wraps an <see cref="IAsyncQueryable{T}"/> and runs <see cref="DehydrationUtils.DehydrateReferences{T}"/> on the results.
+    /// Wraps an <see cref="IAsyncCollectable{T}"/> and runs <see cref="DehydrationUtils.DehydrateReferences{T}"/> on the results.
     /// </summary>
+    /// <remarks>
+    /// This implements <see cref="IOrderedQueryable{T}"/> and not just <see cref="IQueryable{T}"/> because some methods like <see cref="Queryable.OrderBy{TSource,TKey}(IQueryable{TSource},Expression{Func{TSource,TKey}})"/> perform downcasts.
+    /// It does not imply that all instances of this class are actually ordered. Rely on the type of the reference not the type of the object to determine that.
+    /// </remarks>
     /// <seealso cref="DehydratingQueryProvider"/>
-    internal class DehydratingQueryable<T> : DehydratingQueryable, IAsyncQueryable<T>
+    internal class DehydratingQueryable<T> : DehydratingQueryable, IOrderedQueryable<T>, IAsyncCollectable<T>
     {
         private readonly IQueryable<T> _inner;
 

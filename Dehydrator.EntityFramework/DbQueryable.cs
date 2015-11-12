@@ -16,8 +16,12 @@ namespace Dehydrator.EntityFramework
     /// <summary>
     /// Wraps a <see cref="DbSet"/> or an <see cref="IQueryable"/> derived from it.
     /// </summary>
+    /// <remarks>
+    /// This implements <see cref="IOrderedQueryable"/> and not just <see cref="IQueryable"/> because some methods like <see cref="Queryable.OrderBy{TSource,TKey}(IQueryable{TSource},Expression{Func{TSource,TKey}})"/> perform downcasts.
+    /// It does not imply that all instances of this class are actually ordered. Rely on the type of the reference not the type of the object to determine that.
+    /// </remarks>
     /// <seealso cref="DbQueryProvider"/>
-    internal class DbQueryable : IQueryable
+    internal class DbQueryable : IOrderedQueryable
     {
         private readonly IQueryable _inner;
 
@@ -40,10 +44,14 @@ namespace Dehydrator.EntityFramework
     }
 
     /// <summary>
-    /// Wraps a <see cref="DbSet{TEntity}"/> or an <see cref="IQueryable{T}"/> derived from it and exposes its asynchronous collector functionality via <see cref="IAsyncQueryable{T}"/>.
+    /// Wraps a <see cref="DbSet{TEntity}"/> or an <see cref="IQueryable{T}"/> derived from it and exposes its asynchronous collectors via <see cref="IAsyncCollectable{T}"/>.
     /// </summary>
+    /// <remarks>
+    /// This implements <see cref="IOrderedQueryable{T}"/> and not just <see cref="IQueryable{T}"/> because some methods like <see cref="Queryable.OrderBy{TSource,TKey}(IQueryable{TSource},Expression{Func{TSource,TKey}})"/> perform downcasts.
+    /// It does not imply that all instances of this class are actually ordered. Rely on the type of the reference not the type of the object to determine that.
+    /// </remarks>
     /// <seealso cref="DbQueryProvider"/>
-    internal class DbQueryable<T> : DbQueryable, IAsyncQueryable<T>
+    internal class DbQueryable<T> : DbQueryable, IOrderedQueryable<T>, IAsyncCollectable<T>
     {
         private readonly IQueryable<T> _inner;
 

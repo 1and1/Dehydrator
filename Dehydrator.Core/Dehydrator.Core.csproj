@@ -62,7 +62,7 @@
     <Compile Include="EntityExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ExceptionExtensions.cs" />
-    <Compile Include="IAsyncQueryable.cs" />
+    <Compile Include="IAsyncCollectable.cs" />
     <Compile Include="ICrudRepository.cs" />
     <Compile Include="ICrudRepositoryFactory.cs" />
     <Compile Include="IEntity.cs" />
