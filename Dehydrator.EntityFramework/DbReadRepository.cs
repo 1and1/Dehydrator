@@ -31,12 +31,12 @@ namespace Dehydrator.EntityFramework
 
         public IEnumerable<TEntity> GetAll()
         {
-            return _dbSet;
+            return _dbSet.AsNoTracking();
         }
 
         public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbSet.Where(predicate);
+            return _dbSet.AsNoTracking().Where(predicate);
         }
 
         public bool Exists(long id)
