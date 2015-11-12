@@ -56,25 +56,5 @@ namespace Dehydrator
                 (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>)) ||
                 prop.PropertyType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
         }
-
-        /// <summary>
-        /// Invokes the "Add" method on a target of some form of collection.
-        /// </summary>
-        public static void InvokeAdd([NotNull] this Type collectionType, [NotNull] object target, object value)
-        {
-            collectionType.InvokeMember("Add",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                target: target, args: new[] {value});
-        }
-
-        /// <summary>
-        /// Invokes the "Clear" method on a target of some form of collection.
-        /// </summary>
-        public static void InvokeClear([NotNull] this Type collectionType, [NotNull] object target)
-        {
-            collectionType.InvokeMember("Clear",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null,
-                target: target, args: null);
-        }
     }
 }

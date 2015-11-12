@@ -44,24 +44,17 @@ namespace Dehydrator
                     var referenceType = prop.GetGenericArg();
 
                     object targetList = prop.GetValue(to, null);
-                    Type collectionType;
                     if (targetList == null)
                     {
-                        collectionType = typeof(List<>).MakeGenericType(referenceType);
+                        var collectionType = typeof(List<>).MakeGenericType(referenceType);
                         targetList = Activator.CreateInstance(collectionType);
                         prop.SetValue(obj: to, value: targetList, index: null);
                     }
-                    else
-                    {
-                        collectionType = targetList.GetType();
-                        collectionType.InvokeClear(target: targetList);
-                    }
+                    else ((dynamic)targetList).Clear();
 
-                    foreach (object reference in (IEnumerable)fromValue)
-                    {
-                        collectionType.InvokeAdd(target: targetList,
-                            value: reference);
-                    }
+                    dynamic targetListDynamic = targetList;
+                    foreach (var reference in (IEnumerable)fromValue)
+                        targetListDynamic.Add((dynamic)reference);
                 }
                 else prop.SetValue(obj: to, value: fromValue, index: null);
             }

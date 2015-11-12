@@ -48,15 +48,14 @@ namespace Dehydrator
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
-                    var dehydratedRefs = Activator.CreateInstance(collectionType);
+                    object dehydratedRefs = Activator.CreateInstance(collectionType);
                     prop.SetValue(obj: newObj, value: dehydratedRefs, index: null);
 
+                    dynamic dehydratedRefsDynamic = dehydratedRefs;
                     foreach (object resolvedRef in (IEnumerable)propertyValue)
                     {
-                        if (resolvedRef == null) continue;
-                        collectionType.InvokeAdd(
-                            target: dehydratedRefs,
-                            value: prop.DehydrateOrRecurse(referenceType, resolvedRef));
+                        if (resolvedRef != null)
+                            dehydratedRefsDynamic.Add((dynamic)prop.DehydrateOrRecurse(referenceType, resolvedRef));
                     }
                 }
                 else
@@ -142,16 +141,17 @@ namespace Dehydrator
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
-                    var resolvedRefs = Activator.CreateInstance(collectionType);
+                    object resolvedRefs = Activator.CreateInstance(collectionType);
                     prop.SetValue(newObj, resolvedRefs, null);
 
+                    dynamic resolvedRefsDynamic = resolvedRefs;
                     foreach (object dehydratedRef in (IEnumerable)propertyValue)
                     {
-                        if (dehydratedRef == null) continue;
-
-                        collectionType.InvokeAdd(
-                            target: resolvedRefs,
-                            value: prop.ResolveOrRecurse(referenceType, dehydratedRef, repositoryFactory));
+                        if (dehydratedRef != null)
+                        {
+                            resolvedRefsDynamic.Add((dynamic)
+                                prop.ResolveOrRecurse(referenceType, dehydratedRef, repositoryFactory));
+                        }
                     }
                 }
                 else
@@ -173,7 +173,7 @@ namespace Dehydrator
             [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             if (prop.HasAttribute<ResolveAttribute>())
-                return ((IEntity)obj).ResolveUntyped(referenceType, repositoryFactory);
+                return DehydrationUtils.Resolve((dynamic)obj, (dynamic)repositoryFactory.Create(referenceType));
             else if (prop.HasAttribute<ResolveReferencesAttribute>())
                 return obj.ResolveReferences(referenceType, repositoryFactory);
             return obj;
@@ -196,22 +196,6 @@ namespace Dehydrator
             if (entityWithResolvedRefs == null)
                 throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
             return entityWithResolvedRefs;
-        }
-
-        private static readonly MethodInfo ResolveMethod = typeof(DehydrationUtils).GetMethod(nameof(Resolve));
-
-        /// <summary>
-        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
-        /// </summary>
-        /// <param name="entity">The entity to resolve.</param>
-        /// <param name="entityType">The type of the <paramref name="entity"/>.</param>
-        /// <param name="repositoryFactory">The factory to create a suitable <see cref="IReadRepository{TEntity}"/> for lookup.</param>
-        /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <see cref="IReadRepository{TEntity}"/>.</exception>
-        private static IEntity ResolveUntyped([NotNull] this IEntity entity, [NotNull] Type entityType,
-            [NotNull] IReadRepositoryFactory repositoryFactory)
-        {
-            object repository = repositoryFactory.Create(entityType);
-            return (IEntity)ResolveMethod.MakeGenericMethod(entityType).Invoke(repository, new[] {entity, repository});
         }
 
 #if NET45
@@ -251,16 +235,17 @@ namespace Dehydrator
                     var referenceType = prop.GetGenericArg();
                     var collectionType = typeof(List<>).MakeGenericType(referenceType);
 
-                    var resolvedRefs = Activator.CreateInstance(collectionType);
+                    object resolvedRefs = Activator.CreateInstance(collectionType);
                     prop.SetValue(newObj, resolvedRefs, null);
 
+                    dynamic resolvedRefsDynamic = resolvedRefs;
                     foreach (object dehydratedRef in (IEnumerable)propertyValue)
                     {
-                        if (dehydratedRef == null) continue;
-
-                        collectionType.InvokeAdd(
-                            target: resolvedRefs,
-                            value: await prop.ResolveOrRecurseAsync(referenceType, dehydratedRef, repositoryFactory));
+                        if (dehydratedRef != null)
+                        {
+                            resolvedRefsDynamic.Add((dynamic)
+                                await prop.ResolveOrRecurseAsync(referenceType, dehydratedRef, repositoryFactory));
+                        }
                     }
                 }
                 else
@@ -282,7 +267,7 @@ namespace Dehydrator
             [NotNull] Type referenceType, [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
         {
             if (prop.HasAttribute<ResolveAttribute>())
-                return await ((IEntity)obj).ResolveUntypedAsync(referenceType, repositoryFactory);
+                return await DehydrationUtils.ResolveAsync((dynamic)obj, (dynamic)repositoryFactory.Create(referenceType));
             else if (prop.HasAttribute<ResolveReferencesAttribute>())
                 return await obj.ResolveReferencesAsync(referenceType, repositoryFactory);
             return obj;
@@ -305,23 +290,6 @@ namespace Dehydrator
             if (entityWithResolvedRefs == null)
                 throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
             return entityWithResolvedRefs;
-        }
-
-        private static readonly MethodInfo ResolveAsyncMethod = typeof(DehydrationUtils).GetMethod(nameof(ResolveAsync));
-
-        /// <summary>
-        /// Resolves an entity that has been dehydrated to contain nothing but its <see cref="IEntity.Id"/> and returns the full entity.
-        /// </summary>
-        /// <param name="entity">The entity to resolve.</param>
-        /// <param name="entityType">The type of the <paramref name="entity"/>.</param>
-        /// <param name="repositoryFactory">The factory to create a suitable <see cref="IReadRepository{TEntity}"/> for lookup.</param>
-        /// <exception cref="KeyNotFoundException">No entity with matching <see cref="IEntity.Id"/> in <see cref="IReadRepository{TEntity}"/>.</exception>
-        private static async Task<IEntity> ResolveUntypedAsync([NotNull] this IEntity entity, [NotNull] Type entityType,
-            [NotNull] IReadRepositoryFactory repositoryFactory)
-        {
-            object repository = repositoryFactory.Create(entityType);
-            return await
-                (dynamic)ResolveAsyncMethod.MakeGenericMethod(entityType).Invoke(repository, new[] {entity, repository});
         }
 #endif
     }
