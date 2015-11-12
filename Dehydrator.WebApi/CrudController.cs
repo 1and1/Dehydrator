@@ -47,7 +47,7 @@ namespace Dehydrator.WebApi
             SaveChanges();
             return Created(
                 location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
-                content: storedEntity.DehydrateReferences());
+                content: storedEntity);
         }
 
         /// <summary>

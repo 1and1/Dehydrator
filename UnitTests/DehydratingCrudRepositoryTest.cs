@@ -109,7 +109,7 @@ namespace Dehydrator
                 .Returns(_entityWithResolvedRefs);
 
             var result = _repository.Add(_entityWithDehydratedRefs);
-            result.Should().Be(_entityWithResolvedRefs);
+            result.Should().Be(_entityWithDehydratedRefs);
         }
 
         [Test]

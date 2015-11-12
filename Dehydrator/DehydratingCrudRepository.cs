@@ -34,7 +34,7 @@ namespace Dehydrator
         public TEntity Add(TEntity entity)
         {
             return Inner.Add(
-                entity.ResolveReferences(_repositoryFactory));
+                entity.ResolveReferences(_repositoryFactory)).DehydrateReferences();
         }
 
         public void Modify(TEntity entity)
