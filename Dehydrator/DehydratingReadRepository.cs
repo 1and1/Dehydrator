@@ -50,38 +50,9 @@ namespace Dehydrator
             return Inner.Exists(id);
         }
 
+        public IQueryable<TEntity> Query => new DehydratingQueryable<TEntity>(Inner.Query);
+
 #if NET45
-        public async Task<IReadOnlyCollection<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            var result = await Inner.QueryAsync(query);
-            return result.Select(x => x.DehydrateReferences()).ToList();
-        }
-
-        public async Task<TResult> FirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            var result = await Inner.FirstAsync(query);
-
-            // Dehydrate if the query result is an entity, otherwise pass through
-            return IsEntity(typeof(TResult))
-                ? (TResult)(object)((TEntity)(object)result)?.DehydrateReferences()
-                : result;
-        }
-
-        public async Task<TResult> FirstOrDefaultAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            var result = await Inner.FirstOrDefaultAsync(query);
-
-            // Dehydrate if the query result is an entity, otherwise pass through
-            return IsEntity(typeof(TResult))
-                ? (TResult)(object)((TEntity)(object)result)?.DehydrateReferences()
-                : result;
-        }
-
-        private static bool IsEntity(Type type)
-        {
-            return type == typeof(IEntity) || type.GetInterfaces().Contains(typeof(IEntity));
-        }
-
         public async Task<TEntity> FindAsync(long id)
         {
             var entity = await Inner.FindAsync(id);

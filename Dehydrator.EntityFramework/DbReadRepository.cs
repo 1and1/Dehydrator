@@ -49,22 +49,9 @@ namespace Dehydrator.EntityFramework
             return _dbSet.Find(id);
         }
 
+        public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_dbSet.AsNoTracking());
+
 #if NET45
-        public async Task<IReadOnlyCollection<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            return await query(_dbSet).ToListAsync();
-        }
-
-        public Task<TResult> FirstAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            return query(_dbSet).FirstAsync();
-        }
-
-        public Task<TResult> FirstOrDefaultAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query)
-        {
-            return query(_dbSet).FirstOrDefaultAsync();
-        }
-
         public async Task<TEntity> FindAsync(long id)
         {
             return await _dbSet.FindAsync(id);

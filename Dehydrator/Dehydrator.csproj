@@ -60,12 +60,15 @@
     <Compile Include="DehydrateReferencesAttribute.cs" />
     <Compile Include="DehydratingCrudRepository.cs" />
     <Compile Include="DehydratingCrudRepositoryFactory.cs" />
+    <Compile Include="DehydratingQueryable.cs" />
+    <Compile Include="DehydratingQueryProvider.cs" />
     <Compile Include="DehydratingReadRepository.cs" />
     <Compile Include="DehydratingReadRepositoryFactory.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="IAsyncQueryable.cs" />
     <Compile Include="ICrudRepository.cs" />
     <Compile Include="ICrudRepositoryFactory.cs" />
     <Compile Include="IEntity.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="LookupReadRepositoryFactory.cs" />
     <Compile Include="NamedEntity.cs" />
     <Compile Include="PropertyExtensions.cs" />
+    <Compile Include="QueryableExtensions.cs" />
     <Compile Include="RepositoryFactoryExtensions.cs" />
     <Compile Include="ResolveAttribute.cs" />
     <Compile Include="ResolveReferencesAttribute.cs" />

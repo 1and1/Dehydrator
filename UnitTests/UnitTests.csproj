@@ -86,6 +86,7 @@
     <Compile Include="MockEntity1.cs" />
     <Compile Include="MockEntity2.cs" />
     <Compile Include="NoIdTest.cs" />
+    <Compile Include="QueryableExtensionsTest.cs" />
     <Compile Include="ResolveOnlyTest.cs" />
     <Compile Include="WebApi\AsyncCrudControllerTest.cs" />
     <Compile Include="WebApi\AsyncMockController.cs" />

@@ -66,6 +66,8 @@
     <Compile Include="DbContextExtensions.cs" />
     <Compile Include="DbCrudRepository.cs" />
     <Compile Include="DbCrudRepositoryFactory.cs" />
+    <Compile Include="DbQueryable.cs" />
+    <Compile Include="DbQueryProvider.cs" />
     <Compile Include="DbReadRepository.cs" />
     <Compile Include="DbReadRepositoryFactory.cs" />
     <Compile Include="DbTransaction.cs" />

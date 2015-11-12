@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Dehydrator.EntityFramework;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -98,6 +99,16 @@ namespace Dehydrator
                 .Returns(true);
 
             _repository.Exists(123).Should().BeTrue();
+        }
+
+        [Test]
+        public void TestQueryable()
+        {
+            _mainRepositoryMock.SetupGet(x => x.Query)
+                .Returns(new DbQueryable<MockEntity1>(new[] {_entityWithResolvedRefs}.AsQueryable()));
+
+            _repository.Query.Should().Equal(_entityWithDehydratedRefs);
+            _repository.Query.First().Should().Be(_entityWithDehydratedRefs);
         }
 
         [Test]
