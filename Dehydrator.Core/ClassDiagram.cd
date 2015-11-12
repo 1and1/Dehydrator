@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Dehydrator.DehydrateAttribute" Collapsed="true">
+    <Position X="3" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DehydrateAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.DehydrateReferencesAttribute" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DehydrateReferencesAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.Entity" Collapsed="true">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEgAAAAAAAAAAAAIAAAAAAAAIAAAA=</HashCode>
+      <FileName>Entity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dehydrator.EntityExtensions">
+    <Position X="0.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAABA=</HashCode>
+      <FileName>EntityExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.NamedEntity" Collapsed="true">
+    <Position X="2.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Dehydrator.Entity" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.312" />
+        <Point X="3" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NamedEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Dehydrator.ResolveAttribute" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResolveAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.ResolveReferencesAttribute" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResolveReferencesAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.CollectionExtensions">
+    <Position X="2.75" Y="8" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>CollectionExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.EnumerableExtensions">
+    <Position X="2.75" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEIAAgBAAAAAAAAAAACAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>EnumerableExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.PropertyExtensions">
+    <Position X="0.5" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAFAAAAAAAgAAAAAIAAAAAACAAAAAAAA=</HashCode>
+      <FileName>PropertyExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.QueryableExtensions">
+    <Position X="13.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>QueryableExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dehydrator.RepositoryFactoryExtensions">
+    <Position X="4.5" Y="1.75" Width="2.25" />
+    <Members>
+      <Method Name="Create" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAEAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>RepositoryFactoryExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Dehydrator.ICrudRepository&lt;TEntity&gt;">
+    <Position X="8.25" Y="3" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAIAIAABAAAAAEAAQAgABAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICrudRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dehydrator.ICrudRepositoryFactory">
+    <Position X="6" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICrudRepositoryFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dehydrator.IEntity">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dehydrator.INamedEntity">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>INamedEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dehydrator.IReadRepository&lt;TEntity&gt;">
+    <Position X="8.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAIAAgAAgAAAAEAAAA=</HashCode>
+      <FileName>IReadRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dehydrator.IReadRepositoryFactory">
+    <Position X="6" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>IReadRepositoryFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dehydrator.ITransaction">
+    <Position X="11.25" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITransaction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Dehydrator.IAsyncQueryable&lt;T&gt;">
+    <Position X="11.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>IAsyncQueryable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

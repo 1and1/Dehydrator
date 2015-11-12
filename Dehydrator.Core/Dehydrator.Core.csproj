@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}</ProjectGuid>
+    <ProjectGuid>{45ACF899-0359-4976-9336-BE72759CE578}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dehydrator</RootNamespace>
-    <AssemblyName>Dehydrator</AssemblyName>
+    <AssemblyName>Dehydrator.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,7 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\build\Debug\Dehydrator.xml</DocumentationFile>
+    <DocumentationFile>..\build\Debug\Dehydrator.Core.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\build\Release\Dehydrator.xml</DocumentationFile>
+    <DocumentationFile>..\build\Release\Dehydrator.Core.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -46,30 +46,37 @@
       <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.Global.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="DehydratingCrudRepository.cs" />
-    <Compile Include="DehydratingCrudRepositoryFactory.cs" />
-    <Compile Include="DehydratingQueryable.cs" />
-    <Compile Include="DehydratingQueryProvider.cs" />
-    <Compile Include="DehydratingReadRepository.cs" />
-    <Compile Include="DehydratingReadRepositoryFactory.cs" />
-    <Compile Include="DehydrationUtils.cs" />
-    <Compile Include="LookupCrudRepositoryFactory.cs" />
-    <Compile Include="LookupReadRepositoryFactory.cs" />
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="DehydrateAttribute.cs" />
+    <Compile Include="DehydrateReferencesAttribute.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="IAsyncQueryable.cs" />
+    <Compile Include="ICrudRepository.cs" />
+    <Compile Include="ICrudRepositoryFactory.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="INamedEntity.cs" />
+    <Compile Include="IReadRepository.cs" />
+    <Compile Include="IReadRepositoryFactory.cs" />
+    <Compile Include="ITransaction.cs" />
+    <Compile Include="NamedEntity.cs" />
+    <Compile Include="PropertyExtensions.cs" />
+    <Compile Include="QueryableExtensions.cs" />
+    <Compile Include="RepositoryFactoryExtensions.cs" />
+    <Compile Include="ResolveAttribute.cs" />
+    <Compile Include="ResolveReferencesAttribute.cs" />
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dehydrator.Core\Dehydrator.Core.csproj">
-      <Project>{45acf899-0359-4976-9336-be72759ce578}</Project>
-      <Name>Dehydrator.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

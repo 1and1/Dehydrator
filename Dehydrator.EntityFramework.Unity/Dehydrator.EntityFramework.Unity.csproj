@@ -82,6 +82,10 @@
       <Project>{63a4c204-eca0-446e-b461-064413200072}</Project>
       <Name>Dehydrator.EntityFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dehydrator.Core\Dehydrator.Core.csproj">
+      <Project>{45acf899-0359-4976-9336-be72759ce578}</Project>
+      <Name>Dehydrator.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dehydrator\Dehydrator.csproj">
       <Project>{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}</Project>
       <Name>Dehydrator</Name>

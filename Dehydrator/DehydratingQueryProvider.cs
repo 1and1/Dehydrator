@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Dehydrator
 {
     /// <summary>
-    /// Wraps an <see cref="IQueryProvider"/> and runs <see cref="EntityExtensions.DehydrateReferences{T}"/> on the results.
+    /// Wraps an <see cref="IQueryProvider"/> and runs <see cref="DehydrationUtils.DehydrateReferences{T}"/> on the results.
     /// </summary>
     /// <seealso cref="DehydratingQueryable"/>
     /// <seealso cref="DehydratingQueryable{T}"/>

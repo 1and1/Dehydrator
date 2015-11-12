@@ -6,6 +6,7 @@ By stripping navigational references in your entities down to only their IDs the
 
 NuGet packages:
 * [Dehydrator](https://www.nuget.org/packages/Dehydrator/)
+* [Dehydrator.Core](https://www.nuget.org/packages/Dehydrator.Core/)
 * [Dehydrator.EntityFramework](https://www.nuget.org/packages/Dehydrator.EntityFramework/)
 * [Dehydrator.EntityFramework.Unity](https://www.nuget.org/packages/Dehydrator.EntityFramework.Unity/)
 * [Dehydrator.WebApi](https://www.nuget.org/packages/Dehydrator.WebApi/)
@@ -61,19 +62,17 @@ This removes any potential duplication and ambiguity.
 ## Getting started
 
 ### Data model
-Install the `Dehydrator` NuGet package in the project holding your data model. Make all your entity classes either implement `IEntity` or derive from `Entity`. Mark any reference properties you wish to have dehydrated with `[Dehydrate]`. You can now use the `.DehydrateReferences()` extension method to dehydrate references down to only their IDs and  and `.ResolveReferences()` to resolve/restore them again.
+Install the `Dehydrator.Core` NuGet package in the project holding your data model. Make all your entity classes either implement `IEntity` or derive from `Entity`. Mark any reference properties you wish to have dehydrated with `[Dehydrate]`. If you want to have a property resolved but not dehydrated (e.g., incoming data is dehydrated and needs to be resolved but outgoing data should not be dehydrated) use `[Resolve]` instead. Combining `[Dehydrate]` and `[Resolve]` is not necessary since `[Dehydrate]` implies `[Resolve]`. To embed an Entity type within another and have the dehydration only start within the inner object annotate the containing property with `[DehydrateReferences]` or `[ResolveReferences]`.
 
-If you want to have a property resolved but not dehydrated (e.g., incoming data is dehydrated and needs to be resolved but outgoing data should not be dehydrated) use `[Resolve]` instead. Combining `[Dehydrate]` and `[Resolve]` is not necessary since `[Dehydrate]` implies `[Resolve]`. To embed an Entity type within another and have the dehydration only start within the inner object annotate the containing property with `[DehydrateReferences]` or `[ResolveReferences]`.
+Install the `Dehydrator` NuGet package in the project performing the data serializatio (usually the frontend/webservice). You can now use the `.DehydrateReferences()` extension method to dehydrate references in entities down to only their IDs and  and `.ResolveReferences()` to resolve/restore them again.
 
 Resolving requires an `IRepositoryFactory`, which represents a storage backend such as a database and provides `IRepository<>` instances for specific entity types.
 
 
 ### Entity Framework
-Install the `Dehydrator.EntityFramework` NuGet package in the project you use for database access via Entity Framework. This provides `DbRepositoryFactory`, an `IRepositoryFactory` implementation based on Entity Framework's `DbSet`.
+Install the `Dehydrator.EntityFramework` NuGet package in the project you use for database access via Entity Framework. This provides `DbRepositoryFactory`, an `IRepositoryFactory` implementation based on Entity Framework's `DbSet`. Make sure to make any reference/navigational properties `virtual` to enable Entity Framework's lazy loading feature.
 
-Use the `DehydratingRepositoryFactory` decorator to wrap your `IRepositoryFactory` implementation (`DbRepositoryFactory` or a custom implementation). This decorator transparently dehydrates and resolve references when loading and saving entities.
-
-Make sure to make any reference/navigational properties `virtual` to enable Entity Framework's lazy loading feature.
+Use the `DehydratingRepositoryFactory` decorator provided by the `Dehydrator` NuGet package to wrap your `IRepositoryFactory` implementation (`DbRepositoryFactory` or a custom implementation). This decorator transparently dehydrates and resolve references when loading and saving entities.
 
 
 ### Unity

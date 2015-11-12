@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 14.0.23107.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.Core", "Dehydrator.Core\Dehydrator.Core.csproj", "{45ACF899-0359-4976-9336-BE72759CE578}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator", "Dehydrator\Dehydrator.csproj", "{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dehydrator.WebApi", "Dehydrator.WebApi\Dehydrator.WebApi.csproj", "{368ABA94-AA57-482E-B696-1C104EB57BD6}"
@@ -21,6 +23,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45ACF899-0359-4976-9336-BE72759CE578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45ACF899-0359-4976-9336-BE72759CE578}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45ACF899-0359-4976-9336-BE72759CE578}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45ACF899-0359-4976-9336-BE72759CE578}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB9E2BF4-179C-4BD5-A0C8-1B4758D11CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU

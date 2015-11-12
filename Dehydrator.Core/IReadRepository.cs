@@ -20,7 +20,7 @@ namespace Dehydrator
         /// <summary>
         /// Returns all entities of a certain type from the backing database.
         /// </summary>
-        /// <remarks><see cref="EntityExtensions.Dehydrate{TEntity}"/> may be called on results.</remarks>
+        /// <remarks>Results may be dehydrated.</remarks>
         [NotNull]
         [DataObjectMethod(DataObjectMethodType.Select)]
         IEnumerable<TEntity> GetAll();
@@ -28,7 +28,7 @@ namespace Dehydrator
         /// <summary>
         /// Returns all entities of a certain type that match a predicate.
         /// </summary>
-        /// <remarks><see cref="EntityExtensions.Dehydrate{TEntity}"/> may be called on results.</remarks>
+        /// <remarks>Results may be dehydrated.</remarks>
         [NotNull]
         IEnumerable<TEntity> GetAll([NotNull] Expression<Func<TEntity, bool>> predicate);
 
@@ -43,14 +43,14 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
-        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
+        /// <remarks>Result references may be dehydrated.</remarks>
         [CanBeNull]
         TEntity Find(long id);
 
         /// <summary>
         /// Provides LINQ access to the underlying data.
         /// </summary>
-        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
+        /// <remarks>Result references may be dehydrated.</remarks>
         IQueryable<TEntity> Query { get; }
 
 #if NET45
@@ -59,7 +59,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
-        /// <remarks><see cref="EntityExtensions.DehydrateReferences{TEntity}"/> may be called on results.</remarks>
+        /// <remarks>Result references may be dehydrated.</remarks>
         Task<TEntity> FindAsync(long id);
 #endif
     }

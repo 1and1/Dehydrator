@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Dehydrator
 {
     /// <summary>
-    /// Wraps an <see cref="IQueryable"/> and runs <see cref="EntityExtensions.DehydrateReferences{T}"/> on the results.
+    /// Wraps an <see cref="IQueryable"/> and runs <see cref="DehydrationUtils.DehydrateReferences{T}"/> on the results.
     /// </summary>
     /// <seealso cref="DehydratingQueryProvider"/>
     internal class DehydratingQueryable : IQueryable
@@ -39,7 +39,7 @@ namespace Dehydrator
     }
 
     /// <summary>
-    /// Wraps an <see cref="IAsyncQueryable{T}"/> and runs <see cref="EntityExtensions.DehydrateReferences{T}"/> on the results.
+    /// Wraps an <see cref="IAsyncQueryable{T}"/> and runs <see cref="DehydrationUtils.DehydrateReferences{T}"/> on the results.
     /// </summary>
     /// <seealso cref="DehydratingQueryProvider"/>
     internal class DehydratingQueryable<T> : DehydratingQueryable, IAsyncQueryable<T>

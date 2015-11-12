@@ -106,6 +106,10 @@
       <Project>{63a4c204-eca0-446e-b461-064413200072}</Project>
       <Name>Dehydrator.EntityFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dehydrator.Core\Dehydrator.Core.csproj">
+      <Project>{45acf899-0359-4976-9336-be72759ce578}</Project>
+      <Name>Dehydrator.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dehydrator.WebApi\Dehydrator.WebApi.csproj">
       <Project>{368ABA94-AA57-482E-B696-1C104EB57BD6}</Project>
       <Name>Dehydrator.WebApi</Name>

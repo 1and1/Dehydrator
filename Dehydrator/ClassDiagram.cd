@@ -1,31 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Dehydrator.DehydrateAttribute" Collapsed="true">
-    <Position X="3" Y="6.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DehydrateAttribute.cs</FileName>
-    </TypeIdentifier>
+    <Position X="9.75" Y="1.5" Width="1.75" />
+    <TypeIdentifier />
   </Class>
   <Class Name="Dehydrator.DehydrateReferencesAttribute" Collapsed="true">
-    <Position X="0.5" Y="6.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DehydrateReferencesAttribute.cs</FileName>
-    </TypeIdentifier>
+    <Position X="7.25" Y="1.5" Width="2.25" />
+    <TypeIdentifier />
   </Class>
   <Class Name="Dehydrator.DehydratingCrudRepository&lt;TEntity&gt;" Collapsed="true">
-    <Position X="10.5" Y="4" Width="2.75" />
+    <Position X="4" Y="4" Width="2.75" />
     <AssociationLine Name="_repositoryFactory" Type="Dehydrator.IReadRepositoryFactory" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.875" Y="4.691" />
-        <Point X="11.875" Y="6.375" />
-        <Point X="9.5" Y="6.375" />
-        <Point X="9.5" Y="6.75" />
+        <Point X="5.375" Y="4.691" />
+        <Point X="5.375" Y="6.125" />
+        <Point X="3" Y="6.125" />
+        <Point X="3" Y="6.5" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>gAIAIEABAAAAAEAAQCgABAAQCAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>gAIAIEABAAAAAEAAQCgABAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DehydratingCrudRepository.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -35,7 +29,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Dehydrator.DehydratingCrudRepositoryFactory" Collapsed="true">
-    <Position X="10.5" Y="8.75" Width="2.75" />
+    <Position X="4" Y="8.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>DehydratingCrudRepositoryFactory.cs</FileName>
@@ -46,9 +40,9 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Dehydrator.DehydratingReadRepository&lt;TEntity&gt;" Collapsed="true">
-    <Position X="10.5" Y="1.25" Width="2.75" />
+    <Position X="4" Y="1.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAQIAEgAAgAAAAEAgAA=</HashCode>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAACAAIAAgAAgAAAAEAAAA=</HashCode>
       <FileName>DehydratingReadRepository.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -57,7 +51,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Dehydrator.DehydratingReadRepositoryFactory" Collapsed="true">
-    <Position X="10.5" Y="7" Width="2.75" />
+    <Position X="4" Y="6.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>DehydratingReadRepositoryFactory.cs</FileName>
@@ -67,28 +61,8 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Dehydrator.Entity" Collapsed="true">
-    <Position X="2.25" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAEgAAAAAAAAAAAAIAAAAAAAAIAAAA=</HashCode>
-      <FileName>Entity.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Dehydrator.EntityExtensions">
-    <Position X="0.5" Y="3.25" Width="4.25" />
-    <Members>
-      <Method Name="DehydrateOrRecurse" Hidden="true" />
-      <Method Name="ResolveOrRecurse" Hidden="true" />
-      <Method Name="ResolveOrRecurseAsync" Hidden="true" />
-    </Members>
-    <TypeIdentifier>
-      <HashCode>AAAACAAAACAAAIAAwAAAAAAACAAAAAAABAAAAIAAABA=</HashCode>
-      <FileName>EntityExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Dehydrator.LookupCrudRepositoryFactory" Collapsed="true">
-    <Position X="13.5" Y="8.75" Width="2.25" />
+    <Position X="7" Y="8.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>LookupCrudRepositoryFactory.cs</FileName>
@@ -96,107 +70,36 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Dehydrator.LookupReadRepositoryFactory" Collapsed="true">
-    <Position X="13.5" Y="7" Width="2.25" />
+    <Position X="7" Y="6.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAACAAAAAAAAQAAAAAAEAEAAAAAAAAAAA=</HashCode>
       <FileName>LookupReadRepositoryFactory.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Dehydrator.NamedEntity" Collapsed="true">
-    <Position X="2.25" Y="2" Width="1.5" />
-    <InheritanceLine Type="Dehydrator.Entity" FixedToPoint="true">
-      <Path>
-        <Point X="3" Y="1.312" />
-        <Point X="3" Y="2" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>NamedEntity.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Dehydrator.RepositoryExtensions">
-    <Position X="5" Y="0.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAAAAAAAAAAAAACAAAAAAAAAAAAAAgAAA=</HashCode>
-      <FileName>RepositoryExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Dehydrator.RepositoryFactoryExtensions">
-    <Position X="4.5" Y="7.5" Width="2.25" />
-    <Members>
-      <Field Name="CreateCrudMethod" Hidden="true" />
-      <Field Name="CreateReadMethod" Hidden="true" />
-    </Members>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAEAAAAAEAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>RepositoryFactoryExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Dehydrator.ResolveAttribute" Collapsed="true">
-    <Position X="3" Y="5.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ResolveAttribute.cs</FileName>
-    </TypeIdentifier>
+    <Position X="9.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier />
   </Class>
   <Class Name="Dehydrator.ResolveReferencesAttribute" Collapsed="true">
-    <Position X="0.5" Y="5.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ResolveReferencesAttribute.cs</FileName>
-    </TypeIdentifier>
+    <Position X="7.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier />
   </Class>
   <Interface Name="Dehydrator.ICrudRepository&lt;TEntity&gt;">
-    <Position X="7" Y="3" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>gAIAIAABAAAAAEAAQAgABAAQCAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ICrudRepository.cs</FileName>
-    </TypeIdentifier>
+    <Position X="0.5" Y="3" Width="2.75" />
+    <TypeIdentifier />
   </Interface>
   <Interface Name="Dehydrator.ICrudRepositoryFactory">
-    <Position X="7" Y="8.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>ICrudRepositoryFactory.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Dehydrator.IEntity">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IEntity.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Dehydrator.INamedEntity">
-    <Position X="0.5" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>INamedEntity.cs</FileName>
-    </TypeIdentifier>
+    <Position X="0.5" Y="8" Width="2.75" />
+    <TypeIdentifier />
   </Interface>
   <Interface Name="Dehydrator.IReadRepository&lt;TEntity&gt;">
-    <Position X="7" Y="0.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQIAEgAAgAAAAEAgAA=</HashCode>
-      <FileName>IReadRepository.cs</FileName>
-    </TypeIdentifier>
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier />
   </Interface>
   <Interface Name="Dehydrator.IReadRepositoryFactory">
-    <Position X="7" Y="6.75" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>IReadRepositoryFactory.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Dehydrator.ITransaction">
-    <Position X="5.25" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ITransaction.cs</FileName>
-    </TypeIdentifier>
+    <Position X="0.5" Y="6.5" Width="2.75" />
+    <TypeIdentifier />
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Dehydrator.Core</id>
+		<version>$version$</version>
+		<authors>Bastian Eicher</authors>
+		<copyright>1&amp;1 Internet SE</copyright>
+		<projectUrl>https://github.com/1and1/Dehydrator</projectUrl>
+		<description>This package provides core interfaces and helpers used by Dehydrator.
+Install this package instead of the main Dehydrator package in Model-only assemblies to reduce coupling.</description>
+		<summary>Core interfaces and helpers used by Dehydrator</summary>
+		<tags>Dehydrate Entity JSON REST WebAPI ORM EntityFramework</tags>
+	</metadata>
+</package>

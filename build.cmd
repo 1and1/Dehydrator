@@ -12,6 +12,8 @@ if errorlevel 1 pause
 
 ::Create NuGet packages
 mkdir build\Packages
+nuget pack Dehydrator.Core\Dehydrator.Core.csproj -Properties Configuration=Release -IncludeReferencedProjects -Symbols -OutputDirectory build\Packages
+if errorlevel 1 pause
 nuget pack Dehydrator\Dehydrator.csproj -Properties Configuration=Release -IncludeReferencedProjects -Symbols -OutputDirectory build\Packages
 if errorlevel 1 pause
 nuget pack Dehydrator.EntityFramework\Dehydrator.EntityFramework.csproj -Properties Configuration=Release -IncludeReferencedProjects -Symbols -OutputDirectory build\Packages

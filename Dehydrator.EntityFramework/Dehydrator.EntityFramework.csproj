@@ -77,9 +77,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dehydrator\Dehydrator.csproj">
-      <Project>{db9e2bf4-179c-4bd5-a0c8-1b4758d11ca4}</Project>
-      <Name>Dehydrator</Name>
+    <ProjectReference Include="..\Dehydrator.Core\Dehydrator.Core.csproj">
+      <Project>{45acf899-0359-4976-9336-be72759ce578}</Project>
+      <Name>Dehydrator.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
