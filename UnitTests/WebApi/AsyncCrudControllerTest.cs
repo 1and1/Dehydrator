@@ -65,7 +65,7 @@ namespace Dehydrator.WebApi
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
             _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);
-            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.FromResult(true));
             await _controller.Create(entity);
         }
 
@@ -90,8 +90,8 @@ namespace Dehydrator.WebApi
         public async Task TestUpdate()
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
-            _repositoryMock.Setup(x => x.ModifyAsync(entity, CancellationToken.None)).Returns(Task.CompletedTask);
-            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.ModifyAsync(entity, CancellationToken.None)).Returns(Task.FromResult(true));
+            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.FromResult(true));
             await _controller.Update(1, entity);
         }
 
@@ -99,7 +99,7 @@ namespace Dehydrator.WebApi
         public async Task TestDelete()
         {
             _repositoryMock.Setup(x => x.RemoveAsync(1, CancellationToken.None)).ReturnsAsync(true);
-            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.FromResult(true));
             await _controller.Delete(1);
         }
 
