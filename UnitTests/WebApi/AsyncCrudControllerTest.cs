@@ -2,6 +2,7 @@
 using System.Data;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using FluentAssertions;
@@ -38,7 +39,7 @@ namespace Dehydrator.WebApi
         public async Task TestRead()
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
-            _repositoryMock.Setup(x => x.FindAsync(entity.Id))
+            _repositoryMock.Setup(x => x.FindAsync(entity.Id, CancellationToken.None))
                 .Returns(Task.FromResult(entity));
             (await _controller.Read(entity.Id)).Should().Be(entity);
         }
@@ -46,7 +47,7 @@ namespace Dehydrator.WebApi
         [Test]
         public void TestReadNotFound()
         {
-            _repositoryMock.Setup(x => x.FindAsync(1))
+            _repositoryMock.Setup(x => x.FindAsync(1, CancellationToken.None))
                 .Returns(Task.FromResult<MockEntity1>(null));
             Assert.Throws<HttpResponseException>(async () => await _controller.Read(1));
         }
@@ -64,7 +65,7 @@ namespace Dehydrator.WebApi
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
             _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);
-            _repositoryMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.CompletedTask);
             await _controller.Create(entity);
         }
 
@@ -81,7 +82,7 @@ namespace Dehydrator.WebApi
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
             _repositoryMock.Setup(x => x.Add(entity)).Returns(entity);
-            _repositoryMock.Setup(x => x.SaveChangesAsync()).Throws<DataException>();
+            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Throws<DataException>();
             Assert.Throws<HttpResponseException>(async () => await _controller.Create(entity));
         }
 
@@ -89,23 +90,23 @@ namespace Dehydrator.WebApi
         public async Task TestUpdate()
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
-            _repositoryMock.Setup(x => x.ModifyAsync(entity)).Returns(Task.CompletedTask);
-            _repositoryMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.ModifyAsync(entity, CancellationToken.None)).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.CompletedTask);
             await _controller.Update(1, entity);
         }
 
         [Test]
         public async Task TestDelete()
         {
-            _repositoryMock.Setup(x => x.RemoveAsync(1)).ReturnsAsync(true);
-            _repositoryMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _repositoryMock.Setup(x => x.RemoveAsync(1, CancellationToken.None)).ReturnsAsync(true);
+            _repositoryMock.Setup(x => x.SaveChangesAsync(CancellationToken.None)).Returns(Task.CompletedTask);
             await _controller.Delete(1);
         }
 
         [Test]
         public void TestDeleteMissing()
         {
-            _repositoryMock.Setup(x => x.RemoveAsync(1)).ReturnsAsync(false);
+            _repositoryMock.Setup(x => x.RemoveAsync(1, CancellationToken.None)).ReturnsAsync(false);
             Assert.Throws<HttpResponseException>(async () => await _controller.Delete(1));
         }
     }

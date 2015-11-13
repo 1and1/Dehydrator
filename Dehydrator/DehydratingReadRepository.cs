@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using JetBrains.Annotations;
 
 #if NET45
@@ -53,9 +54,9 @@ namespace Dehydrator
         public IQueryable<TEntity> Query => new DehydratingQueryable<TEntity>(Inner.Query);
 
 #if NET45
-        public async Task<TEntity> FindAsync(long id)
+        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var entity = await Inner.FindAsync(id);
+            var entity = await Inner.FindAsync(id, cancellationToken);
             return entity?.DehydrateReferences();
         }
 #endif

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -40,7 +41,7 @@ namespace Dehydrator
             var repositoryMock = new Mock<ICrudRepository<TRef>>(MockBehavior.Strict);
             if (DehydratedRef.Id != Entity.NoId)
             {
-                repositoryMock.Setup(x => x.FindAsync(DehydratedRef.Id))
+                repositoryMock.Setup(x => x.FindAsync(DehydratedRef.Id, CancellationToken.None))
                     .ReturnsAsync(ResolvedRef);
             }
 

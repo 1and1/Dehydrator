@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using JetBrains.Annotations;
 
 #if NET45
@@ -52,9 +53,9 @@ namespace Dehydrator.EntityFramework
         public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_dbSet.AsNoTracking());
 
 #if NET45
-        public async Task<TEntity> FindAsync(long id)
+        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(cancellationToken, id);
         }
 #endif
     }

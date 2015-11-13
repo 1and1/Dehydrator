@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Threading;
 using JetBrains.Annotations;
 
 #if NET45
@@ -57,27 +58,29 @@ namespace Dehydrator
         /// Modifies an existing entity in the database. Call <see cref="SaveChangesAsync"/> when done.
         /// </summary>
         /// <param name="entity">The modified entity.</param>
+        /// <param name="cancellationToken">Used to cancel the request.</param>
         /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
-        Task ModifyAsync([NotNull] TEntity entity);
+        Task ModifyAsync([NotNull] TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Removes a specific entity from the database. Call <see cref="SaveChangesAsync"/> when done.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
+        /// <param name="cancellationToken">Used to cancel the request.</param>
         /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
-        Task<bool> RemoveAsync(long id);
+        Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Locks the contents represented by the repository. Any following changes are only commited if <see cref="ITransaction.Commit"/> is called.
         /// </summary>
         /// <returns>A representation of the transaction. Dispose to end the transaction and rollback uncomitted changes.</returns>
-        Task<ITransaction> BeginTransactionAsync();
+        Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Persists any changes made to the underlying storage system.
         /// </summary>
         /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 #endif
     }
 }

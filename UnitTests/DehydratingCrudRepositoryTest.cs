@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Dehydrator.EntityFramework;
 using FluentAssertions;
@@ -85,7 +86,7 @@ namespace Dehydrator
         [Test]
         public async Task TestFindAsync()
         {
-            _mainRepositoryMock.Setup(x => x.FindAsync(_entityWithDehydratedRefs.Id))
+            _mainRepositoryMock.Setup(x => x.FindAsync(_entityWithDehydratedRefs.Id, CancellationToken.None))
                 .ReturnsAsync(_entityWithResolvedRefs);
 
             var result = await _repository.FindAsync(_entityWithDehydratedRefs.Id);
@@ -136,9 +137,9 @@ namespace Dehydrator
         [Test]
         public async Task TestModifyAsync()
         {
-            _refRepositoryMock.Setup(x => x.FindAsync(_dehydratedRef.Id))
+            _refRepositoryMock.Setup(x => x.FindAsync(_dehydratedRef.Id, CancellationToken.None))
                 .ReturnsAsync(_resolvedRef);
-            _mainRepositoryMock.Setup(x => x.ModifyAsync(_entityWithResolvedRefs))
+            _mainRepositoryMock.Setup(x => x.ModifyAsync(_entityWithResolvedRefs, CancellationToken.None))
                 .Returns(Task.CompletedTask);
 
             await _repository.ModifyAsync(_entityWithDehydratedRefs);
@@ -156,7 +157,7 @@ namespace Dehydrator
         [Test]
         public async Task TestRemoveAsync()
         {
-            _mainRepositoryMock.Setup(x => x.RemoveAsync(123))
+            _mainRepositoryMock.Setup(x => x.RemoveAsync(123, CancellationToken.None))
                 .ReturnsAsync(true);
 
             (await _repository.RemoveAsync(123)).Should().BeTrue();

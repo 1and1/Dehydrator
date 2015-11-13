@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Threading;
+using JetBrains.Annotations;
 
 #if NET45
 using System.Threading.Tasks;
@@ -59,25 +60,25 @@ namespace Dehydrator
         }
 
 #if NET45
-        public async Task ModifyAsync(TEntity entity)
+        public async Task ModifyAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             await Inner.ModifyAsync(
-                await entity.ResolveReferencesAsync(_repositoryFactory));
+                await entity.ResolveReferencesAsync(_repositoryFactory), cancellationToken);
         }
 
-        public Task<bool> RemoveAsync(long id)
+        public Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Inner.RemoveAsync(id);
+            return Inner.RemoveAsync(id, cancellationToken);
         }
 
-        public Task<ITransaction> BeginTransactionAsync()
+        public Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Inner.BeginTransactionAsync();
+            return Inner.BeginTransactionAsync(cancellationToken);
         }
 
-        public Task SaveChangesAsync()
+        public Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Inner.SaveChangesAsync();
+            return Inner.SaveChangesAsync(cancellationToken);
         }
 #endif
     }

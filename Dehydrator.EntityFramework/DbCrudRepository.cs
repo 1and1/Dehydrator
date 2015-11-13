@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Threading;
 using JetBrains.Annotations;
 
 #if NET45
@@ -91,26 +92,27 @@ namespace Dehydrator.EntityFramework
         /// Modifies an existing entity in the database.
         /// </summary>
         /// <param name="entity">The modified entity. If any <see cref="IEntity"/> collections are <see langword="null"/> they are treated as unmodified rather than empty.</param>
+        /// <param name="cancellationToken">Used to cancel the request.</param>
         /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
-        public async Task ModifyAsync(TEntity entity)
+        public async Task ModifyAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             // NOTE: _dbContext.Entry(entity).State = EntityState.Modified; will not work here due to references
-            var existingEntity = await FindAsync(entity.Id);
+            var existingEntity = await FindAsync(entity.Id, cancellationToken);
             if (existingEntity == null)
                 throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
             entity.TransferState(to: existingEntity);
         }
 
-        public async Task<bool> RemoveAsync(long id)
+        public async Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var entity = await FindAsync(id);
+            var entity = await FindAsync(id, cancellationToken);
             if (entity == null) return false;
 
             _dbSet.Remove(entity);
             return true;
         }
 
-        public async Task<ITransaction> BeginTransactionAsync()
+        public async Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             if (_transactionActive) return new FakeTransaction();
 
@@ -119,7 +121,7 @@ namespace Dehydrator.EntityFramework
             {
                 await
                     _dbContext.Database.ExecuteSqlCommandAsync(
-                        $"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
+                        $"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)", cancellationToken);
             }
             catch
             {
@@ -131,9 +133,9 @@ namespace Dehydrator.EntityFramework
             return new DbTransaction(transaction, disposeCallback: () => _transactionActive = false);
         }
 
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 #endif
     }
