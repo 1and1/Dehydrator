@@ -17,10 +17,10 @@ namespace Dehydrator.EntityFramework.Unity
             bool dehydrate = false, bool readOnly = false)
             where TDbContext : DbContext, new()
         {
-            container.RegisterType<TDbContext>();
+            container.RegisterType<TDbContext>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IReadRepositoryFactory>(
-                $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}", new PerResolveLifetimeManager(),
+                $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}", new HierarchicalLifetimeManager(),
                 new InjectionFactory(c =>
                 {
                     var dbFactory = new DbReadRepositoryFactory(c.Resolve<TDbContext>());
@@ -30,7 +30,7 @@ namespace Dehydrator.EntityFramework.Unity
             if (!readOnly)
             {
                 container.RegisterType<ICrudRepositoryFactory>(
-                    $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}", new PerResolveLifetimeManager(),
+                    $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}", new HierarchicalLifetimeManager(),
                     new InjectionFactory(c =>
                     {
                         var dbFactory = new DbCrudRepositoryFactory(c.Resolve<TDbContext>());

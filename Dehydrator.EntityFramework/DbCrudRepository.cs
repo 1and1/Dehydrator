@@ -17,7 +17,7 @@ namespace Dehydrator.EntityFramework
     public class DbCrudRepository<TEntity> : DbReadRepository<TEntity>, ICrudRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
-        [NotNull] private readonly DbContext _dbContext;
+        [NotNull] internal readonly DbContext DbContext;
         [NotNull] private readonly DbSet<TEntity> _dbSet;
 
         private bool _transactionActive;
@@ -30,7 +30,7 @@ namespace Dehydrator.EntityFramework
         public DbCrudRepository(DbSet<TEntity> dbSet, DbContext dbContext)
             : base(dbSet)
         {
-            _dbContext = dbContext;
+            DbContext = dbContext;
             _dbSet = dbSet;
         }
 
@@ -66,11 +66,11 @@ namespace Dehydrator.EntityFramework
         {
             if (_transactionActive) return new FakeTransaction();
 
-            var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
+            var transaction = DbContext.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                _dbContext.Database.ExecuteSqlCommand(
-                    $"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
+                DbContext.Database.ExecuteSqlCommand(
+                    $"SELECT 1 FROM {DbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)");
             }
             catch
             {
@@ -84,7 +84,7 @@ namespace Dehydrator.EntityFramework
 
         public void SaveChanges()
         {
-            _dbContext.SaveChanges();
+            DbContext.SaveChanges();
         }
 
 #if NET45
@@ -116,12 +116,12 @@ namespace Dehydrator.EntityFramework
         {
             if (_transactionActive) return new FakeTransaction();
 
-            var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.Serializable);
+            var transaction = DbContext.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
                 await
-                    _dbContext.Database.ExecuteSqlCommandAsync(
-                        $"SELECT 1 FROM {_dbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)", cancellationToken);
+                    DbContext.Database.ExecuteSqlCommandAsync(
+                        $"SELECT 1 FROM {DbContext.GetTableName<TEntity>()} WITH (TABLOCKX, HOLDLOCK)", cancellationToken);
             }
             catch
             {
@@ -135,7 +135,7 @@ namespace Dehydrator.EntityFramework
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await DbContext.SaveChangesAsync(cancellationToken);
         }
 #endif
     }
