@@ -27,7 +27,7 @@ namespace Dehydrator.WebApi
             [NotNull] IOrderedQueryable<T> queryable)
         {
             if (request.Headers.Range?.Unit != RangeUnit)
-                return request.CreateResponse(queryable);
+                return request.CreateResponse(await queryable.ToListAsync());
 
             var range = request.Headers.Range.Ranges.First();
 
