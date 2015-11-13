@@ -32,7 +32,7 @@ namespace Dehydrator
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _inner.GetEnumerator();
+            throw new InvalidOperationException("Dehydating queryables cannot be enumerated using non-generic IEnumerable interface. Please use IEnumerable<T> instead.");
         }
 
         public Expression Expression => _inner.Expression;
