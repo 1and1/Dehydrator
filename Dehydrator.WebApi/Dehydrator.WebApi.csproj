@@ -70,6 +70,7 @@
     <Compile Include="AsyncReadController.cs" />
     <Compile Include="CrudController.cs" />
     <Compile Include="EntityController.cs" />
+    <Compile Include="HttpPagination.cs" />
     <Compile Include="InheritanceRouteProvider.cs" />
     <Compile Include="ReadController.cs" />
     <None Include="ClassDiagram.cd" />

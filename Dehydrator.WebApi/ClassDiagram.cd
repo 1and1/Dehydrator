@@ -66,6 +66,13 @@
       <FileName>InheritanceRouteProvider.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Dehydrator.WebApi.HttpPagination" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAQAEAAAAACAAAAAAAAAgAAAAEAgAAAQ=</HashCode>
+      <FileName>HttpPagination.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="Dehydrator.IReadRepository&lt;TEntity&gt;" Collapsed="true">
     <Position X="3.75" Y="3" Width="2" />
     <TypeIdentifier />
