@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
 
@@ -36,21 +37,31 @@ namespace Dehydrator.EntityFramework
 
         public TEntity Add(TEntity entity)
         {
-            return _dbSet.Add(entity);
+            var result = _dbSet.Add(entity);
+
+            DbContext.SaveChanges();
+            return result;
+        }
+
+        public void Modify(TEntity entity)
+        {
+            if (!IsTracked(entity))
+            {
+                var existingEntity = Find(entity.Id);
+                if (existingEntity == null)
+                    throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
+                entity.TransferState(to: existingEntity);
+            }
+
+            DbContext.SaveChanges();
         }
 
         /// <summary>
-        /// Modifies an existing entity in the database.
+        /// Determines whether <paramref name="entity"/> is wrapped in a tracking proxy and can therefore detect changes to itself.
         /// </summary>
-        /// <param name="entity">The modified entity. If any <see cref="IEntity"/> collections are <see langword="null"/> they are treated as unmodified rather than empty.</param>
-        /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
-        public void Modify(TEntity entity)
+        private bool IsTracked(TEntity entity)
         {
-            // NOTE: _dbContext.Entry(entity).State = EntityState.Modified; will not work here due to references
-            var existingEntity = Find(entity.Id);
-            if (existingEntity == null)
-                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
-            entity.TransferState(to: existingEntity);
+            return DbContext.ChangeTracker.Entries<TEntity>().Any(x => x.Entity == entity);
         }
 
         public bool Remove(long id)
@@ -59,6 +70,8 @@ namespace Dehydrator.EntityFramework
             if (entity == null) return false;
 
             _dbSet.Remove(entity);
+
+            DbContext.SaveChanges();
             return true;
         }
 
@@ -82,25 +95,26 @@ namespace Dehydrator.EntityFramework
             return new DbTransaction(transaction, disposeCallback: () => _transactionActive = false);
         }
 
-        public void SaveChanges()
+#if NET45
+        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
-            DbContext.SaveChanges();
+            var result = _dbSet.Add(entity);
+
+            await DbContext.SaveChangesAsync(cancellationToken);
+            return result;
         }
 
-#if NET45
-        /// <summary>
-        /// Modifies an existing entity in the database.
-        /// </summary>
-        /// <param name="entity">The modified entity. If any <see cref="IEntity"/> collections are <see langword="null"/> they are treated as unmodified rather than empty.</param>
-        /// <param name="cancellationToken">Used to cancel the request.</param>
-        /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
         public async Task ModifyAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // NOTE: _dbContext.Entry(entity).State = EntityState.Modified; will not work here due to references
-            var existingEntity = await FindAsync(entity.Id, cancellationToken);
-            if (existingEntity == null)
-                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
-            entity.TransferState(to: existingEntity);
+            if (!IsTracked(entity))
+            {
+                var existingEntity = await FindAsync(entity.Id, cancellationToken);
+                if (existingEntity == null)
+                    throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID {entity.Id} not found.");
+                entity.TransferState(to: existingEntity);
+            }
+
+            await DbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
@@ -109,6 +123,8 @@ namespace Dehydrator.EntityFramework
             if (entity == null) return false;
 
             _dbSet.Remove(entity);
+
+            await DbContext.SaveChangesAsync(cancellationToken);
             return true;
         }
 
@@ -131,11 +147,6 @@ namespace Dehydrator.EntityFramework
 
             _transactionActive = true;
             return new DbTransaction(transaction, disposeCallback: () => _transactionActive = false);
-        }
-
-        public async Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await DbContext.SaveChangesAsync(cancellationToken);
         }
 #endif
     }

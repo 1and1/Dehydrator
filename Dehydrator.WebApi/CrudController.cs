@@ -43,8 +43,12 @@ namespace Dehydrator.WebApi
             {
                 return BadRequest(ex.Message);
             }
+            catch (DataException ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    ex.GetInnerMost().Message));
+            }
 
-            SaveChanges();
             return Created(
                 location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
                 content: storedEntity);
@@ -70,8 +74,12 @@ namespace Dehydrator.WebApi
             {
                 return BadRequest(ex.Message);
             }
+            catch (DataException ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    ex.GetInnerMost().Message));
+            }
 
-            SaveChanges();
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -82,26 +90,16 @@ namespace Dehydrator.WebApi
         [HttpDelete, Route("{id}")]
         public virtual void Delete(long id)
         {
-            if (!Repository.Remove(id))
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    $"{typeof(TEntity).Name} {id} not found."));
-
-            SaveChanges(codeIfError: HttpStatusCode.Forbidden);
-        }
-
-        /// <summary>
-        /// Saves any pending changes in the underlying <see cref="Repository"/>.
-        /// </summary>
-        /// <param name="codeIfError">The <see cref="HttpStatusCode"/> to return in case of an error.</param>
-        protected void SaveChanges(HttpStatusCode codeIfError = HttpStatusCode.BadRequest)
-        {
             try
             {
-                Repository.SaveChanges();
+                if (!Repository.Remove(id))
+                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                        $"{typeof(TEntity).Name} {id} not found."));
             }
             catch (DataException ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(codeIfError, ex.GetInnerMost().Message));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Forbidden,
+                    ex.GetInnerMost().Message));
             }
         }
     }

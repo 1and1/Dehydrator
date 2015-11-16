@@ -16,7 +16,7 @@ namespace Dehydrator.Sample.Controllers
         [HttpPost, Route("test-data")]
         public async Task TestData()
         {
-            Repository.Add(new Package
+            await Repository.AddAsync(new Package
             {
                 Name = "AwesomeApp",
                 Dependencies = new List<Package>
@@ -27,7 +27,6 @@ namespace Dehydrator.Sample.Controllers
                     }
                 }
             });
-            await Repository.SaveChangesAsync();
         }
     }
 }

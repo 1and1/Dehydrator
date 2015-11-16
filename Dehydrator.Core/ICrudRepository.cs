@@ -17,26 +17,31 @@ namespace Dehydrator
         where TEntity : class, IEntity, new()
     {
         /// <summary>
-        /// Adds a new entity to the database. Call <see cref="SaveChanges"/> when done.
+        /// Adds a new entity to the database.
         /// </summary>
+        /// <param name="entity">The entity to add.</param>
         /// <returns>The added entity with <see cref="IEntity.Id"/> set.</returns>
+        /// <remarks>Results may be dehydrated.</remarks>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         [NotNull]
         [DataObjectMethod(DataObjectMethodType.Insert)]
         TEntity Add([NotNull] TEntity entity);
 
         /// <summary>
-        /// Modifies an existing entity in the database. Call <see cref="SaveChanges"/> when done.
+        /// Modifies an existing entity in the database.
         /// </summary>
         /// <param name="entity">The modified entity.</param>
         /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         [DataObjectMethod(DataObjectMethodType.Update)]
         void Modify([NotNull] TEntity entity);
 
         /// <summary>
-        /// Removes a specific entity from the database. Call <see cref="SaveChanges"/> when done.
+        /// Removes a specific entity from the database.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
         /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         [DataObjectMethod(DataObjectMethodType.Delete)]
         bool Remove(long id);
 
@@ -47,27 +52,35 @@ namespace Dehydrator
         [NotNull]
         ITransaction BeginTransaction();
 
-        /// <summary>
-        /// Persists any changes made to the underlying storage system.
-        /// </summary>
-        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
-        void SaveChanges();
-
 #if NET45
         /// <summary>
-        /// Modifies an existing entity in the database. Call <see cref="SaveChangesAsync"/> when done.
+        /// Adds a new entity to the database.
+        /// </summary>
+        /// <param name="entity">The entity to add.</param>
+        /// <param name="cancellationToken">Used to cancel the request.</param>
+        /// <returns>The added entity with <see cref="IEntity.Id"/> set.</returns>
+        /// <remarks>Results may be dehydrated.</remarks>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
+        [NotNull]
+        [DataObjectMethod(DataObjectMethodType.Insert)]
+        Task<TEntity> AddAsync([NotNull] TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Modifies an existing entity in the database.
         /// </summary>
         /// <param name="entity">The modified entity.</param>
         /// <param name="cancellationToken">Used to cancel the request.</param>
         /// <exception cref="KeyNotFoundException">No existing entity with matching <see cref="IEntity.Id"/> in the backing database.</exception>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         Task ModifyAsync([NotNull] TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Removes a specific entity from the database. Call <see cref="SaveChangesAsync"/> when done.
+        /// Removes a specific entity from the database.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
         /// <param name="cancellationToken">Used to cancel the request.</param>
         /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
+        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
@@ -75,12 +88,6 @@ namespace Dehydrator
         /// </summary>
         /// <returns>A representation of the transaction. Dispose to end the transaction and rollback uncomitted changes.</returns>
         Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Persists any changes made to the underlying storage system.
-        /// </summary>
-        /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
-        Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 #endif
     }
 }

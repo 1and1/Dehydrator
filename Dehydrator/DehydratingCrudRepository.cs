@@ -34,8 +34,8 @@ namespace Dehydrator
 
         public TEntity Add(TEntity entity)
         {
-            return Inner.Add(
-                entity.ResolveReferences(_repositoryFactory)).DehydrateReferences();
+            var result = Inner.Add(entity.ResolveReferences(_repositoryFactory));
+            return result.DehydrateReferences();
         }
 
         public void Modify(TEntity entity)
@@ -54,12 +54,14 @@ namespace Dehydrator
             return Inner.BeginTransaction();
         }
 
-        public void SaveChanges()
+#if NET45
+        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new CancellationToken())
         {
-            Inner.SaveChanges();
+            var result = await Inner.AddAsync(
+                await entity.ResolveReferencesAsync(_repositoryFactory), cancellationToken);
+            return result.DehydrateReferences();
         }
 
-#if NET45
         public async Task ModifyAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             await Inner.ModifyAsync(
@@ -74,11 +76,6 @@ namespace Dehydrator
         public Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             return Inner.BeginTransactionAsync(cancellationToken);
-        }
-
-        public Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Inner.SaveChangesAsync(cancellationToken);
         }
 #endif
     }

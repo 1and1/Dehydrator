@@ -21,7 +21,7 @@ namespace Dehydrator
         /// <summary>
         /// Returns all entities of a certain type from the backing database.
         /// </summary>
-        /// <remarks>Results may be dehydrated.</remarks>
+        /// <remarks>Results may be dehydrated or non-tracked.</remarks>
         [NotNull]
         [DataObjectMethod(DataObjectMethodType.Select)]
         IEnumerable<TEntity> GetAll();
@@ -29,7 +29,7 @@ namespace Dehydrator
         /// <summary>
         /// Returns all entities of a certain type that match a predicate.
         /// </summary>
-        /// <remarks>Results may be dehydrated.</remarks>
+        /// <remarks>Results may be dehydrated or non-tracked.</remarks>
         [NotNull]
         IEnumerable<TEntity> GetAll([NotNull] Expression<Func<TEntity, bool>> predicate);
 

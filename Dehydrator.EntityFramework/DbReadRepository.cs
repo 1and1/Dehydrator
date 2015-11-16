@@ -50,7 +50,7 @@ namespace Dehydrator.EntityFramework
             return _dbSet.Find(id);
         }
 
-        public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_dbSet.AsNoTracking());
+        public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_dbSet);
 
 #if NET45
         public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
