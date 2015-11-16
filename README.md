@@ -64,7 +64,7 @@ This removes any potential duplication and ambiguity.
 ### Data model
 Install the `Dehydrator.Core` NuGet package in the project holding your data model. Make all your entity classes either implement `IEntity` or derive from `Entity`. Mark any reference properties you wish to have dehydrated with `[Dehydrate]`. If you want to have a property resolved but not dehydrated (e.g., incoming data is dehydrated and needs to be resolved but outgoing data should not be dehydrated) use `[Resolve]` instead. Combining `[Dehydrate]` and `[Resolve]` is not necessary since `[Dehydrate]` implies `[Resolve]`. To embed an Entity type within another and have the dehydration only start within the inner object annotate the containing property with `[DehydrateReferences]` or `[ResolveReferences]`.
 
-Install the `Dehydrator` NuGet package in the project performing the data serializatio (usually the frontend/webservice). You can now use the `.DehydrateReferences()` extension method to dehydrate references in entities down to only their IDs and  and `.ResolveReferences()` to resolve/restore them again.
+Install the `Dehydrator` NuGet package in the project performing the data serialization (usually the frontend/webservice). You can now use the `.DehydrateReferences()` extension method to dehydrate references in entities down to only their IDs and  and `.ResolveReferences()` to resolve/restore them again.
 
 Resolving requires an `IRepositoryFactory`, which represents a storage backend such as a database and provides `IRepository<>` instances for specific entity types.
 
