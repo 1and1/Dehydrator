@@ -43,7 +43,7 @@ namespace Dehydrator
         public async Task ToListAsync()
         {
             var mock = new Mock<IAsyncCollectable<int>>();
-            mock.Setup(x => x.ToListAsync(CancellationToken.None)).Returns(Task.FromResult(new List<int> {1, 2, 3}));
+            mock.Setup(x => x.ToListAsync(CancellationToken.None)).ReturnsAsync(new List<int> {1, 2, 3});
             (await mock.Object.ToListAsync()).Should().Equal(1, 2, 3);
         }
 
@@ -51,7 +51,7 @@ namespace Dehydrator
         public async Task FirstAsync()
         {
             var mock = new Mock<IAsyncCollectable<int>>();
-            mock.Setup(x => x.FirstAsync(CancellationToken.None)).Returns(Task.FromResult(1));
+            mock.Setup(x => x.FirstAsync(CancellationToken.None)).ReturnsAsync(1);
             (await mock.Object.FirstAsync()).Should().Be(1);
         }
 
@@ -59,7 +59,7 @@ namespace Dehydrator
         public async Task FirstOrDefaultAsync()
         {
             var mock = new Mock<IAsyncCollectable<int>>();
-            mock.Setup(x => x.FirstOrDefaultAsync(CancellationToken.None)).Returns(Task.FromResult(1));
+            mock.Setup(x => x.FirstOrDefaultAsync(CancellationToken.None)).ReturnsAsync(1);
             (await mock.Object.FirstOrDefaultAsync()).Should().Be(1);
         }
     }
