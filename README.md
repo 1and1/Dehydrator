@@ -96,6 +96,8 @@ container.RegisterDatabase<LoginDbContext>(dehydrate: true)
   .RegisterRepository(x => x.Groups);
 ```
 
+The repositories are registered with `HierarchicalLifetimeManager`. This means you can use `container.CreateChildContainer()` to start independent sessions.
+
 
 ### WebAPI
 For proper JSON-serialization of dehydrated content you should add the following lines to your `WebApiConfig.Register()` method:
