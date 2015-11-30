@@ -140,7 +140,7 @@ namespace Dehydrator
             _refRepositoryMock.Setup(x => x.FindAsync(_dehydratedRef.Id, CancellationToken.None))
                 .ReturnsAsync(_resolvedRef);
             _mainRepositoryMock.Setup(x => x.ModifyAsync(_entityWithResolvedRefs, CancellationToken.None))
-                .Returns(Task.FromResult(true));
+                .ReturnsAsync();
 
             await _repository.ModifyAsync(_entityWithDehydratedRefs);
         }

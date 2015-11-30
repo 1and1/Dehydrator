@@ -112,6 +112,7 @@
     <Compile Include="MockContainer.cs" />
     <Compile Include="MockEntity1.cs" />
     <Compile Include="MockEntity2.cs" />
+    <Compile Include="MockExtensions.cs" />
     <Compile Include="NoIdTest.cs" />
     <Compile Include="QueryableExtensionsTest.cs" />
     <Compile Include="ResolveOnlyTest.cs" />

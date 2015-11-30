@@ -89,7 +89,7 @@ namespace Dehydrator.WebApi
         public async Task TestUpdate()
         {
             var entity = new MockEntity1 {Id = 1, FriendlyName = "Mock"};
-            _repositoryMock.Setup(x => x.ModifyAsync(entity, CancellationToken.None)).Returns(Task.FromResult(true));
+            _repositoryMock.Setup(x => x.ModifyAsync(entity, CancellationToken.None)).ReturnsAsync();
             await _controller.Update(1, entity);
         }
 
