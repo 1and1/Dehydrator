@@ -155,15 +155,5 @@ namespace Dehydrator
                 return minElement;
             }
         }
-
-        /// <summary>
-        /// Calls <see cref="ICloneable.Clone"/> for every element in a collection and returns the results as a new collection.
-        /// </summary>
-        [NotNull, Pure]
-        public static IEnumerable<T> CloneElements<T>([NotNull, ItemNotNull] this IEnumerable<T> enumerable)
-            where T : ICloneable
-        {
-            return enumerable.Select(entry => (T)entry.Clone());
-        }
     }
 }

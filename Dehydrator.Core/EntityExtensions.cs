@@ -11,18 +11,6 @@ namespace Dehydrator
     [PublicAPI]
     public static class EntityExtensions
     {
-        /// <summary>
-        /// Copies all public properties <paramref name="from"/> an <see cref="IEntity"/> to a new clone of it.
-        /// Skips <see cref="IEntity.Id"/>.
-        /// </summary>
-        [NotNull]
-        public static TEntity Clone<TEntity>([NotNull] this TEntity from)
-            where TEntity : class, IEntity, new()
-        {
-            var to = new TEntity();
-            from.TransferState(to);
-            return to;
-        }
 
         /// <summary>
         /// Copies all public properties <paramref name="from"/> one <see cref="IEntity"/> <paramref name="to"/> another.
