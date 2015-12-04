@@ -28,21 +28,21 @@ namespace Dehydrator.EntityFramework.Unity
         /// </summary>
         public void RegisterRepositories()
         {
-            _container.RegisterType(typeof(IReadRepository<>), new HierarchicalLifetimeManager(), new InjectionFactory((c, t, s) =>
+            _container.RegisterType(typeof(IReadRepository<>), new HierarchicalLifetimeManager(), new InjectionFactory((container, type, name) =>
             {
-                var factory = c.Resolve<IReadRepositoryFactory>(
+                var factory = container.Resolve<IReadRepositoryFactory>(
                     name: $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}");
-                var entityType = t.GetGenericArguments()[0];
+                var entityType = type.GetGenericArguments()[0];
                 return factory.Create(entityType);
             }));
 
             if (!_readOnly)
             {
-                _container.RegisterType(typeof(ICrudRepository<>), new HierarchicalLifetimeManager(), new InjectionFactory((c, t, s) =>
+                _container.RegisterType(typeof(ICrudRepository<>), new HierarchicalLifetimeManager(), new InjectionFactory((container, type, name) =>
                 {
-                    var factory = c.Resolve<ICrudRepositoryFactory>(
+                    var factory = container.Resolve<ICrudRepositoryFactory>(
                         name: $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}");
-                    var entityType = t.GetGenericArguments()[0];
+                    var entityType = type.GetGenericArguments()[0];
                     return factory.Create(entityType);
                 }));
             }
@@ -69,18 +69,18 @@ namespace Dehydrator.EntityFramework.Unity
         public DatabaseRegistration<TDbContext> RegisterRepository<TEntity>()
             where TEntity : class, IEntity, new()
         {
-            _container.RegisterType<IReadRepository<TEntity>>(new HierarchicalLifetimeManager(), new InjectionFactory((c, t, s) =>
+            _container.RegisterType<IReadRepository<TEntity>>(new HierarchicalLifetimeManager(), new InjectionFactory((container, type, name) =>
             {
-                var factory = c.Resolve<IReadRepositoryFactory>(
+                var factory = container.Resolve<IReadRepositoryFactory>(
                     name: $"{nameof(IReadRepositoryFactory)} for {typeof(TDbContext).FullName}");
                 return factory.Create<TEntity>();
             }));
 
             if (!_readOnly)
             {
-                _container.RegisterType<ICrudRepository<TEntity>>(new HierarchicalLifetimeManager(), new InjectionFactory((c, t, s) =>
+                _container.RegisterType<ICrudRepository<TEntity>>(new HierarchicalLifetimeManager(), new InjectionFactory((container, type, name) =>
                 {
-                    var factory = c.Resolve<ICrudRepositoryFactory>(
+                    var factory = container.Resolve<ICrudRepositoryFactory>(
                         name: $"{nameof(ICrudRepositoryFactory)} for {typeof(TDbContext).FullName}");
                     return factory.Create<TEntity>();
                 }));
