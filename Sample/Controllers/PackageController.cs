@@ -6,7 +6,7 @@ using Dehydrator.WebApi;
 
 namespace Dehydrator.Sample.Controllers
 {
-    [RoutePrefix("api/packages")]
+    [RoutePrefix("packages")]
     public class PackageController : AsyncCrudController<Package>
     {
         public PackageController(ICrudRepository<Package> repository) : base(repository)

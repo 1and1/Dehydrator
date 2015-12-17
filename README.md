@@ -121,14 +121,14 @@ You can also build your own controllers using `IRepository<>`s directly without 
 
 The source code includes a sample project that uses all Dehydrator components. You can build and run it using Visual Studio 2015 and LocalDB. By default the instance will be hosted by IIS Express at `http://localhost:6297/`.
 
-`POST /api/packages/test-data` fills the database with some initial demo entries.
+`POST /packages/test-data` fills the database with some initial demo entries.
 
-`GET /api/packages/` lists all entities, showcasing dependencies being dehydrated.
+`GET /packages/` lists all entities, showcasing dependencies being dehydrated.
 
-`POST /api/packages/{id}` creates a new entity, showcasing dependency IDs being resolved.
+`POST /packages/{id}` creates a new entity, showcasing dependency IDs being resolved.
 
-`GET /api/packages/{id}` returns an existing entity, again showcasing dependencies being dehydrated.
+`GET /packages/{id}` returns an existing entity, again showcasing dependencies being dehydrated.
 
-`PUT /api/packages/{id}` updates an existing entity, again showcasing dependency IDs being resolved.
+`PUT /packages/{id}` updates an existing entity, again showcasing dependency IDs being resolved.
 
-`DELETE /api/packages/{id}` deletes an existing entity.
+`DELETE /packages/{id}` deletes an existing entity.
