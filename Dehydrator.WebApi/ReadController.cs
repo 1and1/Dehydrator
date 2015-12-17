@@ -22,7 +22,7 @@ namespace Dehydrator.WebApi
         /// <summary>
         /// Returns all <typeparamref name="TEntity"/>s.
         /// </summary>
-        [HttpGet, Route("")]
+        [HttpGet, HttpHead, Route("")]
         public virtual IEnumerable<TEntity> ReadAll()
         {
             return Repository.GetAll();
@@ -32,7 +32,7 @@ namespace Dehydrator.WebApi
         /// Returns a specific <typeparamref name="TEntity"/>.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> to look for.</param>
-        [HttpGet, Route("{id}")]
+        [HttpGet, HttpHead, Route("{id}")]
         public virtual TEntity Read(long id)
         {
             return CheckFound(Repository.Find(id), id);
