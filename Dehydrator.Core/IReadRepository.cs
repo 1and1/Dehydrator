@@ -43,7 +43,7 @@ namespace Dehydrator
         /// Returns a specific entity from the backing database.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
-        /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
+        /// <returns>The entity or <c>null</c> if there was no match.</returns>
         /// <remarks>Result references may be dehydrated.</remarks>
         [CanBeNull]
         TEntity Find(long id);
@@ -60,7 +60,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to find.</param>
         /// <param name="cancellationToken">Used to cancel the request.</param>
-        /// <returns>The entity or <see langword="null"/> if there was no match.</returns>
+        /// <returns>The entity or <c>null</c> if there was no match.</returns>
         /// <remarks>Result references may be dehydrated.</remarks>
         Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken));
 #endif

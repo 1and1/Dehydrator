@@ -43,7 +43,7 @@ namespace Dehydrator
         }
 
         /// <summary>
-        /// Compares two <see cref="IEntity"/> collections for element-wise equality. Treats <see langword="null"/> values as empty collections.
+        /// Compares two <see cref="IEntity"/> collections for element-wise equality. Treats <c>null</c> values as empty collections.
         /// </summary>
         protected bool Equals<T>([CanBeNull] ICollection<T> first, [CanBeNull] ICollection<T> second)
         {

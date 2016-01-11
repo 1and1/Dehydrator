@@ -11,7 +11,7 @@ namespace Dehydrator
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Filters a sequence of elements to remove any <see langword="null"/> values.
+        /// Filters a sequence of elements to remove any <c>null</c> values.
         /// </summary>
         [NotNull, ItemNotNull, Pure, LinqTunnel]
         public static IEnumerable<T> WhereNotNull<T>([NotNull, ItemCanBeNull] this IEnumerable<T> enumeration)
@@ -24,7 +24,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="first">The first of the two collections to compare.</param>
         /// <param name="second">The first of the two collections to compare.</param>
-        /// <param name="comparer">Controls how to compare elements; leave <see langword="null"/> for default comparer.</param>
+        /// <param name="comparer">Controls how to compare elements; leave <c>null</c> for default comparer.</param>
         [Pure]
         public static bool UnsequencedEquals<T>([NotNull, InstantHandle] this ICollection<T> first,
             [NotNull, InstantHandle] ICollection<T> second, [CanBeNull] IEqualityComparer<T> comparer = null)
@@ -40,7 +40,7 @@ namespace Dehydrator
         /// Generates a hash code for the contents of a collection. Changing the elements' order will not change the hash.
         /// </summary>
         /// <param name="collection">The collection to generate the hash for.</param>
-        /// <param name="comparer">Controls how to compare elements; leave <see langword="null"/> for default comparer.</param>
+        /// <param name="comparer">Controls how to compare elements; leave <c>null</c> for default comparer.</param>
         /// <seealso cref="UnsequencedEquals{T}"/>
         [Pure]
         public static int GetUnsequencedHashCode<T>([NotNull, InstantHandle] this IEnumerable<T> collection,

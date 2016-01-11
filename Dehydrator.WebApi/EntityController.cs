@@ -12,9 +12,9 @@ namespace Dehydrator.WebApi
         where TEntity : class, IEntity, new()
     {
         /// <summary>
-        /// Throws an exception if <paramref name="entity"/> is <see langword="null"/>. Returns the <paramref name="entity"/> otherwise.
+        /// Throws an exception if <paramref name="entity"/> is <c>null</c>. Returns the <paramref name="entity"/> otherwise.
         /// </summary>
-        /// <exception cref="HttpResponseException"><paramref name="entity"/> is <see langword="null"/>.</exception>
+        /// <exception cref="HttpResponseException"><paramref name="entity"/> is <c>null</c>.</exception>
         protected TEntity CheckFound(TEntity entity, long id)
         {
             if (entity == null)

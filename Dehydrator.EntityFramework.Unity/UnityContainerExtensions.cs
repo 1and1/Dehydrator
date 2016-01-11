@@ -10,8 +10,8 @@ namespace Dehydrator.EntityFramework.Unity
         /// </summary>
         /// <typeparam name="TDbContext">The specific type of <see cref="DbContext"/> to register for.</typeparam>
         /// <param name="container">The Unity container to perform the registration on.</param>
-        /// <param name="dehydrate"><see langword="true"/> to wrap factories in <see cref="DehydratingReadRepositoryFactory"/>s/<see cref="DehydratingCrudRepositoryFactory"/>s.</param>
-        /// <param name="readOnly"><see langword="true"/> to register only <see cref="IReadRepositoryFactory"/>, <see langword="false"/> to also add <see cref="ICrudRepositoryFactory"/>.</param>
+        /// <param name="dehydrate"><c>true</c> to wrap factories in <see cref="DehydratingReadRepositoryFactory"/>s/<see cref="DehydratingCrudRepositoryFactory"/>s.</param>
+        /// <param name="readOnly"><c>true</c> to register only <see cref="IReadRepositoryFactory"/>, <c>false</c> to also add <see cref="ICrudRepositoryFactory"/>.</param>
         /// <returns>A fluent API object to continue the configuration.</returns>
         /// <remarks>Uses <see cref="HierarchicalLifetimeManager"/>. Use <see cref="IUnityContainer.CreateChildContainer"/> to start independent sessions.</remarks>
         public static DatabaseRegistration<TDbContext> RegisterDatabase<TDbContext>(this IUnityContainer container,

@@ -40,7 +40,7 @@ namespace Dehydrator
         /// Removes a specific entity from the database.
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
-        /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
+        /// <returns><c>true</c> if the entity was removed; <c>false</c> if the entity did not exist.</returns>
         /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         [DataObjectMethod(DataObjectMethodType.Delete)]
         bool Remove(long id);
@@ -79,7 +79,7 @@ namespace Dehydrator
         /// </summary>
         /// <param name="id">The <see cref="IEntity.Id"/> of the entity to remove.</param>
         /// <param name="cancellationToken">Used to cancel the request.</param>
-        /// <returns><see langword="true"/> if the entity was removed; <see langword="false"/> if the entity did not exist.</returns>
+        /// <returns><c>true</c> if the entity was removed; <c>false</c> if the entity did not exist.</returns>
         /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken));
 
