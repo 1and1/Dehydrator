@@ -51,7 +51,7 @@ namespace Dehydrator.WebApi
             }
 
             return Created(
-                location: new Uri(storedEntity.Id.ToString(), UriKind.Relative),
+                location: new Uri(Request.RequestUri.EnsureTrailingSlash(), storedEntity.Id.ToString()),
                 content: storedEntity);
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Net;
 using System.Net.Http;
@@ -24,7 +25,7 @@ namespace Dehydrator.WebApi
 
             _controller = new AsyncMockController(_repositoryMock.Object)
             {
-                Request = new HttpRequestMessage(),
+                Request = new HttpRequestMessage {RequestUri = new Uri("http://fake/")},
                 Configuration = new HttpConfiguration()
             };
         }
