@@ -2,7 +2,7 @@
 
 namespace Dehydrator.WebApi
 {
-    public static class UriExtensions
+    internal static class UriExtensions
     {
         /// <summary>
         /// Adds a trailing slash to the URI if it does not already have one.
