@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Dehydrator</id>
-		<version>$version$</version>
+		<version>$version$$VersionSuffix$</version>
 		<authors>Bastian Eicher</authors>
 		<copyright>1&amp;1 Internet SE</copyright>
 		<projectUrl>https://github.com/1and1/Dehydrator</projectUrl>
@@ -11,5 +11,8 @@ By stripping navigational references in your entities down to only their IDs the
 Install this package in your data model. Install Dehydrator.EntityFramework and EntityFramework.WebApi in your controller if you use Entity Framework and WebAPI.</description>
 		<summary>Dehydrates references in Entity objects down to nothing but their ID for better serializability</summary>
 		<tags>Dehydrate Entity JSON REST WebAPI ORM EntityFramework</tags>
+		<dependencies>
+			<dependency id="Dehydrator.Core" version="[$version$$VersionSuffix$]" />
+		</dependencies>
 	</metadata>
 </package>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Dehydrator.EntityFramework</id>
-		<version>$version$</version>
+		<version>$version$$VersionSuffix$</version>
 		<authors>Bastian Eicher</authors>
 		<copyright>1&amp;1 Internet SE</copyright>
 		<projectUrl>https://github.com/1and1/Dehydrator</projectUrl>
@@ -10,5 +10,8 @@
 Install this package in your controller if you use Entity Framework.</description>
 		<summary>Implements Dehydrator interfaces for Microsoft's Entity Framework</summary>
 		<tags>Dehydrate Entity JSON REST WebAPI ORM EntityFramework</tags>
+		<dependencies>
+			<dependency id="Dehydrator.Core" version="[$version$$VersionSuffix$]" />
+		</dependencies>
 	</metadata>
 </package>

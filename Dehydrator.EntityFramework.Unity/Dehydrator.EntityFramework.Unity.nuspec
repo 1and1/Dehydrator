@@ -2,12 +2,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Dehydrator.EntityFramework.Unity</id>
-		<version>$version$</version>
+		<version>$version$$VersionSuffix$</version>
 		<authors>Bastian Eicher</authors>
 		<copyright>1&amp;1 Internet SE</copyright>
 		<projectUrl>https://github.com/1and1/Dehydrator</projectUrl>
 		<description>This package provides extension methods for registering Dehydrator.EntityFramework repositories and factories in the Unity Application Block.</description>
 		<summary>Extension methods for registering Dehydrator.EntityFramework in Unity</summary>
 		<tags>Dehydrate Entity JSON REST WebAPI ORM EntityFramework</tags>
+		<dependencies>
+			<dependency id="Dehydrator.EntityFramework" version="[$version$$VersionSuffix$]" />
+			<dependency id="Dehydrator.WebApi" version="[$version$$VersionSuffix$]" />
+		</dependencies>
 	</metadata>
 </package>
