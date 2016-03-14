@@ -11,7 +11,7 @@ namespace Dehydrator
         [NotNull] private readonly ICrudRepositoryFactory _inner;
 
         /// <summary>
-        /// Creates a new reference-dehyrdating decorator.
+        /// Creates a new reference-dehydrating decorator.
         /// </summary>
         /// <param name="inner">The inner factory to use for the actual storage.</param>
         public DehydratingCrudRepositoryFactory([NotNull] ICrudRepositoryFactory inner)
