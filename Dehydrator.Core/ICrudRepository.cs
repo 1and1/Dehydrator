@@ -61,7 +61,7 @@ namespace Dehydrator
         /// <returns>The added entity with <see cref="IEntity.Id"/> set.</returns>
         /// <remarks>Results may be dehydrated.</remarks>
         /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
-        [NotNull]
+        [ItemNotNull]
         [DataObjectMethod(DataObjectMethodType.Insert)]
         Task<TEntity> AddAsync([NotNull] TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -87,6 +87,7 @@ namespace Dehydrator
         /// Locks the contents represented by the repository. Any following changes are only commited if <see cref="ITransaction.Commit"/> is called.
         /// </summary>
         /// <returns>A representation of the transaction. Dispose to end the transaction and rollback uncomitted changes.</returns>
+        [ItemNotNull]
         Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken));
 #endif
     }

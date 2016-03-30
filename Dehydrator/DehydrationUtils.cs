@@ -205,7 +205,7 @@ namespace Dehydrator
         /// <param name="obj">The object containing the references to resolve.</param>
         /// <param name="repositoryFactory">Used to aquire full entities based on their ID. Usually backed by a database.</param>
         /// <typeparam name="T">The specific type of the <paramref name="obj"/>.</typeparam>
-        [Pure, NotNull]
+        [Pure, ItemNotNull]
         public static async Task<T> ResolveReferencesAsync<T>([NotNull] this T obj,
             [NotNull] IReadRepositoryFactory repositoryFactory)
         {
@@ -262,7 +262,7 @@ namespace Dehydrator
             return newObj;
         }
 
-        [NotNull]
+        [ItemNotNull]
         private static async Task<object> ResolveOrRecurseAsync([NotNull] this PropertyInfo prop,
             [NotNull] Type referenceType, [NotNull] object obj, [NotNull] IReadRepositoryFactory repositoryFactory)
         {

@@ -62,6 +62,7 @@ namespace Dehydrator
         /// <param name="cancellationToken">Used to cancel the request.</param>
         /// <returns>The entity or <c>null</c> if there was no match.</returns>
         /// <remarks>Result references may be dehydrated.</remarks>
+        [ItemCanBeNull]
         Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken));
 #endif
     }
