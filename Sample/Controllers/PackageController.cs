@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Dehydrator.Sample.Models;
+using Dehydrator;
 using Dehydrator.WebApi;
+using DehydratorSample.Models;
 
-namespace Dehydrator.Sample.Controllers
+namespace DehydratorSample.Controllers
 {
     [RoutePrefix("packages")]
     public class PackageController : AsyncCrudController<Package>

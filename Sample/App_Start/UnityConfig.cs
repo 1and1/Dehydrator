@@ -1,7 +1,7 @@
 ﻿using Dehydrator.EntityFramework.Unity;
 using Microsoft.Practices.Unity;
 
-namespace Dehydrator.Sample
+namespace DehydratorSample
 {
     public static class UnityConfig
     {

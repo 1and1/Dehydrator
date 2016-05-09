@@ -4,7 +4,7 @@ using Dehydrator.WebApi;
 using Newtonsoft.Json;
 using Unity.WebApi;
 
-namespace Dehydrator.Sample
+namespace DehydratorSample
 {
     public static class WebApiConfig
     {
@@ -19,6 +19,8 @@ namespace Dehydrator.Sample
             config.Formatters.JsonFormatter.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            config.EnsureInitialized();
         }
     }
 }

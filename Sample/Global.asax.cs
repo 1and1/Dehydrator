@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace Dehydrator.Sample
+namespace DehydratorSample
 {
     public class WebApiApplication : System.Web.HttpApplication
     {

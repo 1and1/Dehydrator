@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
-using Dehydrator.Sample.Models;
+using DehydratorSample.Models;
 
-namespace Dehydrator.Sample
+namespace DehydratorSample
 {
     public class SampleDbContext : DbContext
     {

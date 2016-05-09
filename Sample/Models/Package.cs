@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Dehydrator;
 
-namespace Dehydrator.Sample.Models
+namespace DehydratorSample.Models
 {
     /// <summary>
     /// A software package like an application or a library.

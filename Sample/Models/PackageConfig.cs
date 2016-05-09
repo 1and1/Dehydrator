@@ -1,4 +1,6 @@
-﻿namespace Dehydrator.Sample.Models
+﻿using Dehydrator;
+
+namespace DehydratorSample.Models
 {
     /// <summary>
     /// A configuration entry for a specific <see cref="Package"/>.
