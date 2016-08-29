@@ -12,22 +12,22 @@ if not defined VS140COMNTOOLS (
 )
 call "%VS140COMNTOOLS%vsvars32.bat"
 
-::Compile Visual Studio solution
+echo Compiling Visual Studio solution...
 nuget restore Dehydrator.sln
-msbuild Dehydrator.sln /nologo /t:Rebuild /p:Configuration=%BuildConfiguration%;VersionSuffix=""
+msbuild Dehydrator.sln /nologo /v:q /m /t:Rebuild /p:Configuration=%BuildConfiguration%;VersionSuffix=""
 if errorlevel 1 pause
 
-::Create NuGet packages
+echo Creating NuGet packages...
 mkdir build\%BuildConfiguration%\Packages
-nuget pack Dehydrator.Core\Dehydrator.Core.csproj -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
+nuget pack Dehydrator.Core\Dehydrator.Core.csproj -Verbosity quiet -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
 if errorlevel 1 pause
-nuget pack Dehydrator\Dehydrator.csproj -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
+nuget pack Dehydrator\Dehydrator.csproj -Verbosity quiet -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
 if errorlevel 1 pause
-nuget pack Dehydrator.EntityFramework\Dehydrator.EntityFramework.csproj -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
+nuget pack Dehydrator.EntityFramework\Dehydrator.EntityFramework.csproj -Verbosity quiet -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
 if errorlevel 1 pause
-nuget pack Dehydrator.EntityFramework.Unity\Dehydrator.EntityFramework.Unity.csproj -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
+nuget pack Dehydrator.EntityFramework.Unity\Dehydrator.EntityFramework.Unity.csproj -Verbosity quiet -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
 if errorlevel 1 pause
-nuget pack Dehydrator.WebApi\Dehydrator.WebApi.csproj -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
+nuget pack Dehydrator.WebApi\Dehydrator.WebApi.csproj -Verbosity quiet -Properties Configuration=%BuildConfiguration%;VersionSuffix="" -Symbols -OutputDirectory build\%BuildConfiguration%\Packages
 if errorlevel 1 pause
 
 popd
