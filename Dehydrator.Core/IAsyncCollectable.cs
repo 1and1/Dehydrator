@@ -13,6 +13,11 @@ namespace Dehydrator
     public interface IAsyncCollectable<T> : IEnumerable<T>
     {
         /// <summary>
+        /// Requests that the underlying database provider performs appropriate joins to eager-load the specified <paramref name="path"/>.
+        /// </summary>
+        IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path);
+
+        /// <summary>
         /// Creates a list from the queryable. Performs the operation asynchronously.
         /// </summary>
         Task<List<T>> ToListAsync(CancellationToken cancellationToken = default(CancellationToken));

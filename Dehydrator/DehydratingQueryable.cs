@@ -65,6 +65,9 @@ namespace Dehydrator
             }
         }
 
+        public IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path) =>
+            new DehydratingQueryable<T>(_inner.Include(path));
+
         public async Task<List<T>> ToListAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
             (await _inner.ToListAsync(cancellationToken)).Select(x => x.DehydrateReferences()).ToList();
 
