@@ -61,9 +61,11 @@ namespace Dehydrator
 
         public IEnumerator<T> GetEnumerator()
         {
-            var enumerator = _inner.GetEnumerator();
-            while (enumerator.MoveNext())
-                yield return enumerator.Current.DehydrateReferences();
+            using (var enumerator = _inner.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                    yield return enumerator.Current.DehydrateReferences();
+            }
         }
 
 #if NET45
