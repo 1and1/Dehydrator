@@ -1,9 +1,6 @@
 ﻿using System.Threading;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator
 {
@@ -54,7 +51,6 @@ namespace Dehydrator
             return Inner.BeginTransaction();
         }
 
-#if NET45
         public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new CancellationToken())
         {
             var result = await Inner.AddAsync(
@@ -77,6 +73,5 @@ namespace Dehydrator
         {
             return Inner.BeginTransactionAsync(cancellationToken);
         }
-#endif
     }
 }

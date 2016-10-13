@@ -3,12 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading;
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator
 {
@@ -68,16 +65,11 @@ namespace Dehydrator
             }
         }
 
-#if NET45
-        public async Task<List<T>> ToListAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return (await _inner.ToListAsync(cancellationToken)).Select(x => x.DehydrateReferences()).ToList();
-        }
+        public async Task<List<T>> ToListAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+            (await _inner.ToListAsync(cancellationToken)).Select(x => x.DehydrateReferences()).ToList();
 
-        public async Task<T> FirstAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return (await _inner.FirstAsync(cancellationToken)).DehydrateReferences();
-        }
+        public async Task<T> FirstAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+            (await _inner.FirstAsync(cancellationToken)).DehydrateReferences();
 
         public async Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -86,6 +78,5 @@ namespace Dehydrator
             // ReSharper disable once ExpressionIsAlwaysNull
             return (result == null) ? result : result.DehydrateReferences();
         }
-#endif
     }
 }

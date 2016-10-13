@@ -16,9 +16,9 @@ namespace Dehydrator
         /// </summary>
         public static async Task<List<T>> ToListAsync<T>([NotNull] this IQueryable<T> queryable, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var asyncQueryable = queryable as IAsyncCollectable<T>;
-            if (asyncQueryable == null) return queryable.ToList();
-            else return await asyncQueryable.ToListAsync(cancellationToken);
+            var asyncCollectable = queryable as IAsyncCollectable<T>;
+            if (asyncCollectable == null) return queryable.ToList();
+            else return await asyncCollectable.ToListAsync(cancellationToken);
         }
 
         /// <summary>
@@ -26,9 +26,9 @@ namespace Dehydrator
         /// </summary>
         public static async Task<T> FirstAsync<T>([NotNull] this IQueryable<T> queryable, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var asyncQueryable = queryable as IAsyncCollectable<T>;
-            if (asyncQueryable == null) return queryable.First();
-            else return await asyncQueryable.FirstAsync(cancellationToken);
+            var asyncCollectable = queryable as IAsyncCollectable<T>;
+            if (asyncCollectable == null) return queryable.First();
+            else return await asyncCollectable.FirstAsync(cancellationToken);
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace Dehydrator
         /// </summary>
         public static async Task<T> FirstOrDefaultAsync<T>([NotNull] this IQueryable<T> queryable, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var asyncQueryable = queryable as IAsyncCollectable<T>;
-            if (asyncQueryable == null) return queryable.FirstOrDefault();
-            else return await asyncQueryable.FirstOrDefaultAsync(cancellationToken);
+            var asyncCollectable = queryable as IAsyncCollectable<T>;
+            if (asyncCollectable == null) return queryable.FirstOrDefault();
+            else return await asyncCollectable.FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

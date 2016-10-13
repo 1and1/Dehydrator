@@ -4,11 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator
 {
@@ -54,7 +51,6 @@ namespace Dehydrator
         /// <remarks>Result references may be dehydrated.</remarks>
         IQueryable<TEntity> Query { get; }
 
-#if NET45
         /// <summary>
         /// Returns a specific entity from the backing database.
         /// </summary>
@@ -64,6 +60,5 @@ namespace Dehydrator
         /// <remarks>Result references may be dehydrated.</remarks>
         [ItemCanBeNull]
         Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken));
-#endif
     }
 }

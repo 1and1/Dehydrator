@@ -2,11 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Threading;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator
 {
@@ -52,7 +49,6 @@ namespace Dehydrator
         [NotNull]
         ITransaction BeginTransaction();
 
-#if NET45
         /// <summary>
         /// Adds a new entity to the database.
         /// </summary>
@@ -89,6 +85,5 @@ namespace Dehydrator
         /// <returns>A representation of the transaction. Dispose to end the transaction and rollback uncomitted changes.</returns>
         [ItemNotNull]
         Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken));
-#endif
     }
 }

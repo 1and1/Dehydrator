@@ -4,12 +4,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading;
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator.EntityFramework
 {
@@ -60,26 +57,16 @@ namespace Dehydrator.EntityFramework
             _inner = dbSet;
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _inner.GetEnumerator();
-        }
+        public IEnumerator<T> GetEnumerator() =>
+            _inner.GetEnumerator();
 
-#if NET45
-        public Task<List<T>> ToListAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return System.Data.Entity.QueryableExtensions.ToListAsync(_inner, cancellationToken);
-        }
+        public Task<List<T>> ToListAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+            System.Data.Entity.QueryableExtensions.ToListAsync(_inner, cancellationToken);
 
-        public Task<T> FirstAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return System.Data.Entity.QueryableExtensions.FirstAsync(_inner, cancellationToken);
-        }
+        public Task<T> FirstAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+            System.Data.Entity.QueryableExtensions.FirstAsync(_inner, cancellationToken);
 
-        public Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return System.Data.Entity.QueryableExtensions.FirstOrDefaultAsync(_inner, cancellationToken);
-        }
-#endif
+        public Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+            System.Data.Entity.QueryableExtensions.FirstOrDefaultAsync(_inner, cancellationToken);
     }
 }

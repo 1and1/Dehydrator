@@ -3,11 +3,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator.EntityFramework
 {
@@ -95,7 +92,6 @@ namespace Dehydrator.EntityFramework
             return new DbTransaction(transaction, disposeCallback: () => _transactionActive = false);
         }
 
-#if NET45
         public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = _dbSet.Add(entity);
@@ -148,6 +144,5 @@ namespace Dehydrator.EntityFramework
             _transactionActive = true;
             return new DbTransaction(transaction, disposeCallback: () => _transactionActive = false);
         }
-#endif
     }
 }

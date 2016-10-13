@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-
-#if NET45
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-#endif
 
 namespace Dehydrator
 {
@@ -13,7 +12,6 @@ namespace Dehydrator
     /// </summary>
     public interface IAsyncCollectable<T> : IEnumerable<T>
     {
-#if NET45
         /// <summary>
         /// Creates a list from the queryable. Performs the operation asynchronously.
         /// </summary>
@@ -28,6 +26,5 @@ namespace Dehydrator
         /// Returns the first element from the queryable or the default value of <typeparamref name="T"/> if there are no elements. Performs the operation asynchronously.
         /// </summary>
         Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken = default(CancellationToken));
-#endif
     }
 }

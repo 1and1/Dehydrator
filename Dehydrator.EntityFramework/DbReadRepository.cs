@@ -4,11 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator.EntityFramework
 {
@@ -52,11 +49,9 @@ namespace Dehydrator.EntityFramework
 
         public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_dbSet);
 
-#if NET45
         public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await _dbSet.FindAsync(cancellationToken, id);
         }
-#endif
     }
 }

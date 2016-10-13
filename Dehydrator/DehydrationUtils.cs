@@ -2,11 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using JetBrains.Annotations;
-
-#if NET45
 using System.Threading.Tasks;
-#endif
+using JetBrains.Annotations;
 
 namespace Dehydrator
 {
@@ -197,8 +194,7 @@ namespace Dehydrator
                 throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
             return entityWithResolvedRefs;
         }
-
-#if NET45
+        
         /// <summary>
         /// Resolves references that were dehydrated by <see cref="DehydrateReferences{TEntity}"/> to the original full entities. Returns the result as a new object keeping the original unchanged.
         /// </summary>
@@ -291,6 +287,5 @@ namespace Dehydrator
                 throw new KeyNotFoundException($"{entity.GetType().Name} with ID {entity.Id} not found.");
             return entityWithResolvedRefs;
         }
-#endif
     }
 }
