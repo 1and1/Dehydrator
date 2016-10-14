@@ -56,10 +56,7 @@ namespace Dehydrator.EntityFramework
         /// <summary>
         /// Determines whether <paramref name="entity"/> is wrapped in a tracking proxy and can therefore detect changes to itself.
         /// </summary>
-        private bool IsTracked(TEntity entity)
-        {
-            return DbContext.ChangeTracker.Entries<TEntity>().Any(x => x.Entity == entity);
-        }
+        private bool IsTracked(TEntity entity) => DbContext.ChangeTracker.Entries<TEntity>().Any(x => x.Entity == entity);
 
         public bool Remove(long id)
         {

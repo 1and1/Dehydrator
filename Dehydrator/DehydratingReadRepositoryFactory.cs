@@ -19,10 +19,7 @@ namespace Dehydrator
             _inner = inner;
         }
 
-        public IReadRepository<TEntity> Create<TEntity>()
-            where TEntity : class, IEntity, new()
-        {
-            return new DehydratingReadRepository<TEntity>(_inner.Create<TEntity>());
-        }
+        public IReadRepository<TEntity> Create<TEntity>() where TEntity : class, IEntity, new() =>
+            new DehydratingReadRepository<TEntity>(_inner.Create<TEntity>());
     }
 }

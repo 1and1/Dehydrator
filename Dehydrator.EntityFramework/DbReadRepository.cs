@@ -27,31 +27,16 @@ namespace Dehydrator.EntityFramework
             _dbSet = dbSet;
         }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _dbSet.AsNoTracking();
-        }
+        public IEnumerable<TEntity> GetAll() => _dbSet.AsNoTracking();
 
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
-        {
-            return _dbSet.AsNoTracking().Where(predicate);
-        }
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) => _dbSet.AsNoTracking().Where(predicate);
 
-        public bool Exists(long id)
-        {
-            return _dbSet.Any(e => e.Id == id);
-        }
+        public bool Exists(long id) => _dbSet.Any(e => e.Id == id);
 
-        public TEntity Find(long id)
-        {
-            return _dbSet.Find(id);
-        }
+        public TEntity Find(long id) => _dbSet.Find(id);
 
         public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_dbSet);
 
-        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return await _dbSet.FindAsync(cancellationToken, id);
-        }
+        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken)) => await _dbSet.FindAsync(cancellationToken, id);
     }
 }

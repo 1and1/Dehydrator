@@ -28,32 +28,16 @@ namespace Dehydrator
             Inner = inner;
         }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return Inner.GetAll().Select(x => x.Dehydrate());
-        }
+        public IEnumerable<TEntity> GetAll() => Inner.GetAll().Select(x => x.Dehydrate());
 
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Inner.GetAll(predicate).Select(x => x.Dehydrate());
-        }
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) => Inner.GetAll(predicate).Select(x => x.Dehydrate());
 
-        public TEntity Find(long id)
-        {
-            return Inner.Find(id)?.DehydrateReferences();
-        }
+        public TEntity Find(long id) => Inner.Find(id)?.DehydrateReferences();
 
-        public bool Exists(long id)
-        {
-            return Inner.Exists(id);
-        }
+        public bool Exists(long id) => Inner.Exists(id);
 
         public IQueryable<TEntity> Query => new DehydratingQueryable<TEntity>(Inner.Query);
 
-        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var entity = await Inner.FindAsync(id, cancellationToken);
-            return entity?.DehydrateReferences();
-        }
+        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken)) => (await Inner.FindAsync(id, cancellationToken))?.DehydrateReferences();
     }
 }

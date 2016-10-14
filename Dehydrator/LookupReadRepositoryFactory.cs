@@ -27,21 +27,12 @@ namespace Dehydrator
             return this;
         }
 
-        public IReadRepository<TEntity> Create<TEntity>()
-            where TEntity : class, IEntity, new()
-        {
-            return (ICrudRepository<TEntity>)Repositories[typeof(TEntity)];
-        }
+        public IReadRepository<TEntity> Create<TEntity>() where TEntity : class, IEntity, new() =>
+            (ICrudRepository<TEntity>)Repositories[typeof(TEntity)];
 
         // NOTE: Implement IEnumerable<T> to get support for initializer syntax
-        IEnumerator<object> IEnumerable<object>.GetEnumerator()
-        {
-            return Repositories.Values.GetEnumerator();
-        }
+        IEnumerator<object> IEnumerable<object>.GetEnumerator() => Repositories.Values.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Repositories.Values.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => Repositories.Values.GetEnumerator();
     }
 }

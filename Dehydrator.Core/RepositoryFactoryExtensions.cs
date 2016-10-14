@@ -13,11 +13,8 @@ namespace Dehydrator
         /// Returns a read-only repository for a specific <paramref name="entityType"/>.
         /// </summary>
         [NotNull]
-        public static object Create([NotNull] this IReadRepositoryFactory repositoryFactory,
-            [NotNull] Type entityType)
-        {
-            return CreateReadMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
-        }
+        public static object Create([NotNull] this IReadRepositoryFactory repositoryFactory, [NotNull] Type entityType) =>
+            CreateReadMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
 
         private static readonly MethodInfo CreateCrudMethod =
             typeof(ICrudRepositoryFactory).GetMethod(nameof(ICrudRepositoryFactory.Create));
@@ -26,10 +23,7 @@ namespace Dehydrator
         /// Returns a CRUD repository for a specific <paramref name="entityType"/>.
         /// </summary>
         [NotNull]
-        public static object Create([NotNull] this ICrudRepositoryFactory repositoryFactory,
-            [NotNull] Type entityType)
-        {
-            return CreateCrudMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
-        }
+        public static object Create([NotNull] this ICrudRepositoryFactory repositoryFactory, [NotNull] Type entityType) =>
+            CreateCrudMethod.MakeGenericMethod(entityType).Invoke(repositoryFactory, null);
     }
 }

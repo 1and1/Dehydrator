@@ -29,49 +29,24 @@ namespace Dehydrator
             Inner = inner;
         }
 
-        public TEntity Add(TEntity entity)
-        {
-            var result = Inner.Add(entity.ResolveReferences(_repositoryFactory));
-            return result.DehydrateReferences();
-        }
+        public TEntity Add(TEntity entity) => Inner.Add(
+            entity.ResolveReferences(_repositoryFactory)).DehydrateReferences();
 
-        public void Modify(TEntity entity)
-        {
-            Inner.Modify(
-                entity.ResolveReferences(_repositoryFactory));
-        }
+        public void Modify(TEntity entity) => Inner.Modify(
+            entity.ResolveReferences(_repositoryFactory));
 
-        public bool Remove(long id)
-        {
-            return Inner.Remove(id);
-        }
+        public bool Remove(long id) => Inner.Remove(id);
 
-        public ITransaction BeginTransaction()
-        {
-            return Inner.BeginTransaction();
-        }
+        public ITransaction BeginTransaction() => Inner.BeginTransaction();
 
-        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new CancellationToken())
-        {
-            var result = await Inner.AddAsync(
-                await entity.ResolveReferencesAsync(_repositoryFactory), cancellationToken);
-            return result.DehydrateReferences();
-        }
+        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new CancellationToken()) => (await Inner.AddAsync(
+            await entity.ResolveReferencesAsync(_repositoryFactory), cancellationToken)).DehydrateReferences();
 
-        public async Task ModifyAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await Inner.ModifyAsync(
-                await entity.ResolveReferencesAsync(_repositoryFactory), cancellationToken);
-        }
+        public async Task ModifyAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken)) => await Inner.ModifyAsync(
+            await entity.ResolveReferencesAsync(_repositoryFactory), cancellationToken);
 
-        public Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Inner.RemoveAsync(id, cancellationToken);
-        }
+        public Task<bool> RemoveAsync(long id, CancellationToken cancellationToken = default(CancellationToken)) => Inner.RemoveAsync(id, cancellationToken);
 
-        public Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Inner.BeginTransactionAsync(cancellationToken);
-        }
+        public Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default(CancellationToken)) => Inner.BeginTransactionAsync(cancellationToken);
     }
 }

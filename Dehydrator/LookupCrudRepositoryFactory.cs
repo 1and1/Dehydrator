@@ -22,10 +22,7 @@ namespace Dehydrator
             return this;
         }
 
-        public new ICrudRepository<TEntity> Create<TEntity>()
-            where TEntity : class, IEntity, new()
-        {
-            return (ICrudRepository<TEntity>)Repositories[typeof(TEntity)];
-        }
+        public new ICrudRepository<TEntity> Create<TEntity>() where TEntity : class, IEntity, new() =>
+            (ICrudRepository<TEntity>)Repositories[typeof(TEntity)];
     }
 }
