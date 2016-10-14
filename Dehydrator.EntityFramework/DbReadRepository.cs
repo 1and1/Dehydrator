@@ -17,6 +17,7 @@ namespace Dehydrator.EntityFramework
         where TEntity : class, IEntity, new()
     {
         [NotNull] private readonly DbSet<TEntity> _dbSet;
+        [NotNull] private readonly IQueryable<TEntity> _queryable;
 
         /// <summary>
         /// Creates a new database-backed repository.
@@ -25,18 +26,19 @@ namespace Dehydrator.EntityFramework
         public DbReadRepository(DbSet<TEntity> dbSet)
         {
             _dbSet = dbSet;
+            _queryable = dbSet;
         }
 
         public IEnumerable<TEntity> GetAll() => _dbSet.AsNoTracking();
 
         public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) => _dbSet.AsNoTracking().Where(predicate);
 
-        public bool Exists(long id) => _dbSet.Any(e => e.Id == id);
+        public bool Exists(long id) => _dbSet.Any(x => x.Id == id);
 
-        public TEntity Find(long id) => _dbSet.Find(id);
+        public TEntity Find(long id) => _queryable.FirstOrDefault(x => x.Id == id);
 
-        public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_dbSet);
+        public IQueryable<TEntity> Query => new DbQueryable<TEntity>(_queryable);
 
-        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken)) => await _dbSet.FindAsync(cancellationToken, id);
+        public async Task<TEntity> FindAsync(long id, CancellationToken cancellationToken = default(CancellationToken)) => await _queryable.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }

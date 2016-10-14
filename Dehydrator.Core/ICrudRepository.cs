@@ -58,7 +58,6 @@ namespace Dehydrator
         /// <remarks>Results may be dehydrated.</remarks>
         /// <exception cref="DataException">The underlying storage system failed to persist the changes.</exception>
         [ItemNotNull]
-        [DataObjectMethod(DataObjectMethodType.Insert)]
         Task<TEntity> AddAsync([NotNull] TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
