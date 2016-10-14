@@ -60,9 +60,6 @@ namespace Dehydrator.EntityFramework
         public IEnumerator<T> GetEnumerator() =>
             _inner.GetEnumerator();
 
-        public IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path) =>
-            new DbQueryable<T>(System.Data.Entity.QueryableExtensions.Include(_inner, path));
-
         public Task<List<T>> ToListAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
             System.Data.Entity.QueryableExtensions.ToListAsync(_inner, cancellationToken);
 
